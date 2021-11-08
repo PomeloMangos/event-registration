@@ -1,0 +1,19 @@
+﻿namespace Pomelo.Wow.EventRegistration.Web.Models
+{
+    public class Raid
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public int Phase { get; set; }
+
+        public string BossList { get; set; }
+
+        public int ItemLevelEntrance { get; set; }
+
+        public int ItemLevelPreference { get; set; }
+
+        public int ItemLevelGraduated { get; set; }
+    }
+}
