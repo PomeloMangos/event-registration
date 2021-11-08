@@ -38,6 +38,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             return await PagedApiResultAsync(db.Activities
                 .Include(x => x.Registrations)
+                .Include(x => x.User)
                 .OrderByDescending(x => x.Id), page - 1, pageSize, cancellationToken);
         }
 
@@ -48,6 +49,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             CancellationToken cancellationToken = default)
         {
             var activity = await db.Activities
+                .Include(x => x.User)
                 .Include(x => x.Registrations)
                 .ThenInclude(x => x.Charactor)
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);

@@ -31,6 +31,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public string Raids { get; set; }
 
+        [ForeignKey(nameof(User))]
+        public int UserId { get; set; }
+
+        public virtual User User { get; set; }
+
         public virtual ICollection<Registration> Registrations { get; set; } = new List<Registration>();
     }
 }
