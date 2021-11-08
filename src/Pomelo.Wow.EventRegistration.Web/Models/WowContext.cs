@@ -19,6 +19,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public DbSet<Registration> Registrations { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public async ValueTask InitAsync()
         {
             if (Database.EnsureCreated())
@@ -27,17 +29,17 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
                 {
                     BossList = "不稳定的海度斯,鱼斯拉,盲眼者莱欧瑟拉斯,深水领主卡拉瑟雷斯,莫洛格里·踏潮者,瓦丝琪",
                     Name = "毒蛇神殿",
-                    ItemLevelEntrance = 110,
-                    ItemLevelPreference = 118,
-                    ItemLevelGraduated = 125
+                    ItemLevelEntrance = 115,
+                    ItemLevelPreference = 120,
+                    ItemLevelGraduated = 128
                 });
                 Raids.Add(new Raid
                 {
                     BossList = "奥,空灵机甲,大星术师索兰莉安,凯尔萨斯·逐日者",
                     Name = "风暴要塞",
-                    ItemLevelEntrance = 110,
-                    ItemLevelPreference = 118,
-                    ItemLevelGraduated = 125
+                    ItemLevelEntrance = 115,
+                    ItemLevelPreference = 120,
+                    ItemLevelGraduated = 128
                 });
                 await SaveChangesAsync();
             }
