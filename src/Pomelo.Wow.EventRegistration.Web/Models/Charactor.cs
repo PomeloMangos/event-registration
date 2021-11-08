@@ -20,5 +20,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public string DpsBossRanks { get; set; } = "[]";
 
         public string HpsBossRanks { get; set; } = "[]";
+
+        public Class Class { get; set; }
     }
 }

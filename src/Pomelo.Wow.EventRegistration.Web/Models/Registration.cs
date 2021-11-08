@@ -29,6 +29,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public string Hint { get; set; }
 
+        public Class Class { get; set; }
+
         [ForeignKey(nameof(Charactor))]
         public Guid? CharactorId { get; set; }
 

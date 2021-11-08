@@ -1,14 +1,14 @@
-<div>
+<div v-if="activity">
     <!-- PAGE NAME START -->
     <section class="page-name parallax" data-paroller-factor="0.1" data-paroller-type="background" data-paroller-direction="vertical">
         <div class="container">
             <div class="row">
                 <h1 class="page-title">
-                    11.11 风暴全通团
+                    {{ activity.name }}
                 </h1>
                 
                 <div class="breadcrumbs">
-                    晚7点开组，7点半开打，自备全程爆发药水、合剂、食物等，DPS 60%分G
+                    {{ activity.description }}
                 </div>
             </div>
         </div>
@@ -39,17 +39,19 @@
                                     <th>备注</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="label-orange">待审核</span></td>
-                                    <td class="class-2">
-                                        <img src="/assets/images/class-2.png" class="class-img" />
-                                        萌小柚
+                            <tbody v-if="activity">
+                                <tr v-for="reg in activity.registrations.filter(x => x.role == 0)">
+                                    <td>
+                                        <span class="label-orange">待审核</span>
                                     </td>
-                                    <td class="purple">130</td>
+                                    <td v-bind:class="'class-' + reg.class">
+                                        <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
+                                        {{ reg.name }}
+                                    </td>
+                                    <td class="purple">{{ reg.charactor.highestItemLevel }}</td>
                                     <td class="blue">52.2</td>
                                     <td class="purple">4 / 4</td>
-                                    <td>有毒抗装</td>
+                                    <td>{{ reg.hint }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -109,13 +111,13 @@
                                     </td>
                                     <td>{{ ch.realm }}</td>
                                     <td>
-                                        <input type="text" class="form-input" style="width: 100px" placeholder="报名备注" />
+                                        <input type="text" class="form-input" style="width: 100px" placeholder="报名备注" v-model="ch.hint" />
                                         <select class="form-input" v-model="ch.role">
                                             <option value="1">输出</option>
                                             <option value="0">坦克</option>
                                             <option value="2">治疗</option>
                                         </select>
-                                        <input class="form-input" type="button" value="报名" v-on:click="register" />
+                                        <input class="form-input" type="button" value="报名" v-on:click="register(ch)" />
                                     </td>
                                 </tr>
                                 <tr class="table-footer">

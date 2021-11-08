@@ -59,13 +59,26 @@ var app = new Vue({
             }
         },
         open: async function (url, params, pushState = true) {
-            if (app.$container.active) {
-                app.$container.close(app.$container.active);
+            if (this.$container.active) {
+                this.$container.close(this.$container.active);
             }
+
+            var splited = url.split('?');
+            var _params = {};
+            if (splited.length > 1) {
+                var params = splited[1].split('&');
+                for (let i = 0; i < params.length; ++i) {
+                    let _splited = params[i].split('=');
+                    _params[_splited[0]] = decodeURIComponent(_splited[1]);
+                }
+            }
+            if (this.$container.active) {
+                this.$container.close(this.$container.active);
+            }
+            this.child = await this.$container.open(splited[0], _params);
             if (pushState) {
                 window.history.pushState(null, null, url);
             }
-            await app.$container.open(url, params);
         },
         signOut: function () {
             window.sessionStorage.removeItem('user');
@@ -83,7 +96,12 @@ var mainContainer = new PomeloComponentContainer('#main', app, app, function (vi
 
 app.$container = mainContainer;
 app.$mount('#app');
-app.open('/list');
+
+if (window.location.pathname != '/') {
+    app.open(window.location.pathname + window.location.search);
+} else {
+    app.open('/list');
+}
 
 window.onpopstate = function (event) {
     if (app.$container.active) {

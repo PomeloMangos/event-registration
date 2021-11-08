@@ -45,7 +45,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         [HttpGet("{id:long}")]
         public async ValueTask<ApiResult<Activity>> Get(
             [FromServices] WowContext db,
-            [FromQuery] long id, 
+            [FromRoute] long id, 
             CancellationToken cancellationToken = default)
         {
             var activity = await db.Activities
@@ -138,7 +138,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         #endregion
 
         #region Registration
-        [HttpPost("{activityId:long}")]
+        [HttpPost("{activityId:long}/registrations")]
         public async ValueTask<ApiResult<Registration>> Post(
             [FromServices] WowContext db,
             [FromRoute] long activityId,
@@ -164,6 +164,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             if (charactor != null)
             {
                 registration.CharactorId = charactor.Id;
+                registration.Class = charactor.Class;
             }
 
             db.Registrations.Add(registration);
