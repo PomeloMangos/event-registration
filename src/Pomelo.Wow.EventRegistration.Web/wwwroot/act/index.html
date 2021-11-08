@@ -40,7 +40,7 @@
                                 </tr>
                             </thead>
                             <tbody v-if="activity">
-                                <tr v-for="reg in activity.registrations.filter(x => x.role == 0)">
+                                <tr v-for="reg in activity.registrations.filter(x => x.role == 'Tank')">
                                     <td>
                                         <span class="label-orange">待审核</span>
                                     </td>
