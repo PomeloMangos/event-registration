@@ -1,0 +1,30 @@
+<div>
+    <!-- PAGE NAME START -->
+    <section class="page-name parallax" data-paroller-factor="0.1" data-paroller-type="background" data-paroller-direction="vertical">
+        <div class="container">
+            <div class="row">
+                <h1 class="page-title">
+                    登录
+                </h1>
+            </div>
+        </div>
+    </section>
+    <!-- PAGE NAME END -->
+    <!-- SECTION START -->
+    <section class="blog-content ptb150 each-element">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-md-push-2">
+                    <input type="text" v-model="form.username" class="form-input" placeholder="用户名" />
+                    <br />
+                    <br />
+                    <input type="password" v-model="form.password" class="form-input" placeholder="密码" />
+                    <br />
+                    <br />
+                    <input type="button" class="form-btn" value="登录" v-on:click="login" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SECTION END -->    
+</div>

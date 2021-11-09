@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Pomelo.Wow.EventRegistration.Web.Models;
 using Pomelo.Wow.EventRegistration.Web.Vue;
+using Pomelo.Wow.EventRegistration.Authentication;
 
 namespace Pomelo.Wow.EventRegistration.Web
 {
@@ -30,6 +31,9 @@ namespace Pomelo.Wow.EventRegistration.Web
                 });
             services.AddDbContext<WowContext>(x => x.UseSqlite("Data source=wow.db"))
                 .AddEntityFrameworkSqlite();
+
+            services.AddAuthentication(x => x.DefaultScheme = TokenAuthenticateHandler.Scheme)
+                .AddPersonalAccessToken();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,6 +53,7 @@ namespace Pomelo.Wow.EventRegistration.Web
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseStaticFiles();
 
             app.UseVueMiddleware();

@@ -1,0 +1,64 @@
+<div>
+    <!-- PAGE NAME START -->
+    <section class="page-name parallax" data-paroller-factor="0.1" data-paroller-type="background" data-paroller-direction="vertical">
+        <div class="container">
+            <div class="row">
+                <h1 class="page-title">
+                    创建活动
+                </h1>
+            </div>
+        </div>
+    </section>
+    <!-- PAGE NAME END -->
+    <!-- SECTION START -->
+    <section class="blog-content ptb150 each-element">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-md-push-2">
+                    <table class="act-table">
+                        <tr>
+                            <td>活动名称</td>
+                            <td>
+                                <input type="text" v-model="form.name" class="form-input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>活动说明</td>
+                            <td>
+                                <input type="text" v-model="form.description" class="form-input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>服务器</td>
+                            <td>
+                                <input type="text" v-model="form.realm" class="form-input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>报名截止日期</td>
+                            <td>
+                                <input type="text" v-model="form.deadline" class="form-input" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>副本</td>
+                            <td>
+                                <label v-for="raid in raids">
+                                    <input type="checkbox" v-bind:value="raid.id" v-model="selectedRaids" />
+                                    {{ raid.name }}
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="button" class="form-btn" value="创建活动" v-on:click="create" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SECTION END -->
+</div>

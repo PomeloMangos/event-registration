@@ -5,6 +5,7 @@ component.data = function () {
 };
 
 component.created = function () {
+    app.active = 'activity';
     this.load();
 };
 

@@ -59,6 +59,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Activity>(404, "Acitvity not found");
             }
 
+            activity.Registrations = activity.Registrations
+                .OrderByDescending(x => x.Status)
+                .ThenBy(x => x.Class)
+                .ToList();
+
             return ApiResult(activity);
         }
 
@@ -78,6 +83,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Activity>(400, "Activity name is null or white space");
             }
 
+            activity.UserId = Convert.ToInt32(User.Identity.Name);
             db.Activities.Add(activity);
             await db.SaveChangesAsync(cancellationToken);
             return ApiResult(activity);
@@ -187,10 +193,14 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Registration>(404, "Registration not found");
             }
 
-            registration.Hint = model.Hint;
-            if (model.Status == RegistrationStatus.Leave || User.Identity.IsAuthenticated)
-            { 
-                registration.Status = RegistrationStatus.Leave;
+            if (!string.IsNullOrWhiteSpace(model.Hint))
+            {
+                registration.Hint = model.Hint;
+            }
+
+            if (model.Status == RegistrationStatus.Leave || model.Status == RegistrationStatus.Pending || User.Identity.IsAuthenticated)
+            {
+                registration.Status = model.Status;
             }
 
             if (User.Identity.IsAuthenticated)

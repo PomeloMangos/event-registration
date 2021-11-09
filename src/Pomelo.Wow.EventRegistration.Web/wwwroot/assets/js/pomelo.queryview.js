@@ -69,8 +69,8 @@ var qv = {
                     reject(err);
                 },
                 beforeSend: function (xhr) {
-                    if (window.app !== undefined && app.token) {
-                        xhr.setRequestHeader('Authorization', 'Session ' + app.token); 
+                    if (window.app !== undefined && app.user.token) {
+                        xhr.setRequestHeader('Authorization', 'Token ' + app.user.token); 
                     }
                 }
             });

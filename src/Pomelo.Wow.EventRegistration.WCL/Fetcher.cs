@@ -16,7 +16,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
         private static HttpClient clientWowhead = new HttpClient() { BaseAddress = new Uri("https://tbc.wowhead.com") };
         private static HttpClient clientWowheadCN = new HttpClient() { BaseAddress = new Uri("https://cn.tbc.wowhead.com") };
         private static Regex equipmentRegex = new Regex("(?<=tbc.wowhead.com/item=)[0-9]{1,}");
-        private static Regex itemLevelRegex = new Regex("(?<=item level )[0-9]{1,}");
+        private static Regex itemLevelRegex = new Regex("(?<=\"level\":)[0-9]{1,}");
         private static Regex imageUrlRegex = new Regex("(?<=<link rel=\"image_src\" href=\").*(?=\">)");
         private static Regex itemNameRegex = new Regex("(?<=<title>)((?!&mdash).)*");
         private static Regex qualityRegex = new Regex("(?<=\"quality\":)[0-9]{1,}");
@@ -47,7 +47,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
 
         private static async ValueTask<string> GetWclHomePageAsync(string name, string realm)
         {
-            using (var response = await clientWcl.GetAsync($"/charactor/CN/{realm}/{name}"))
+            using (var response = await clientWcl.GetAsync($"/character/CN/{realm}/{name}"))
             {
                 var html = await response.Content.ReadAsStringAsync();
                 if (html.Contains("No charactor could be found"))

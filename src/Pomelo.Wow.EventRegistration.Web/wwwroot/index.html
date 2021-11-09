@@ -59,10 +59,26 @@
                                 <span class="toggle_menu">
                                     <span></span>
                                 </span>
+                                <ul class="menu clearfix">
+                                    <li class="inline-block" v-bind:class="{ 'active': active == 'activity' }">
+                                        <a v-on:click="$root.open('/list')">活动</a>
+                                    </li>
+                                    <li v-if="!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
+                                        <a v-on:click="$root.open('/login')">登录</a>
+                                    </li>
+                                    <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
+                                        <a v-on:click="$root.open('/act/create')">创建活动</a>
+                                    </li>
+                                    <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'password' }">
+                                        <a v-on:click="$root.open('/password')">修改密码</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="table-cell valign-top text-right">
                             <div class="right-bl">
+                                <ul class="menu clearfix">
+                                </ul>
                             </div>
                         </div>
                     </div>

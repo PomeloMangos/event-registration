@@ -4,7 +4,13 @@
 
 var app = new Vue({
     data: {
-        notifications: []
+        notifications: [],
+        active: 'activity',
+        user: {
+            token: window.localStorage.getItem('token'),
+            role: window.localStorage.getItem('role'),
+            username: window.localStorage.getItem('username')
+        }
     },
     mounted: async function () {
         setInterval(function () {
@@ -17,8 +23,27 @@ var app = new Vue({
                 }
             }
         }, 1000);
+        this.checkToken();
     },
     methods: {
+        checkToken: async function () {
+            if (!this.user.token) {
+                return;
+            }
+
+            var self = this;
+
+            try {
+                await qv.get('/api/user/someone/session/' + this.user.token);
+            } catch (e) {
+                self.user.token = null;
+                self.user.role = null;
+                self.user.username = null;
+                token: window.localStorage.setItem('token', null);
+                token: window.localStorage.setItem('role', null);
+                token: window.localStorage.setItem('username', null);
+            }
+        },
         marked: function (text) {
             if (!text) return '';
             return marked(text);

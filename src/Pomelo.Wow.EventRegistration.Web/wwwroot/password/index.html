@@ -1,0 +1,33 @@
+<div>
+    <!-- PAGE NAME START -->
+    <section class="page-name parallax" data-paroller-factor="0.1" data-paroller-type="background" data-paroller-direction="vertical">
+        <div class="container">
+            <div class="row">
+                <h1 class="page-title">
+                    修改密码
+                </h1>
+            </div>
+        </div>
+    </section>
+    <!-- PAGE NAME END -->
+    <!-- SECTION START -->
+    <section class="blog-content ptb150 each-element">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-md-push-2">
+                    <input type="password" v-model="form.old" class="form-input" placeholder="旧密码" />
+                    <br />
+                    <br />
+                    <input type="password" v-model="form.new" class="form-input" placeholder="新密码" />
+                    <br />
+                    <br />
+                    <input type="password" v-model="form.confirm" class="form-input" placeholder="确认新密码" />
+                    <br />
+                    <br />
+                    <input type="button" class="form-btn" value="重置密码" v-on:click="resetPassword" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SECTION END -->    
+</div>
