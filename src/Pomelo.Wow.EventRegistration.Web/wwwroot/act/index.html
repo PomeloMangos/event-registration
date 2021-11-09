@@ -40,19 +40,28 @@
                                 </tr>
                             </thead>
                             <tbody v-if="activity">
-                                <tr v-for="reg in activity.registrations.filter(x => x.role == 0)">
-                                    <td>
-                                        <span class="label-orange">待审核</span>
-                                    </td>
-                                    <td v-bind:class="'class-' + reg.class">
-                                        <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
-                                        {{ reg.name }}
-                                    </td>
-                                    <td class="purple">{{ reg.charactor.highestItemLevel }}</td>
-                                    <td class="blue">{{ reg.wcl }}</td>
-                                    <td class="purple">{{ reg.bossPassed }} / {{ bosses.length }}</td>
-                                    <td>{{ reg.hint }}</td>
-                                </tr>
+                                <template v-for="reg in activity.registrations.filter(x => x.role == 0)">
+                                    <tr>
+                                        <td>
+                                            <span class="label-orange">待审核</span>
+                                        </td>
+                                        <td v-bind:class="'class-' + reg.class">
+                                            <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
+                                            {{ reg.name }}
+                                        </td>
+                                        <td class="purple">{{ reg.charactor.highestItemLevel }}</td>
+                                        <td class="blue">{{ reg.wcl }}</td>
+                                        <td class="purple">{{ reg.bossPassed }} / {{ bosses.length }}</td>
+                                        <td>{{ reg.hint }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="ch-detail">
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
