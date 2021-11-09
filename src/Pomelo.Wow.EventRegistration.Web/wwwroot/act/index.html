@@ -40,7 +40,7 @@
                                 </tr>
                             </thead>
                             <tbody v-if="activity">
-                                <tr v-for="reg in activity.registrations.filter(x => x.role == 'Tank')">
+                                <tr v-for="reg in activity.registrations.filter(x => x.role == 0)">
                                     <td>
                                         <span class="label-orange">待审核</span>
                                     </td>
@@ -49,8 +49,8 @@
                                         {{ reg.name }}
                                     </td>
                                     <td class="purple">{{ reg.charactor.highestItemLevel }}</td>
-                                    <td class="blue">52.2</td>
-                                    <td class="purple">4 / 4</td>
+                                    <td class="blue">{{ reg.wcl }}</td>
+                                    <td class="purple">{{ reg.bossPassed }} / {{ bosses.length }}</td>
                                     <td>{{ reg.hint }}</td>
                                 </tr>
                             </tbody>

@@ -26,7 +26,6 @@ namespace Pomelo.Wow.EventRegistration.Web
                 {
                     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
                     options.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ";
-                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
             services.AddDbContext<WowContext>(x => x.UseSqlite("Data source=wow.db"))

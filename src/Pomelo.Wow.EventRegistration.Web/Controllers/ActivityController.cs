@@ -164,7 +164,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             if (charactor != null)
             {
                 registration.CharactorId = charactor.Id;
-                registration.Class = charactor.Class;
+                registration.Class = registration.Class;
             }
 
             db.Registrations.Add(registration);
