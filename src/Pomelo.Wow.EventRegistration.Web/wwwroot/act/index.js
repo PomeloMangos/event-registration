@@ -8,12 +8,18 @@
                 name: '',
                 realm: '',
                 role: 0
+            },
+            newGrid: {
+                name: null,
+                mode: 0
             }
         },
         activity: null,
         raids: [],
         bosses: [],
-        inProgress: false
+        inProgress: false,
+        active: 'registration',
+        grids: { data: [] }
     };
 };
 
@@ -22,8 +28,9 @@ component.created = function () {
     this.myCharactors = JSON.parse(window.localStorage.getItem('my_charactors') || '[]');
 };
 
-component.mounted = function () {
-    this.loadActivity();
+component.mounted = async function () {
+    await this.loadActivity();
+    this.bindDragula();
 };
 
 component.methods = {
@@ -63,8 +70,19 @@ component.methods = {
                 activity.registrations[i].items = fetched.items;
             }
             self.$forceUpdate();
-        })
+        });
         this.activity = activity;
+        this.grids = JSON.parse(this.activity.extension1);
+
+        if (!this.grids.data) {
+            this.grids.data = [];
+        }
+
+        for (var i = 0; i < this.grids.data.length; ++i) {
+            this.grids.data[i].pending = this.generatePendingCharactors(this.grids.data[i].grid);
+        }
+
+        this.updateGridStatus();
     },
     loadItemFor: async function (items, itemId) {
         items.push((await qv.get('/api/item/' + itemId)).data);
@@ -171,5 +189,112 @@ component.methods = {
 
         await qv.delete('/api/activity/' + this.id + '/registrations/' + id);
         await this.loadActivity();
+    },
+    createGrid: function (name, mode) {
+        if (!name) {
+            alert("请填写框架名称");
+            return;
+        }
+
+        var grid = {
+            name: name,
+            mode: mode,
+            grid: mode == 0 ? [
+                [null, null, null, null, null],
+                [null, null, null, null, null],
+                [null, null, null, null, null],
+                [null, null, null, null, null],
+                [null, null, null, null, null]
+            ] : [[null, null], [null, null], [null, null], [null, null], [null, null]],
+            pending: []
+        };
+
+        grid.pending = this.generatePendingCharactors(grid.grid);
+
+        if (!this.grids.data) {
+            this.grids.data = [];
+        }
+
+        this.grids.data.push(grid);
+        this.$forceUpdate();
+        this.bindDragula();
+    },
+    generatePendingCharactors: function (grid) {
+        var existed = [];
+        for (var i = 0; i < grid.length; ++i) {
+            for (var j = 0; j < grid[i].length; ++j) {
+                if (grid[i][j] != null) {
+                    existed.push(grid[i][j].name);
+                }
+            }
+        }
+
+        var pending = [];
+        for (var i = 0; i < this.activity.registrations.length; ++i) {
+            if (existed.some(x => x == this.activity.registrations[i].name)) {
+                continue;
+            }
+
+            pending.push(this.activity.registrations[i]);
+        }
+
+        return pending;
+    },
+    bindDragula: async function () {
+        if (!app.user.token) {
+            return;
+        }
+        await sleep(1);
+        for (var i = 0; i < this.grids.data.length; ++i) {
+            var arr = [document.querySelector('#grid-pending-of-' + i)];
+            for (a = 0; a < 5; ++a) {
+                for (b = 0; b < 5; ++b) {
+                    arr.push(document.querySelector(`#grid-${i}-${a}-${b}`));
+                }
+            }
+
+            var self = this;
+            dragula(arr)
+                .on('drag', function (el) {
+                }).on('drop', function (el, target, source) {
+                }).on('over', function (el, container) {
+                }).on('out', function (el, container) {
+                });
+        }
+    },
+    updateGridData: function () {
+        for (var i = 0; i < this.grids.data.length; ++i) {
+            for (var r = 0; r < this.grids.data[i].grid.length; ++r) {
+                for (var c = 0; c < this.grids.data[i].grid[r].length; ++c) {
+                    var id = `#grid-${i}-${r}-${c}`;
+                    var dom = $(`${id} [data-reg-id]`);
+                    if (dom.length) {
+                        this.grids.data[i].grid[r][c] = this.activity.registrations.filter(x => x.id == dom.attr('data-reg-id'))[0];
+                    } else {
+                        this.grids.data[i].grid[r][c] = null;
+                    }
+                }
+            }
+        }
+    },
+    updateGridStatus: function () {
+        for (var i = 0; i < this.grids.data.length; ++i) {
+            for (var r = 0; r < this.grids.data[i].grid.length; ++r) {
+                for (var c = 0; c < this.grids.data[i].grid[r].length; ++c) {
+                    var regId = this.grids.data[i].grid[r][c].id;
+                    var latest = this.activity.registrations.filter(x => x.id == regId);
+                    if (!latest.length) {
+                        this.grids.data[i].grid[r][c] = null;
+                    } else {
+                        this.grids.data[i].grid[r][c] = latest[0];
+                    }
+                }
+            }
+        }
+    },
+    saveGrids: function () {
+        this.updateGridData();
+        qv.patch(`/api/activity/${this.id}`, { extension1: JSON.stringify(this.grids) });
+        alert("团队框架保存成功");
     }
 };

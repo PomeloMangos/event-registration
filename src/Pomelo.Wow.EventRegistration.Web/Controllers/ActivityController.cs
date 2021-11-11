@@ -132,10 +132,34 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Activity>(404, "Acitvity not found");
             }
 
-            activity.Name = model.Name;
-            activity.Description = model.Description;
-            activity.Deadline = model.Deadline;
-            activity.Raids = model.Raids;
+            if (!string.IsNullOrEmpty(model.Name))
+            {
+                activity.Name = model.Name;
+            }
+            if (!string.IsNullOrEmpty(model.Description))
+            {
+                activity.Description = model.Description;
+            }
+            if (model.Deadline != default)
+            {
+                activity.Deadline = model.Deadline;
+            }
+            if (!string.IsNullOrEmpty(model.Raids))
+            {
+                activity.Raids = model.Raids;
+            }
+            if (!string.IsNullOrEmpty(model.Extension1))
+            {
+                activity.Extension1 = model.Extension1;
+            }
+            if (!string.IsNullOrEmpty(model.Extension2))
+            {
+                activity.Extension2 = model.Extension2;
+            }
+            if (!string.IsNullOrEmpty(model.Extension3))
+            {
+                activity.Extension3 = model.Extension3;
+            }
 
             await db.SaveChangesAsync(cancellationToken);
 
