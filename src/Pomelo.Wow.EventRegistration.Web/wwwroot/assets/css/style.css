@@ -3394,3 +3394,7 @@ a {
         height: 80px;
         border-radius: 10px;
     }
+
+.price-table .form-input {
+    max-width: 100%;
+}

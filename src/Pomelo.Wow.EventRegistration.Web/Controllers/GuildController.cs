@@ -12,6 +12,7 @@ using Pomelo.Wow.EventRegistration.Web.Models.ViewModels;
 
 namespace Pomelo.Wow.EventRegistration.Web.Controllers
 {
+    #region Common
     [Route("api/[controller]")]
     [ApiController]
     public class GuildController : ControllerBase
@@ -88,13 +89,17 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
 
             guild.UserId = Convert.ToInt32(User.Identity.Name);
+            guild.Managers.Add(new GuildManager 
+            {
+                UserId = guild.UserId
+            });
             db.Guilds.Add(guild);
             await db.SaveChangesAsync(cancellationToken);
 
             return ApiResult(guild);
         }
 
-        [HttpPut("manager/{username}")]
+        [HttpPut("{guildId}/manager/{username}")]
         public async ValueTask<ApiResult> Put(
             [FromServices] WowContext db,
             [FromRoute] string username,
@@ -134,7 +139,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(200, $"已将{username}添加为公会管理员");
         }
 
-        [HttpDelete("manager/{username}")]
+        [HttpDelete("{guildId}/manager/{username}")]
         public async ValueTask<ApiResult> Delete(
             [FromServices] WowContext db,
             [FromRoute] string username,
@@ -187,7 +192,123 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return Guild.UserId == userId;
             }
 
-            return await db.GuildManagers.AnyAsync(x => x.GuildId == GuildId && x.UserId == userId, cancellationToken);
+            return Guild.UserId == userId || await db.GuildManagers.AnyAsync(x => x.GuildId == GuildId && x.UserId == userId, cancellationToken);
         }
+        #endregion
+
+        #region Price
+        [HttpGet("{guildId}/price")]
+        public async ValueTask<ApiResult<List<PriceResponse>>> GetPrices(
+            [FromServices] WowContext db,
+            [FromRoute] string guildId,
+            CancellationToken cancellationToken = default)
+        {
+            var prices = await db.Prices
+                .Where(x => x.GuildId == guildId)
+                .Select(x => new PriceResponse 
+                {
+                    CreatedAt = x.CreatedAt,
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToListAsync(cancellationToken);
+
+            return ApiResult(prices);
+        }
+
+        [HttpGet("{guildId}/price/{id:Guid}")]
+        public async ValueTask<ApiResult<Price>> GetPrice(
+            [FromServices] WowContext db,
+            [FromRoute] Guid id,
+            [FromRoute] string guildId,
+            CancellationToken cancellationToken = default)
+        {
+            var price = await db.Prices
+                .Where(x => x.GuildId == guildId && x.Id == id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (price == null)
+            {
+                return ApiResult<Price>(404, "没有找到这个价目表");
+            }
+
+            return ApiResult(price);
+        }
+
+        [HttpPost("{guildId}/price")]
+        public async ValueTask<ApiResult<Price>> PostPrice(
+            [FromServices] WowContext db,
+            [FromRoute] string guildId,
+            [FromBody] Price price,
+            CancellationToken cancellationToken = default)
+        {
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            {
+                return ApiResult<Price>(403, "您没有权限这样做");
+            }
+
+            price.GuildId = GuildId;
+            db.Prices.Add(price);
+            await db.SaveChangesAsync(cancellationToken);
+            return ApiResult(price);
+        }
+
+        [HttpPatch("{guildId}/price/{id:Guid}")]
+        public async ValueTask<ApiResult<Price>> PatchPrice(
+            [FromServices] WowContext db,
+            [FromRoute] Guid id,
+            [FromRoute] string guildId,
+            [FromBody] Price model,
+            CancellationToken cancellationToken = default)
+        {
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            {
+                return ApiResult<Price>(403, "您没有权限这样做");
+            }
+
+            var price = await db.Prices
+                .Where(x => x.GuildId == guildId && x.Id == id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (price == null)
+            {
+                return ApiResult<Price>(404, "没有找到这个价目表");
+            }
+
+            price.Name = model.Name;
+            price.Data = model.Data;
+            await db.SaveChangesAsync(cancellationToken);
+
+            return ApiResult(price);
+        }
+
+        [HttpDelete("{guildId}/price/{id:Guid}")]
+        public async ValueTask<ApiResult> DeletePrice(
+            [FromServices] WowContext db,
+            [FromRoute] Guid id,
+            [FromRoute] string guildId,
+            [FromBody] Price model,
+            CancellationToken cancellationToken = default)
+        {
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            {
+                return ApiResult(403, "您没有权限这样做");
+            }
+
+            var price = await db.Prices
+                .Where(x => x.GuildId == guildId && x.Id == id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (price == null)
+            {
+                return ApiResult(404, "没有找到这个价目表");
+            }
+
+            db.Prices.Remove(price);
+            await db.SaveChangesAsync(cancellationToken);
+
+            return ApiResult(200, "已删除价目表");
+        }
+        #endregion
     }
 }

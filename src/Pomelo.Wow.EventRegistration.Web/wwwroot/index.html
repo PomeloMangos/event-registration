@@ -68,7 +68,7 @@
                                         <a v-on:click="$root.open('/guild')">公会</a>
                                     </li>
                                     <li class="inline-block" v-bind:class="{ 'active': active == 'activity' }">
-                                        <a v-on:click="$root.open('/list')">{{ guildId ? '首页' : '活动列表' }}</a>
+                                        <a v-on:click="guildId ? $root.open('/home') : $root.open('/list')">{{ guildId ? '首页' : '活动列表' }}</a>
                                     </li>
                                     <li v-if="!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'reg' }">
                                         <a v-on:click="$root.open('/reg')">注册</a>
