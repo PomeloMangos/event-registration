@@ -1,0 +1,118 @@
+<div>
+    <!-- PAGE NAME START -->
+    <section class="page-name parallax" data-paroller-factor="0.1" data-paroller-type="background" data-paroller-direction="vertical">
+        <div class="container">
+            <div class="row">
+                <h1 class="page-title" v-if="active == 'activity'">公会活动</h1>
+                <h1 class="page-title" v-if="active == 'about'">关于公会</h1>
+            </div>
+        </div>
+    </section>
+    <!-- PAGE NAME END --><!-- SECTION START -->
+    <section class="blog-content ptb150 each-element">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-7 col-md-8 col-lg-8 col-sm-push-5 col-md-push-4 col-lg-push-4" v-if="result && result.data">
+                    <div v-show="active == 'activity'">
+                        <article class="vertical-item format-thumb fsize-0 clearfix" v-for="act in result.data">
+                            <div class="item-left-img col-lg-4 col-md-4 col-sm-12 col-xs-12 equal-height">
+                                <img v-bind:src="'/assets/images/raid/' + act.raids.split(',')[0].trim() + '.jpg'">
+                            </div>
+                            <div class="post-content col-lg-8 col-md-8 col-sm-12 col-xs-12 equal-height">
+                                <div class="post-wrapper">
+                                    <div class="table">
+                                        <div class="table-row">
+                                            <div class="table-cell valign-top">
+                                                <div class="platform fsize-14 fweight-700 uppercase orange">
+                                                    {{ act.realm }} - {{ act.guild.faction == 0 ? '联盟' : '部落' }} - {{ act.guild.name }}
+                                                </div>
+                                            </div>
+                                            <div class="table-cell valign-top text-right">
+                                                <div class="fsize-14 fweight-700 uppercase">
+                                                    {{ $root.moment(act.begin).format('YYYY年MM月DD日 HH:mm') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt15">
+                                        <a v-on:click="$root.open('/act?id=' + act.id)" class="post-title">
+                                            <h5>{{ act.name }}</h5>
+                                        </a>
+                                        <div class="fsize-16 lheight-26 mt15" data-trim="140">
+                                            {{ act.description }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="post-bottom table">
+                                    <div class="table-cell valign-middle">
+                                        <i class="fa fa-star color-1 fsize-14" aria-hidden="true"></i>
+                                        <span class="color-2 fsize-14 ml5">{{ act.user.displayName }}</span>
+                                    </div>
+                                    <div class="table-cell valign-middle text-right">
+                                        <i class="fa fa-user color-1 fsize-14" aria-hidden="true"></i>
+                                        <span class="color-2 fsize-14 ml5">{{ act.registrations.length }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <div class="col-lg-12 text-center mt60" v-if="result && result.currentPage < result.totalPages - 1">
+                            <div class="pagination-page">
+                                <a href="#" class="page-numbers prev" style="width: 200px" v-on:click="next">
+                                    加载更多
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-show="active == 'about'">
+                        <div v-if="$root.guild" v-html="$root.marked($root.guild.description || '会长未设定公会信息')"></div>
+                    </div>
+                </div>
+                <div class="sidebar col-sm-5 col-md-4 col-lg-4 col-sm-pull-7 col-md-pull-8 col-lg-pull-8">
+                    <div class="widget-bl categories-widget">
+                        <h5 class="fsize-20" v-if="$root.guild">{{ $root.guild.name }}</h5>
+                        <div class="widget-wrapper">
+                            <ul class="list-1 menu-list">
+                                <li class="color1" v-on:click="active = 'activity'" v-bind:class="{ 'active': active == 'activity' }">
+                                    <a>
+                                        <i class="fa fa-fw fa-calendar"></i>
+                                        <span>公会活动</span>
+                                    </a>
+                                </li>
+                                <li class="color1" v-on:click="active = 'about'" v-bind:class="{ 'active': active == 'about' }">
+                                    <a>
+                                        <i class="fa fa-fw fa-info-circle"></i>
+                                        <span>关于公会</span>
+                                    </a>
+                                </li>
+                                <template v-if="$root.user.token">
+                                    <li class="color1">
+                                        <a href="#">
+                                            <i class="fa fa-fw fa-users"></i>
+                                            <span>管理员设置</span>
+                                        </a>
+                                        <a href="#">
+                                            <i class="fa fa-fw fa-pencil"></i>
+                                            <span>公会简介设置</span>
+                                        </a>
+                                        <a href="#">
+                                            <i class="fa fa-fw fa-pencil"></i>
+                                            <span>公会图标设置</span>
+                                        </a>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="widget-bl calendar-widget">
+                        <div class="widget-wrapper">
+                            <div class="calendar-bl">
+                                <div class="calendar-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SECTION END -->
+</div>

@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="/assets/plugins/slick-1.8.0/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="/assets/plugins/slick-1.8.0/slick/slick-theme.css" />
     <script>
-        var __version = '20211114';
+        var __version = '20211114-2';
     </script>
 </head>
 
@@ -67,7 +67,7 @@
                                         <a v-on:click="$root.open('/guild')">公会</a>
                                     </li>
                                     <li class="inline-block" v-bind:class="{ 'active': active == 'activity' }">
-                                        <a v-on:click="$root.open('/list')">活动</a>
+                                        <a v-on:click="$root.open('/list')">{{ guildId ? '首页' : '活动列表' }}</a>
                                     </li>
                                     <li v-if="!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'reg' }">
                                         <a v-on:click="$root.open('/reg')">注册</a>
@@ -134,8 +134,8 @@
     <script src="/assets/js/vue.js"></script>
     <script src="/assets/js/moment.js"></script>
     <script src="/assets/js/marked.js"></script>
-    <script src="/assets/js/pomelo.container.js?v=20211114-1"></script>
-    <script src="/assets/js/pomelo.queryview.js?v=20211114-1"></script>
+    <script src="/assets/js/pomelo.container.js?v=20211114-2"></script>
+    <script src="/assets/js/pomelo.queryview.js?v=20211114-2"></script>
     <script src="/assets/js/dragula.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/plugins/slick-1.8.0/slick/slick.min.js"></script>
@@ -152,7 +152,7 @@
     <script src="/assets/plugins/jquery-date-range-picker-master/dist/jquery.daterangepicker.min.js"></script>
     <script src="/assets/plugins/wow-master/dist/wow.min.js"></script>
     <script src="/assets/js/script.js"></script>
-    <script src="/index.js?v=20211114"></script>
+    <script src="/index.js?v=20211114-2"></script>
 </body>
 
 </html>

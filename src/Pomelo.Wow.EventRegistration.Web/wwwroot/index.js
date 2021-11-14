@@ -11,7 +11,8 @@ var app = new Vue({
             role: window.localStorage.getItem('role'),
             username: window.localStorage.getItem('username')
         },
-        guildId: null
+        guildId: null,
+        guild: null
     },
     mounted: async function () {
         setInterval(function () {
@@ -25,6 +26,21 @@ var app = new Vue({
             }
         }, 1000);
         this.checkToken();
+        var idx = window.location.host.indexOf('.mwow.org');
+        if (idx > 0) {
+            var len = window.location.host.length - '.mwow.org'.length;
+            app.guildId = window.location.host.substr(0, len);
+        }
+
+        if (window.location.pathname != '/') {
+            app.open(window.location.pathname + window.location.search);
+        } else {
+            if (app.guildId) {
+                app.open('/home');
+            } else {
+                app.open('/guild');
+            }
+        }
     },
     methods: {
         checkToken: async function () {
@@ -114,6 +130,14 @@ var app = new Vue({
         moment: function (date) {
             return moment(date);
         }
+    },
+    watch: {
+        guildId: function () {
+            var self = this;
+            qv.get('/api/guild/' + self.guildId).then(data => {
+                self.guild = data.data;
+            });
+        }
     }
 });
 
@@ -122,22 +146,6 @@ var mainContainer = new PomeloComponentContainer('#main', app, app, function (vi
 
 app.$container = mainContainer;
 app.$mount('#app');
-
-var idx = window.location.host.indexOf('.mwow.org');
-if (idx > 0) {
-    var len = window.location.host.length - '.mwow.org'.length;
-    app.guildId = window.location.host.substr(0, len);
-}
-
-if (window.location.pathname != '/') {
-    app.open(window.location.pathname + window.location.search);
-} else {
-    if (app.guildId) {
-        app.open('/list');
-    } else {
-        app.open('/guild');
-    }
-}
 
 window.onpopstate = function (event) {
     if (app.$container.active) {

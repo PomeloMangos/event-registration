@@ -51,6 +51,20 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 cancellationToken);
         }
 
+        [HttpGet("{id}")]
+        public async ValueTask<ApiResult<Guild>> Get(
+            [FromServices] WowContext db,
+            [FromRoute] string id,
+            CancellationToken cancellationToken = default)
+        {
+            var guild = await db.Guilds.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+            if (guild == null)
+            {
+                return ApiResult<Guild>(404, "没有找到指定的公会");
+            }
+
+            return ApiResult(guild);
+        }
 
         [HttpPost]
         public async ValueTask<ApiResult<Guild>> Post(
