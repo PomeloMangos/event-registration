@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace Pomelo.Wow.EventRegistration.Web.Models
@@ -13,6 +12,10 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public DbSet<Charactor> Charactors { get; set; }
 
+        public DbSet<Guild> Guilds { get; set; }
+
+        public DbSet<GuildManager> GuildManagers { get; set; }
+
         public DbSet<Item> Items { get; set; }
 
         public DbSet<Raid> Raids { get; set; }
@@ -21,41 +24,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<UserSession> UserSessions { get; set; }
+
         public async ValueTask InitAsync()
         {
             if (Database.EnsureCreated())
             {
-                Users.Add(new User
-                { 
-                    Id = 1,
-                    Username = "yuko",
-                    PasswordHash = "19931101",
-                    Role = UserRole.Admin,
-                    DisplayName = "萌小柚"
-                });
-
-                Activities.Add(new Activity
-                {
-                    Deadline = Convert.ToDateTime("2021-11-12 11:00"),
-                    Server = ActivityServer.Official,
-                    Description = "晚7点开组，自备全程合剂药水烹饪，115+装等进本，DPS60%分G",
-                    Raids = "2",
-                    Realm = "龙之召唤",
-                    UserId = 1,
-                    Name = "Mirai公会团11月12日风暴全通"
-                });
-
-                Activities.Add(new Activity
-                {
-                    Deadline = Convert.ToDateTime("2021-11-13 11:00"),
-                    Server = ActivityServer.Official,
-                    Description = "晚7点开组，自备全程合剂药水烹饪，115+装等进本，DPS60%分G",
-                    Raids = "1",
-                    Realm = "龙之召唤",
-                    UserId = 1,
-                    Name = "Mirai公会团11月13日毒蛇全通"
-                });
-
                 Raids.Add(new Raid
                 {
                     Id = 1,
@@ -63,7 +37,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
                     Name = "毒蛇神殿",
                     ItemLevelEntrance = 115,
                     ItemLevelPreference = 120,
-                    ItemLevelGraduated = 128
+                    ItemLevelGraduated = 128,
+                    ItemLevelFarm = 130,
+                    EstimatedDuration = 2.5f
                 });
 
                 Raids.Add(new Raid
@@ -73,7 +49,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
                     Name = "风暴要塞",
                     ItemLevelEntrance = 115,
                     ItemLevelPreference = 120,
-                    ItemLevelGraduated = 128
+                    ItemLevelGraduated = 128,
+                    ItemLevelFarm = 130,
+                    EstimatedDuration = 2f
                 });
 
                 await SaveChangesAsync();
@@ -84,15 +62,32 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Activity>(e =>
+            {
+                e.HasMany(x => x.Registrations).WithOne(x => x.Activity).OnDelete(DeleteBehavior.Cascade);
+            });
+
             builder.Entity<Charactor>(e =>
             {
                 e.HasIndex(x => new { x.Name, x.Realm });
                 e.HasMany<Registration>().WithOne(x => x.Charactor).OnDelete(DeleteBehavior.SetNull);
             });
 
+            builder.Entity<Guild>(e =>
+            {
+                e.HasMany(x => x.Managers).WithOne(x => x.Guild).OnDelete(DeleteBehavior.Cascade);
+                e.HasMany<Activity>().WithOne(x => x.Guild).OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<GuildManager>(e =>
+            {
+                e.HasKey(x => new { x.GuildId, x.UserId });
+            });
+
             builder.Entity<User>(e =>
             {
                 e.HasIndex(x => x.Username).IsUnique();
+                e.HasMany<UserSession>().WithOne(x => x.User).OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

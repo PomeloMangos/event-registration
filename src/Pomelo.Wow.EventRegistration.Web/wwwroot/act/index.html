@@ -22,6 +22,7 @@
                     <div class="tab-outer">
                         <a class="tab-item" v-on:click="active = 'registration'" v-bind:class="{ active: active == 'registration' }"><i class="fa fa-user-plus"></i> 活动报名</a>
                         <a class="tab-item" v-on:click="active = 'grid'; bindDragula()" v-bind:class="{ active: active == 'grid' }"><i class="fa fa-braille"></i> 团队框架</a>
+                        <a class="tab-item" v-on:click="active = 'manage';" v-bind:class="{ active: active == 'manage' }" v-if="$root.user.token"><i class="fa fa-cog"></i> 管理活动</a>
                         <!--<a class="tab-item" v-on:click="active = 'task'" v-bind:class="{ active: active == 'task' }"><i class="fa fa-puzzle-piece"></i> 任务分配</a>-->
                     </div>
                     <div v-if="active == 'registration'">
@@ -482,6 +483,11 @@
                             </select>
                             <input type="text" v-model="form.newGrid.name" class="form-input" placeholder="框架名称" />
                             <input value="创建" type="button" class="form-btn" v-on:click="createGrid(form.newGrid.name, form.newGrid.mode)" />
+                        </div>
+                    </div>
+                    <div v-if="active == 'manage'">
+                        <div>
+                            <input type="button" value="强制更新团员WCL数据" class="form-btn" v-on:click="updateWCL" />
                         </div>
                     </div>
                 </div>

@@ -13,16 +13,16 @@ var PomeloComponentContainer = function (el, root, parent, onActive, onViewOpen)
             }
         },
         getTemplate: async function (url) {
-            var result = await fetch(url + '.html');
+            var result = await fetch(url + '.html?v=' + __version);
             if (result.status === 404) {
-                result = await fetch(url + '/index.html');
+                result = await fetch(url + '/index.html?v=' + __version);
             }
             return result.text();
         },
         getScript: async function (url) {
-            var result = await fetch(url + '.js');
+            var result = await fetch(url + '.js?' + __version);
             if (result.status === 404) {
-                result = await fetch(url + '/index.js');
+                result = await fetch(url + '/index.js?v=' + __version);
             }
             return result.text();
         },

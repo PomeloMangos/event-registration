@@ -1,10 +1,10 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Converters;
 using Pomelo.Wow.EventRegistration.Web.Models;
 using Pomelo.Wow.EventRegistration.Web.Vue;
 using Pomelo.Wow.EventRegistration.Authentication;
@@ -29,8 +29,23 @@ namespace Pomelo.Wow.EventRegistration.Web
                     options.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ";
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
-            services.AddDbContext<WowContext>(x => x.UseSqlite("Data source=wow.db"))
-                .AddEntityFrameworkSqlite();
+
+            if (Configuration["Database:Engine"] == "SQLite")
+            {
+                services.AddDbContext<WowContext>(x => x.UseSqlite(Configuration["Database:ConnectionString"]))
+                    .AddEntityFrameworkSqlite();
+            }
+            else if (Configuration["Database:Engine"] == "MySQL")
+            {
+                services.AddDbContext<WowContext>(x => x.UseMySql(
+                    Configuration["Database:ConnectionString"],
+                    ServerVersion.AutoDetect(Configuration["Database:ConnectionString"])))
+                    .AddEntityFrameworkSqlite();
+            }
+            else
+            {
+                throw new NotSupportedException(Configuration["Database:Engine"]);
+            }
 
             services.AddAuthentication(x => x.DefaultScheme = TokenAuthenticateHandler.Scheme)
                 .AddPersonalAccessToken();

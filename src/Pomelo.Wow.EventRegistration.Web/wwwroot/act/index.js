@@ -26,6 +26,12 @@
 component.created = function () {
     app.active = 'activity';
     this.myCharactors = JSON.parse(window.localStorage.getItem('my_charactors') || '[]');
+
+    var idx = window.location.host.indexOf('mwow.org');
+    if (idx > 0) {
+        var len = window.location.host.length - 'mwow.org'.length;
+        app.guild = window.location.host.substr(0, len);
+    }
 };
 
 component.mounted = async function () {
@@ -96,8 +102,10 @@ component.methods = {
                     return 'green';
                 } else if (itemLevel < this.raids[i].itemLevelGraduated && itemLevel >= this.raids[i].itemLevelPreference) {
                     return 'blue';
-                } else {
+                } else if (itemLevel < this.raids[i].itemLevelFarm && itemLevel >= this.raids[i].itemLevelGraduated) {
                     return 'purple';
+                } else {
+                    return 'orange';
                 }
             }
         }
@@ -254,7 +262,14 @@ component.methods = {
             }
 
             var self = this;
-            dragula(arr)
+            dragula(arr, {
+                accepts: function (el, target, source, sibling) {
+                    if ($(target).hasClass('grid-out-ch-outer')) {
+                        return true;
+                    }
+                    return $(target).find('[data-reg-id]').length == 0;
+                },
+            })
                 .on('drag', function (el) {
                 }).on('drop', function (el, target, source) {
                 }).on('over', function (el, container) {
@@ -296,5 +311,9 @@ component.methods = {
         this.updateGridData();
         qv.patch(`/api/activity/${this.id}`, { extension1: JSON.stringify(this.grids) });
         alert("团队框架保存成功");
+    },
+    updateWCL: function () {
+        qv.post('/api/charactor/batch', { realm: this.activity.realm, names: this.activity.registrations.map(x => x.name) });
+        alert('已提交强制更新WCL数据，请等待1-2分钟后刷新即可看到最新WCL数据');
     }
 };

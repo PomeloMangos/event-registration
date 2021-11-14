@@ -36,10 +36,20 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 pageSize = 100;
             }
 
-            return await PagedApiResultAsync(db.Activities
+            IQueryable<Activity> query = db.Activities
                 .Include(x => x.Registrations)
-                .Include(x => x.User)
-                .OrderByDescending(x => x.Id), page - 1, pageSize, cancellationToken);
+                .Include(x => x.User);
+
+            if (GuildId != null)
+            {
+                query = query.Where(x => x.GuildId == GuildId);
+            }
+
+            return await PagedApiResultAsync(
+                query.OrderByDescending(x => x.Id), 
+                page - 1, 
+                pageSize, 
+                cancellationToken);
         }
 
         [HttpGet("{id:long}")]
@@ -56,7 +66,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             if (activity == null)
             {
-                return ApiResult<Activity>(404, "Acitvity not found");
+                return ApiResult<Activity>(404, "没有找到指定的活动");
             }
 
             activity.Registrations = activity.Registrations
@@ -75,14 +85,20 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return ApiResult<Activity>(403, "You don't have permission to create an activity");
+                return ApiResult<Activity>(403, "你没有权限创建活动");
             }
 
             if (string.IsNullOrWhiteSpace(activity.Name))
             {
-                return ApiResult<Activity>(400, "Activity name is null or white space");
+                return ApiResult<Activity>(400, "活动名称不能为空");
             }
 
+            if (GuildId == null)
+            {
+                return ApiResult<Activity>(400, "你必须在公会中创建活动");
+            }
+
+            activity.GuildId = GuildId; 
             activity.UserId = Convert.ToInt32(User.Identity.Name);
             db.Activities.Add(activity);
             await db.SaveChangesAsync(cancellationToken);
@@ -97,20 +113,20 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return ApiResult(403, "You don't have permission to delete an activity");
+                return ApiResult(403, "你没有权限删除这个活动");
             }
 
             var activity = await db.Activities.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             if (activity == null)
             {
-                return ApiResult(404, "Acitvity not found");
+                return ApiResult(404, "没有找到指定的活动");
             }
 
             db.Activities.Remove(activity);
             await db.SaveChangesAsync(cancellationToken);
 
-            return ApiResult(200, "Activity removed");
+            return ApiResult(200, "活动已删除");
         }
 
         [HttpPatch("{id:long}")]
@@ -122,14 +138,14 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return ApiResult<Activity>(403, "You don't have permission to modify an activity");
+                return ApiResult<Activity>(403, "你没有权限修改这个活动");
             }
 
             var activity = await db.Activities.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             if (activity == null)
             {
-                return ApiResult<Activity>(404, "Acitvity not found");
+                return ApiResult<Activity>(404, "活动没有找到");
             }
 
             if (!string.IsNullOrEmpty(model.Name))
@@ -190,7 +206,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Registration>(400, "Duplicated charactor found");
             }
 
-            var charactor = await FetchCharactorAsync(db, registration.Name, activity.Realm);
+            var charactor = await FetchCharactorAsync(db, _logger, registration.Name, activity.Realm);
             if (charactor != null)
             {
                 registration.CharactorId = charactor.Id;
@@ -262,7 +278,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         }
         #endregion
 
-        private async ValueTask<Charactor> FetchCharactorAsync(WowContext db,  string name, string realm)
+        internal static async ValueTask<Charactor> FetchCharactorAsync(WowContext db, ILogger logger, string name, string realm)
         {
             try
             {
@@ -289,7 +305,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"Fetch charactor from WCL failed: {ex}");
+                logger.LogWarning($"Fetch charactor from WCL failed: {ex}");
                 return null;
             }
         }

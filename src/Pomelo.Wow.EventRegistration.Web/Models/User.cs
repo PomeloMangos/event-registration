@@ -19,7 +19,13 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public string DisplayName { get; set; }
 
         [MaxLength(128)]
-        public string PasswordHash { get; set; }
+        public string Email { get; set; }
+
+        [MaxLength(32)]
+        public byte[] PasswordHash { get; set; } // SHA256
+
+        [MaxLength(32)]
+        public byte[] Salt { get; set; }
 
         public UserRole Role { get; set; }
     }

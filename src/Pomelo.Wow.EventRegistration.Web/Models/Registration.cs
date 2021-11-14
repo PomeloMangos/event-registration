@@ -29,6 +29,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public string Hint { get; set; }
 
+        public bool Microphone { get; set; } = true;
+
         public Class Class { get; set; }
 
         [ForeignKey(nameof(Charactor))]

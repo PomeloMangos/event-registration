@@ -1,4 +1,4 @@
-component.data = function () {
+ï»¿component.data = function () {
     return {
         form: {
             username: '',
@@ -23,7 +23,7 @@ component.methods = {
             app.user.username = this.form.username;
             window.location = '/';
         } catch (e) {
-            alert('ÓÃ»§Ãû»òÃÜÂë´íÎó£¡');
+            alert('ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯ï¼');
         }
     }
 };

@@ -72,6 +72,9 @@ var qv = {
                     if (window.app !== undefined && app.user.token) {
                         xhr.setRequestHeader('Authorization', 'Token ' + app.user.token); 
                     }
+                    if (window.app !== undefined && app.guild) {
+                        xhr.setRequestHeader('Guild', app.guild);
+                    }
                 }
             });
         });

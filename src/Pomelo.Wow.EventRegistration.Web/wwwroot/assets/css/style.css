@@ -3275,6 +3275,7 @@ footer.footer {
     border-radius: 3px;
     cursor: pointer;
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 
     .grid-out-ch.c-1 {
@@ -3332,6 +3333,7 @@ footer.footer {
     text-align: left;
     border-radius: 0;
     margin-right: 0;
+    margin-bottom: 0;
 }
 
 .dashed {
@@ -3350,4 +3352,8 @@ footer.footer {
 
 a {
     cursor: pointer;
+}
+
+.form-row {
+    padding-bottom: 15px;
 }

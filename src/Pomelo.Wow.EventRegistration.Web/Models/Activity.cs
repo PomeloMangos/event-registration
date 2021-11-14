@@ -11,6 +11,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         Private
     }
 
+    public enum ActivityVisibility
+    {
+        Public,
+        Internal
+    }
+
     public class Activity
     {
         public long Id { get; set; }
@@ -26,6 +32,10 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime Deadline { get; set; }
+
+        public DateTime Begin { get; set; }
+
+        public float EstimatedDurationInHours { get; set; }
 
         public ActivityServer Server { get; set; }
 
@@ -43,5 +53,23 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public virtual User User { get; set; }
 
         public virtual ICollection<Registration> Registrations { get; set; } = new List<Registration>();
+
+        [MaxLength(32)]
+        public string GuildId { get; set; }
+
+        public virtual Guild Guild { get; set; }
+
+        public ActivityVisibility Visibility { get; set; }
+
+        [MaxLength(64)]
+        public string Password { get; set; }
+
+        public int ItemLevelEntrance { get; set; }
+
+        public int ItemLevelPreference { get; set; }
+
+        public int ItemLevelGraduated { get; set; }
+
+        public int ItemLevelFarm { get; set; }
     }
 }

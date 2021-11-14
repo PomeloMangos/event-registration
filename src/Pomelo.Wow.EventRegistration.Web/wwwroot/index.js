@@ -10,7 +10,8 @@ var app = new Vue({
             token: window.localStorage.getItem('token'),
             role: window.localStorage.getItem('role'),
             username: window.localStorage.getItem('username')
-        }
+        },
+        guildId: null
     },
     mounted: async function () {
         setInterval(function () {

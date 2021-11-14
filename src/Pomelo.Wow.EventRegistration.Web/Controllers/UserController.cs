@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,6 +18,10 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        public static Regex EmailRegex = new Regex("^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,5})\\s*$");
+        internal static Random Random = new Random();
+        internal static SHA256 Sha256 = SHA256.Create();
+
         ILogger<UserController> _logger;
 
         public UserController(ILogger<UserController> logger)
@@ -32,18 +41,41 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         [HttpPost]
         public async ValueTask<ApiResult<User>> Post(
             [FromServices] WowContext db,
-            [FromBody] User user,
+            [FromBody] CreateUserRequest request,
             CancellationToken cancellationToken = default)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (request.Username.Length < 3)
             {
-                return ApiResult<User>(403, "You can't create user");
+                return ApiResult<User>(400, "用户名长度必须大于3");
             }
 
-            if (!User.IsInRole("Admin"))
+            if (await db.Users.AnyAsync(x => x.Username == request.Username, cancellationToken))
             {
-                user.Role = UserRole.User;
+                return ApiResult<User>(400, $"用户名{request.Username}已经存在");
             }
+
+            if (!EmailRegex.IsMatch(request.Email))
+            {
+                return ApiResult<User>(400, "电子邮箱地址不合法");
+            }
+
+            if (string.IsNullOrEmpty(request.DisplayName))
+            {
+                return ApiResult<User>(400, "昵称不能为空");
+            }
+
+            var user = new User 
+            {
+                Username = request.Username,
+                Email = request.Email,
+                DisplayName = request.DisplayName,
+                Salt = new byte[32]
+            };
+
+            var buffer = new List<byte>(Encoding.UTF8.GetBytes(request.Password));
+            Random.NextBytes(user.Salt);
+            buffer.AddRange(user.Salt);
+            user.PasswordHash = Sha256.ComputeHash(buffer.ToArray());
 
             db.Users.Add(user);
             await db.SaveChangesAsync(cancellationToken);
@@ -61,16 +93,47 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             var user = await db.Users.SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
             if (user == null)
             {
-                return ApiResult<LoginResponse>(400, "Login failed");
+                return ApiResult<LoginResponse>(400, "用户名或密码错误");
             }
 
-            if (user.PasswordHash != request.Password)
+            var buffer = new List<byte>();
+            buffer.AddRange(Encoding.UTF8.GetBytes(request.Password));
+            buffer.AddRange(user.Salt);
+            var hash = Sha256.ComputeHash(buffer.ToArray());
+            if (!hash.SequenceEqual(user.PasswordHash))
             {
-                return ApiResult<LoginResponse>(400, "Login failed");
+                return ApiResult<LoginResponse>(400, "用户名或密码错误");
             }
 
-            var token = Authentication.TokenAuthenticateHandler.GenerateToken(user);
-            return ApiResult(new LoginResponse { Token = token, Role = user.Role.ToString() });
+            var us = new UserSession 
+            {
+                CreatedAt = DateTime.UtcNow,
+                ExpiredAt = DateTime.UtcNow.AddDays(7),
+                UserId = user.Id,
+                Id = GenerateTokenId()
+            };
+
+            db.UserSessions.Add(us);
+            await db.SaveChangesAsync(cancellationToken);
+
+            return ApiResult(new LoginResponse { Token = us.Id, Role = user.Role.ToString() });
+        }
+
+        private string GenerateTokenId()
+        {
+            return $"{DateTime.UtcNow.Ticks}-{GenerateRandomString(64)}";
+        }
+
+        static string randomStringDic = "1234567890qwertyuiopasdfghjklzxcvbnm";
+
+        private string GenerateRandomString(int length)
+        {
+            var sb = new StringBuilder();
+            while(sb.Length < length)
+            {
+                sb.Append(randomStringDic[Random.Next(0, randomStringDic.Length)]);
+            }
+            return sb.ToString();
         }
 
         [HttpGet("{username}/session/{session}")]
@@ -80,7 +143,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromRoute] string session,
             CancellationToken cancellationToken = default)
         {
-            if (Authentication.TokenAuthenticateHandler.Check(session))
+            if (User.Identity.IsAuthenticated)
             {
                 return ApiResult(200, "ok");
             }
@@ -99,18 +162,31 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return ApiResult(403, "Permission denied");
+                return ApiResult(403, "请登录");
             }
 
-            var user = await db.Users.SingleOrDefaultAsync(x => x.Username == username);
-            if (!User.IsInRole("Admin") && request.Old != user.PasswordHash)
+            var user = await db.Users.SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
+            if (user == null)
             {
-                return ApiResult(400, "Old password is incorrect");
+                return ApiResult(404, "未找到用户");
             }
 
-            user.PasswordHash = request.New;
+            var buffer = new List<byte>();
+            buffer.AddRange(Encoding.UTF8.GetBytes(request.Old));
+            buffer.AddRange(user.Salt);
+            var hash = Sha256.ComputeHash(buffer.ToArray());
+            if (!hash.SequenceEqual(user.PasswordHash))
+            {
+                return ApiResult(400, "旧密码不正确");
+            }
+
+            user.Salt = new byte[32];
+            buffer = new List<byte>(Encoding.UTF8.GetBytes(request.New));
+            Random.NextBytes(user.Salt);
+            buffer.AddRange(user.Salt);
+            user.PasswordHash = Sha256.ComputeHash(buffer.ToArray());
             await db.SaveChangesAsync();
-            return ApiResult(200, "ok");
+            return ApiResult(200, "密码修改成功");
         }
     }
 }

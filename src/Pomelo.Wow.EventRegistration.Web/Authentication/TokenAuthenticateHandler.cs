@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Pomelo.Wow.EventRegistration.Web.Models;
@@ -16,7 +17,6 @@ namespace Pomelo.Wow.EventRegistration.Authentication
     public class TokenAuthenticateHandler : AuthenticationHandler<TokenOptions>
     {
         public new const string Scheme = "Token";
-        private static ConcurrentDictionary<string, User> SessionDic = new ConcurrentDictionary<string, User>();
 
         private WowContext _db;
 
@@ -31,18 +31,6 @@ namespace Pomelo.Wow.EventRegistration.Authentication
             this._db = db;
         }
 
-        public static string GenerateToken(User user)
-        {
-            var token = Guid.NewGuid().ToString().Replace("-", "");
-            SessionDic.TryAdd(token, user);
-            return token;
-        }
-
-        public static bool Check(string token)
-        { 
-            return SessionDic.ContainsKey(token);
-        }
-
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             var authorization = Request.Headers["Authorization"].ToArray();
@@ -51,10 +39,6 @@ namespace Pomelo.Wow.EventRegistration.Authentication
                 if (!string.IsNullOrEmpty(Request.Query["token"]))
                 {
                     authorization = new[] { $"Token {Request.Query["token"]}" };
-                }
-                else if (!string.IsNullOrEmpty(Request.Query["session"]))
-                {
-                    authorization = new[] { $"Session {Request.Query["token"]}" };
                 }
                 else
                 {
@@ -66,11 +50,13 @@ namespace Pomelo.Wow.EventRegistration.Authentication
             if (authorization.First().StartsWith("Token", StringComparison.OrdinalIgnoreCase))
             {
                 var t = authorization.First().Substring("Token ".Length);
-
-                if (!SessionDic.TryGetValue(t, out var user))
+                var us = await _db.UserSessions.SingleOrDefaultAsync(x => x.Id == t);
+                if (us == null)
                 {
                     return AuthenticateResult.NoResult();
                 }
+
+                var user = await _db.Users.SingleAsync(x => x.Id == us.UserId);
                 tokenOwner = user;
             }
             else

@@ -15,5 +15,9 @@
         public int ItemLevelPreference { get; set; }
 
         public int ItemLevelGraduated { get; set; }
+
+        public int ItemLevelFarm { get; set; }
+
+        public float EstimatedDuration { get; set; }
     }
 }

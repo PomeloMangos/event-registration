@@ -17,7 +17,7 @@
     <!-- Bootstrap-->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <!-- Style -->
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=20211112" />
     <!-- Responsive Style -->
     <link rel="stylesheet" href="/assets/css/responsive.css" />
     <!-- Animate CSS -->
@@ -31,6 +31,9 @@
     <!-- Sliders -->
     <link rel="stylesheet" type="text/css" href="/assets/plugins/slick-1.8.0/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="/assets/plugins/slick-1.8.0/slick/slick-theme.css" />
+    <script>
+        var __version = '20211114';
+    </script>
 </head>
 
 <body>
@@ -63,11 +66,17 @@
                                     <li class="inline-block" v-bind:class="{ 'active': active == 'activity' }">
                                         <a v-on:click="$root.open('/list')">活动</a>
                                     </li>
+                                    <li v-if="!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'reg' }">
+                                        <a v-on:click="$root.open('/reg')">注册</a>
+                                    </li>
                                     <li v-if="!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
                                         <a v-on:click="$root.open('/login')">登录</a>
                                     </li>
-                                    <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
+                                    <li v-if="!!$root.user.token && guildId" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
                                         <a v-on:click="$root.open('/act/create')">创建活动</a>
+                                    </li>
+                                    <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'create-guild' }">
+                                        <a v-on:click="$root.open('/guild/create')">创建公会</a>
                                     </li>
                                     <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'password' }">
                                         <a v-on:click="$root.open('/password')">修改密码</a>
@@ -122,8 +131,8 @@
     <script src="/assets/js/vue.js"></script>
     <script src="/assets/js/moment.js"></script>
     <script src="/assets/js/marked.js"></script>
-    <script src="/assets/js/pomelo.container.js"></script>
-    <script src="/assets/js/pomelo.queryview.js"></script>
+    <script src="/assets/js/pomelo.container.js?v=20211114"></script>
+    <script src="/assets/js/pomelo.queryview.js?v=20211114"></script>
     <script src="/assets/js/dragula.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/plugins/slick-1.8.0/slick/slick.min.js"></script>
@@ -140,7 +149,7 @@
     <script src="/assets/plugins/jquery-date-range-picker-master/dist/jquery.daterangepicker.min.js"></script>
     <script src="/assets/plugins/wow-master/dist/wow.min.js"></script>
     <script src="/assets/js/script.js"></script>
-    <script src="/index.js"></script>
+    <script src="/index.js?v=20211114"></script>
 </body>
 
 </html>
