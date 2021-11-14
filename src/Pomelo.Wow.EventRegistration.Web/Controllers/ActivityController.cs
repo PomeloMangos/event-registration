@@ -38,7 +38,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             IQueryable<Activity> query = db.Activities
                 .Include(x => x.Registrations)
-                .Include(x => x.User);
+                .Include(x => x.User)
+                .Include(x => x.Guild);
 
             if (GuildId != null)
             {
