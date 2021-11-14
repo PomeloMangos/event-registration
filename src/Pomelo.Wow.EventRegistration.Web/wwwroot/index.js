@@ -29,7 +29,7 @@ var app = new Vue({
         var idx = window.location.host.indexOf('mwow.org');
         if (idx > 0) {
             var len = window.location.host.length - 'mwow.org'.length;
-            app.guild = window.location.host.substr(0, len);
+            app.guildId = window.location.host.substr(0, len);
         }
     },
     methods: {
