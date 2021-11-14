@@ -75,6 +75,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
             builder.Entity<Guild>(e =>
             {
+                e.HasIndex(x => x.Name).IsFullText();
+                e.HasIndex(x => x.Faction);
                 e.HasMany(x => x.Managers).WithOne(x => x.Guild).OnDelete(DeleteBehavior.Cascade);
                 e.HasMany<Activity>().WithOne(x => x.Guild).OnDelete(DeleteBehavior.Cascade);
             });

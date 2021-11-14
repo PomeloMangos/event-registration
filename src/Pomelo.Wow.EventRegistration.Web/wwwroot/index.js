@@ -25,12 +25,6 @@ var app = new Vue({
             }
         }, 1000);
         this.checkToken();
-
-        var idx = window.location.host.indexOf('.mwow.org');
-        if (idx > 0) {
-            var len = window.location.host.length - '.mwow.org'.length;
-            app.guildId = window.location.host.substr(0, len);
-        }
     },
     methods: {
         checkToken: async function () {
@@ -129,10 +123,20 @@ var mainContainer = new PomeloComponentContainer('#main', app, app, function (vi
 app.$container = mainContainer;
 app.$mount('#app');
 
+var idx = window.location.host.indexOf('.mwow.org');
+if (idx > 0) {
+    var len = window.location.host.length - '.mwow.org'.length;
+    app.guildId = window.location.host.substr(0, len);
+}
+
 if (window.location.pathname != '/') {
     app.open(window.location.pathname + window.location.search);
 } else {
-    app.open('/list');
+    if (app.guildId) {
+        app.open('/list');
+    } else {
+        app.open('/guild');
+    }
 }
 
 window.onpopstate = function (event) {

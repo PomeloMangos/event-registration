@@ -63,6 +63,9 @@
                                     <span></span>
                                 </span>
                                 <ul class="menu clearfix">
+                                    <li class="inline-block" v-if="!guildId" v-bind:class="{ 'active': active == 'guild' }">
+                                        <a v-on:click="$root.open('/guild')">公会</a>
+                                    </li>
                                     <li class="inline-block" v-bind:class="{ 'active': active == 'activity' }">
                                         <a v-on:click="$root.open('/list')">活动</a>
                                     </li>

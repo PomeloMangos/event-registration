@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -24,12 +25,30 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<ApiResult<List<Guild>>> Get(
+        public async ValueTask<PagedApiResult<Guild>> Get(
             [FromServices] WowContext db,
+            [FromQuery] string name = null,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] int page = 1,
             CancellationToken cancellationToken = default)
         {
-            var guilds = await db.Guilds.ToListAsync(cancellationToken);
-            return ApiResult(guilds);
+            if (pageSize > 100)
+            {
+                pageSize = 100;
+            }
+
+            IQueryable<Guild> query = db.Guilds;
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(x => x.Name.Contains(name));
+            }
+
+            return await PagedApiResultAsync(
+                query.OrderByDescending(x => x.Id),
+                page - 1,
+                pageSize,
+                cancellationToken);
         }
 
 

@@ -33,7 +33,10 @@
                     </div>
                     <div class="form-row">
                         <div class="input-wrap">
-                            <input type="text" class="general_input italic" placeholder="公会徽标 URL （可选），如：https://mwow.org/assets/images/logo.png" v-model="form.guildLogoUrl">
+                            <select class="general_input italic" v-model="form.faction">
+                                <option value="Alliance">联盟</option>
+                                <option value="Horde">部落</option>
+                            </select>
                         </div>
                     </div>
                     <div>

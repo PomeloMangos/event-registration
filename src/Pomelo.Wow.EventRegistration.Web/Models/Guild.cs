@@ -4,6 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pomelo.Wow.EventRegistration.Web.Models
 {
+    public enum Faction
+    {
+        Alliance,
+        Horde
+    }
+
     public class Guild
     {
         [MaxLength(32)]
@@ -17,11 +23,16 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public string Description { get; set; }
 
+        public Faction Faction { get; set; }
+
         [ForeignKey(nameof(User))]
         public int UserId { get; set; } // Owner
 
         [MaxLength(256)]
         public string GuildLogoUrl { get; set; }
+
+        [MaxLength(256)]
+        public string GuildListImageUrl { get; set; }
 
         public virtual User User { get; set; }
 
