@@ -2990,7 +2990,7 @@ footer.footer {
     .post-commet-bl .comment-body .comment-right {
       display: table-cell; }
 
-.comment-form .general_input {
+.general_input {
   width: 100%;
   background: #1e1d32;
   padding: 19px 30px;
@@ -3003,13 +3003,13 @@ footer.footer {
   outline: none;
   /* Firefox 19+ */
   /* Firefox 18- */ }
-  .comment-form .general_input::-webkit-input-placeholder {
+.general_input::-webkit-input-placeholder {
     color: #c2d4f8; }
-  .comment-form .general_input::-moz-placeholder {
+.general_input::-moz-placeholder {
     color: #c2d4f8; }
-  .comment-form .general_input:-moz-placeholder {
+.general_input:-moz-placeholder {
     color: #c2d4f8; }
-  .comment-form .general_input:-ms-input-placeholder {
+.general_input:-ms-input-placeholder {
     color: #c2d4f8; }
 
 .comment-form textarea {
@@ -3356,4 +3356,17 @@ a {
 
 .form-row {
     padding-bottom: 15px;
+}
+
+.input {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background: #292845;
+    text-transform: uppercase;
+    font-style: italic;
+    font-size: 14px;
+    outline: none;
+    font-weight: 400;
+    padding: 19px 30px;
 }

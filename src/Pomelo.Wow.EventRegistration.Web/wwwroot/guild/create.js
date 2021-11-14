@@ -4,7 +4,6 @@
             id: '',
             name: '',
             realm: '',
-            guildLogoUrl: '',
             faction: 'Alliance'
         }
     };
