@@ -53,7 +53,7 @@
                 <div class="table height-100p">
                     <div class="table-row">
                         <div class="table-cell valign-middle text-left">
-                            <a v-on:click="$root.open('/list')" class="logo">
+                            <a v-on:click="guildId ? $root.open('/home') : $root.open('/guild')" class="logo">
                                 <img src="/assets/images/logo.png" alt="" class="img-responsive inline-block">
                             </a>
                         </div>
