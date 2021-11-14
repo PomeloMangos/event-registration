@@ -29,7 +29,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         [MaxLength(64)]
         public string Realm { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime Deadline { get; set; }
 
