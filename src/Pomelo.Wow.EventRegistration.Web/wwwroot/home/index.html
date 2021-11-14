@@ -6,6 +6,10 @@
                 <h1 class="page-title" v-if="active == 'activity'">公会活动</h1>
                 <h1 class="page-title" v-if="active == 'about'">关于公会</h1>
             </div>
+
+            <div class="breadcrumbs" v-if="$root.guild">
+                {{ $root.guild.realm }} - {{ $root.guild.faction == 0 ? '联盟' : '部落' }} - {{ $root.guild.name }}
+            </div>
         </div>
     </section>
     <!-- PAGE NAME END --><!-- SECTION START -->
