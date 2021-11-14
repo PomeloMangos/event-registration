@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Pomelo.Wow.EventRegistration.Web.Models;
 using Pomelo.Wow.EventRegistration.Web.Vue;
 using Pomelo.Wow.EventRegistration.Authentication;
+using Pomelo.Wow.EventRegistration.Web.Blob;
 
 namespace Pomelo.Wow.EventRegistration.Web
 {
@@ -49,6 +50,8 @@ namespace Pomelo.Wow.EventRegistration.Web
 
             services.AddAuthentication(x => x.DefaultScheme = TokenAuthenticateHandler.Scheme)
                 .AddPersonalAccessToken();
+
+            services.AddDiskBlobStorage();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
