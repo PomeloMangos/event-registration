@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
     public class GuildController : ControllerBase
     {
         ILogger<UserController> _logger;
+        static Regex guildDomainRegex = new Regex("^[0-9a-zA-Z-_]{4,16}$");
 
         public GuildController(ILogger<UserController> logger)
         {
@@ -45,6 +47,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             if (await db.Guilds.AnyAsync(x => x.Id == guild.Id, cancellationToken))
             {
                 return ApiResult<Guild>(400, $"公会ID {guild.Id} 已经存在，请更换后再试");
+            }
+
+            if (!guildDomainRegex.IsMatch(guild.Id))
+            {
+                return ApiResult<Guild>(400, "公会ID不合法");
             }
 
             guild.UserId = Convert.ToInt32(User.Identity.Name);

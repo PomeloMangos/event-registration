@@ -26,12 +26,6 @@
 component.created = function () {
     app.active = 'activity';
     this.myCharactors = JSON.parse(window.localStorage.getItem('my_charactors') || '[]');
-
-    var idx = window.location.host.indexOf('mwow.org');
-    if (idx > 0) {
-        var len = window.location.host.length - 'mwow.org'.length;
-        app.guild = window.location.host.substr(0, len);
-    }
 };
 
 component.mounted = async function () {

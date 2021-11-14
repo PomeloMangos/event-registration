@@ -30,8 +30,8 @@ component.methods = {
             return;
         }
 
-        if (!/^[0-9a-zA-Z-_]{1,16}$/.test(this.form.id)) {
-            alert('公会网址不合法');
+        if (!/^[0-9a-zA-Z-_]{4,16}$/.test(this.form.id)) {
+            alert('公会网址不合法，请使用英文字母、数字、连字符，并保证长度大于4');
             return;
         }
 
