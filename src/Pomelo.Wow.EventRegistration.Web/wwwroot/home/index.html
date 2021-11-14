@@ -123,12 +123,12 @@
                                         <td v-else><input class="form-input" type="text" v-model="item.initial" placeholder="起拍价" /></td>
                                         <td v-if="!$root.user.token">{{ item.cap || '不封顶' }}</td>
                                         <td v-else><input class="form-input" type="text" v-model="item.cap" placeholder="封顶价" /></td>
-                                        <td><input type="button" v-on:click="removeItem(group, i)" class="form-btn" value="删除" /></td>
+                                        <td v-if="$root.user.token"><input type="button" v-on:click="removeItem(group, i)" class="form-btn" value="删除" /></td>
                                     </tr>
                                     <tr v-if="!$root.user.token && !group.items.length">
                                         <td v-bind:colspan="4">该分组下没有装备</td>
                                     </tr>
-                                    <tr v-else-if="!working">
+                                    <tr v-if="!working && $root.user.token">
                                         <td colspan="2">
                                             <input class="form-input" type="text" v-model="form.createItem.itemId" placeholder="装备ID" />
                                         </td>
@@ -142,7 +142,7 @@
                                             <input class="form-input" type="button" value="创建" v-on:click="createItem(group)" />
                                         </td>
                                     </tr>
-                                    <tr v-else>
+                                    <tr v-if="$root.user.token && working">
                                         <td colspan="5">创建中...</td>
                                     </tr>
                                 </tbody>
