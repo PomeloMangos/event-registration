@@ -58,15 +58,7 @@ namespace Pomelo.Wow.EventRegistration.Web
                 scope.ServiceProvider.GetRequiredService<WowContext>().InitAsync().GetAwaiter().GetResult();
             }
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+            app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseStaticFiles();
