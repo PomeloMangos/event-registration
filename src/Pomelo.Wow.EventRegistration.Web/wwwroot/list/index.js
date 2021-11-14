@@ -11,10 +11,13 @@ component.created = function () {
 
 component.methods = {
     load: async function () {
-        var page = 1;
-        if (this.result) {
-            page = this.result.currentPage + 2;
+        this.result = await qv.get(`/api/activity?page=1`);
+    },
+    next: async function () {
+        ++this.result.currentPage;
+        var result = await qv.get(`/api/activity?page={this.result.currentPage}`);
+        for (var i = 0; i < result.data.length; ++i) {
+            this.result.data.push(result.data[i]);
         }
-        this.result = await qv.get(`/api/activity?page=${page}`);
     }
 };
