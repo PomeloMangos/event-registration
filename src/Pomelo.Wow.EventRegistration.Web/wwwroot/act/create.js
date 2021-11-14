@@ -3,10 +3,12 @@
         form: {
             name: '',
             server: 0,
-            realm: '',
+            realm: app.guild.realm,
             description: '',
-            deadline: app.moment(new Date().getTime() + 1000*60*60*24).format('YYYY-MM-DD HH:00:00'),
-            raids: ''
+            deadline: null,
+            begin: null,
+            raids: '',
+            estimatedDuration: 4.5
         },
         selectedRaids: [],
         raids: []
@@ -16,6 +18,15 @@
 component.created = function () {
     app.active = 'activity';
     this.loadRaids();
+};
+
+component.mounted = function () {
+    var self = this;
+    $('#txt-begin').val(app.moment(new Date()).format('YYYY/MM/DD HH:00'));
+    $('#txt-begin').datetimepicker();
+
+    $('#txt-deadline').val(app.moment(new Date()).format('YYYY/MM/DD HH:00'));
+    $('#txt-deadline').datetimepicker();
 };
 
 component.methods = {
@@ -35,6 +46,8 @@ component.methods = {
             return;
         }
 
+        this.form.begin = new Date($('#txt-begin').val()).toISOString();
+        this.form.deadline = new Date($('#txt-deadline').val()).toISOString();
         this.form.raids = this.selectedRaids.toString();
         var result = await qv.post('/api/activity', this.form);
         if (result.code != 200) {

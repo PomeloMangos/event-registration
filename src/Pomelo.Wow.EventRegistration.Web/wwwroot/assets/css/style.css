@@ -3383,3 +3383,14 @@ a {
     .menu-list li:hover {
         background: rgba(0,0,0,0.2);
     }
+
+.raid-label {
+    text-align: center;
+    margin-right: 15px;
+}
+
+    .raid-label img {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+    }
