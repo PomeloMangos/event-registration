@@ -3398,3 +3398,15 @@ a {
 .price-table .form-input {
     max-width: 100%;
 }
+
+.footer-list li {
+    list-style: none;
+}
+
+.footer-list a {
+    color: #3dd0d8;
+}
+
+.footer-list a:hover {
+    color: #fff;
+}

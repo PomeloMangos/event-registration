@@ -136,6 +136,7 @@ var app = new Vue({
             var self = this;
             qv.get('/api/guild/' + self.guildId).then(data => {
                 self.guild = data.data;
+                $('title').html(self.guild.name);
             });
         }
     }
