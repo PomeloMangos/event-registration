@@ -19,6 +19,17 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             _logger = logger;
         }
 
+        [HttpGet("{realm}/{charactorName}")]
+        public async ValueTask<ApiResult<Charactor>> Get(
+             [FromServices] WowContext db,
+             [FromRoute] string realm,
+             [FromRoute] string charactorName,
+             CancellationToken cancellationToken = default)
+        {
+            var charactor = await ActivityController.FetchCharactorAsync(db, _logger, charactorName, realm);
+            return ApiResult(charactor);
+        }
+
         [HttpPost("batch")]
         public async ValueTask<ApiResult> Post(
             [FromServices] WowContext db,
