@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,29 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
         }
 
+        protected async ValueTask<bool> ValidateUserPermissionToCurrentGuildAsync(
+            WowContext db,
+            bool isOwner = false,
+            CancellationToken cancellationToken = default)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            if (GuildId == null)
+            {
+                return false;
+            }
+
+            var userId = Convert.ToInt32(User.Identity.Name);
+            if (isOwner)
+            {
+                return Guild.UserId == userId;
+            }
+
+            return Guild.UserId == userId || await db.GuildManagers.AnyAsync(x => x.GuildId == GuildId && x.UserId == userId, cancellationToken);
+        }
         protected ApiResult ApiResult(int code = 200, string message = null)
         {
             message = message ?? "Succeeded";

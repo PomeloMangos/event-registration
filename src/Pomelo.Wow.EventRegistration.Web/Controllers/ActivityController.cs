@@ -47,7 +47,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
 
             return await PagedApiResultAsync(
-                query.OrderByDescending(x => x.Id), 
+                query.OrderByDescending(x => x.Begin), 
                 page - 1, 
                 pageSize, 
                 cancellationToken);
@@ -97,6 +97,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             if (GuildId == null)
             {
                 return ApiResult<Activity>(400, "你必须在公会中创建活动");
+            }
+
+            if (await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            {
+                return ApiResult<Activity>(400, "你没有权限在这个公会中创建活动");
             }
 
             activity.GuildId = GuildId; 

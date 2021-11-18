@@ -170,30 +170,6 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             await db.SaveChangesAsync(cancellationToken);
             return ApiResult(200, $"已移除管理员{username}");
         }
-
-        private async ValueTask<bool> ValidateUserPermissionToCurrentGuildAsync(
-            WowContext db, 
-            bool isOwner = false,
-            CancellationToken cancellationToken = default)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
-            if (GuildId == null)
-            {
-                return false;
-            }
-
-            var userId = Convert.ToInt32(User.Identity.Name);
-            if (isOwner)
-            {
-                return Guild.UserId == userId;
-            }
-
-            return Guild.UserId == userId || await db.GuildManagers.AnyAsync(x => x.GuildId == GuildId && x.UserId == userId, cancellationToken);
-        }
         #endregion
 
         #region Price
