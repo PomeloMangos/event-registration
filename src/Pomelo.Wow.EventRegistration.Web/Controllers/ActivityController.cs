@@ -147,7 +147,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Activity>(400, "你必须在公会中创建活动");
             }
 
-            if (await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
             {
                 return ApiResult<Activity>(400, "你没有权限在这个公会中创建活动");
             }

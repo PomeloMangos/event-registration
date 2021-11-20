@@ -49,10 +49,20 @@ component.methods = {
         this.form.begin = new Date($('#txt-begin').val()).toISOString();
         this.form.deadline = new Date($('#txt-deadline').val()).toISOString();
         this.form.raids = this.selectedRaids.toString();
-        var result = await qv.post('/api/activity', this.form);
-        if (result.code != 200) {
-            alert('活动创建失败');
-            return;
+        try
+        {
+            var result = await qv.post('/api/activity', this.form);
+        }
+        catch (e)
+        {
+            if (e.responseJSON) {
+                alert(e.responseJSON.message);
+                return;
+            }
+            else {
+                alert('创建活动失败');
+                return;
+            }
         }
 
         app.open('/act?id=' + result.data.id);
