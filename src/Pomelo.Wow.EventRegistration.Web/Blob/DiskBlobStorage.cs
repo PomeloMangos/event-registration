@@ -16,7 +16,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Blob
         public DiskBlobStorage(IConfiguration config)
         {
             _config = config;
-            _storePath = _config["Storage"] ?? "Blobs";
+            _storePath = String.IsNullOrWhiteSpace(_config["Storage"]) ? "Blobs" : _config["Storage"];
         }
 
         public async ValueTask<Blob> GetBlobAsync(Guid id, CancellationToken cancellationToken = default)
@@ -53,7 +53,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Blob
 
             var fi = new FileInfo(blobPath);
             blob.Size = fi.Length;
-            await File.WriteAllTextAsync(metaPath, JsonConvert.SerializeObject(metaPath));
+            await File.WriteAllTextAsync(metaPath, JsonConvert.SerializeObject(blob));
             return blob;
         }
 

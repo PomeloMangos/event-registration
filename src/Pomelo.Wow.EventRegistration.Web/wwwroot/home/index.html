@@ -7,6 +7,7 @@
                 <h1 class="page-title" v-if="active == 'about'">关于公会</h1>
                 <h1 class="page-title" v-if="active == 'price'">装备价目表</h1>
                 <h1 class="page-title" v-if="active == 'manager'">管理员设置</h1>
+                <h1 class="page-title" v-if="active == 'icon'">公会图标设置</h1>
             </div>
 
             <div class="breadcrumbs" v-if="$root.guild">
@@ -58,8 +59,8 @@
                                             <span>公会简介设置</span>
                                         </a>
                                     </li>
-                                    <li class="color1">
-                                        <a href="#">
+                                    <li class="color1" v-on:click="active = 'icon'" v-bind:class="{ 'active': active == 'icon' }">
+                                        <a>
                                             <i class="fa fa-fw fa-image"></i>
                                             <span>公会图标设置</span>
                                         </a>

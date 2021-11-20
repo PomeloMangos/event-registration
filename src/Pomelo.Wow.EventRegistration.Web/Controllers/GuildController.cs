@@ -99,6 +99,57 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(guild);
         }
 
+        [HttpPatch("{guildId}")]
+        public async ValueTask<ApiResult<Guild>> Patch(
+            [FromServices] WowContext db,
+            [FromRoute] string guildId,
+            [FromBody] Guild model,
+            CancellationToken cancellationToken = default)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return ApiResult<Guild>(401, "请登录");
+            }
+
+            if (GuildId == null)
+            {
+                return ApiResult<Guild>(400, "请在公会中进行该操作");
+            }
+
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, true, cancellationToken))
+            {
+                return ApiResult<Guild>(403, "您没有权限这样做");
+            }
+
+            if (guildId != GuildId)
+            {
+                return ApiResult<Guild>(400, "请在正确的公会中进行该操作");
+            }
+
+            if (!string.IsNullOrEmpty(model.GuildLogoUrl))
+            {
+                Guild.GuildLogoUrl = model.GuildLogoUrl;
+            }
+            if (!string.IsNullOrEmpty(model.GuildListImageUrl))
+            {
+                Guild.GuildListImageUrl = model.GuildListImageUrl;
+            }
+            if (!string.IsNullOrEmpty(model.Name))
+            {
+                Guild.Name = model.Name;
+            }
+            if (!string.IsNullOrEmpty(model.Description))
+            {
+                Guild.Description = model.Description;
+            }
+            if (!string.IsNullOrEmpty(model.Realm))
+            {
+                Guild.Realm = model.Realm;
+            }
+            await db.SaveChangesAsync();
+            return ApiResult(Guild);
+        }
+
         [HttpGet("{guildId}/manager")]
         public async ValueTask<ApiResult<List<GuildManagerResponse>>> GetManagers(
             [FromServices] WowContext db,
