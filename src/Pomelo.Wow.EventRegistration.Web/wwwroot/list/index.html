@@ -25,19 +25,25 @@
                                     <div class="table-row">
                                         <div class="table-cell valign-top">
                                             <div class="platform fsize-14 fweight-700 uppercase orange">
+                                                <span class="act-status green" v-if="act.status == 1">报名中</span>
+                                                <span class="act-status blue" v-if="act.status == 2">报名截止</span>
+                                                <span class="act-status orange" v-if="act.status == 3">进行中</span>
+                                                <span class="act-status gray" v-if="act.status == 4">已结束</span>
                                                 {{ act.realm }} - {{ act.guild.faction == 0 ? '联盟' : '部落' }} - {{ act.guild.name }}
                                             </div>
                                         </div>
                                         <div class="table-cell valign-top text-right">
                                             <div class="fsize-14 fweight-700 uppercase">
-                                                {{ $root.moment(act.begin).format('YYYY年MM月DD日 HH:mm') }}
+                                                {{ $root.moment(act.begin).format('YYYY年MM月DD日 HH:mm') }} 开打
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt15">
                                     <a v-on:click="$root.open('/act?id=' + act.id)" class="post-title">
-                                        <h5>{{ act.name }}</h5>
+                                        <h5>
+                                            {{ act.name }}
+                                        </h5>
                                     </a>
                                     <div class="fsize-16 lheight-26 mt15" data-trim="140">
                                         {{ act.description }}

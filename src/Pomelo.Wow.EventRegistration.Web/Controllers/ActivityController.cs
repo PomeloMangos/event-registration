@@ -29,6 +29,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromServices] WowContext db,
             [FromQuery] int pageSize = 10,
             [FromQuery] int page = 1,
+            [FromQuery] ActivityStatus status = ActivityStatus.All,
+            [FromQuery] DateTime? from = null,
+            [FromQuery] DateTime? to = null,
             CancellationToken cancellationToken = default)
         { 
             if (pageSize > 100)
@@ -44,6 +47,33 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             if (GuildId != null)
             {
                 query = query.Where(x => x.GuildId == GuildId);
+            }
+
+            if (from.HasValue)
+            {
+                query = query.Where(x => x.Begin >= from.Value);
+            }
+
+            if (to.HasValue)
+            {
+                query = query.Where(x => x.Begin < to.Value);
+            }
+
+            if (status == ActivityStatus.Registering)
+            {
+                query = query.Where(x => x.Deadline >= DateTime.UtcNow);
+            }
+            else if (status == ActivityStatus.RegistrationClosed)
+            {
+                query = query.Where(x => x.Deadline < DateTime.UtcNow && x.Begin > DateTime.UtcNow);
+            }
+            else if (status == ActivityStatus.InProgress)
+            {
+                query = query.Where(x => x.Begin <= DateTime.UtcNow && x.Begin.AddHours(x.EstimatedDurationInHours) > DateTime.UtcNow);
+            }
+            else if (status == ActivityStatus.Ended)
+            {
+                query = query.Where(x => x.Begin.AddHours(x.EstimatedDurationInHours) < DateTime.UtcNow);
             }
 
             return await PagedApiResultAsync(

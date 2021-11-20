@@ -3410,3 +3410,9 @@ a {
 .footer-list a:hover {
     color: #fff;
 }
+
+.act-status {
+    padding: 3px 5px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.1);
+}

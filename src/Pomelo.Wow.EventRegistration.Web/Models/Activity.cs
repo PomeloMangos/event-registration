@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Pomelo.Wow.EventRegistration.Web.Models.ViewModels;
 
 namespace Pomelo.Wow.EventRegistration.Web.Models
 {
@@ -71,5 +72,29 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public int ItemLevelGraduated { get; set; }
 
         public int ItemLevelFarm { get; set; }
+
+        [NotMapped]
+        public ActivityStatus Status
+        {
+            get 
+            {
+                if (DateTime.UtcNow < Deadline)
+                {
+                    return ActivityStatus.Registering;
+                }
+                else if (DateTime.UtcNow < Begin)
+                {
+                    return ActivityStatus.RegistrationClosed;
+                }
+                else if (DateTime.UtcNow < Begin.AddHours(EstimatedDurationInHours))
+                {
+                    return ActivityStatus.InProgress;
+                }
+                else
+                {
+                    return ActivityStatus.Ended;
+                }
+            }
+        }
     }
 }
