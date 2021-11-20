@@ -214,6 +214,14 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             {
                 activity.Deadline = model.Deadline;
             }
+            if (model.Begin != default)
+            {
+                activity.Begin = model.Begin;
+            }
+            if (model.EstimatedDurationInHours != default)
+            {
+                activity.EstimatedDurationInHours = model.EstimatedDurationInHours;
+            }
             if (!string.IsNullOrEmpty(model.Raids))
             {
                 activity.Raids = model.Raids;

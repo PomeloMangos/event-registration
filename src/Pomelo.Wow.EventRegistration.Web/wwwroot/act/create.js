@@ -8,7 +8,7 @@
             deadline: null,
             begin: null,
             raids: '',
-            estimatedDuration: 4.5
+            estimatedDurationInHours: 4.5
         },
         selectedRaids: [],
         raids: []

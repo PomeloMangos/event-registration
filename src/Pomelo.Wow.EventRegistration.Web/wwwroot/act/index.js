@@ -31,6 +31,10 @@ component.created = function () {
 component.mounted = async function () {
     await this.loadActivity();
     this.bindDragula();
+
+    this.$container = new PomeloComponentContainer('#act-manage-container', app, this, function (view) {
+    }, function () { });
+    this.$container.open(`/act/manage`, { activity: this.activity });
 };
 
 component.methods = {
@@ -305,9 +309,5 @@ component.methods = {
         this.updateGridData();
         qv.patch(`/api/activity/${this.id}`, { extension1: JSON.stringify(this.grids) });
         alert("团队框架保存成功");
-    },
-    updateWCL: function () {
-        qv.post('/api/charactor/batch', { realm: this.activity.realm, names: this.activity.registrations.map(x => x.name) });
-        alert('已提交强制更新WCL数据，请等待1-2分钟后刷新即可看到最新WCL数据');
     }
 };
