@@ -18,7 +18,8 @@
             }
         },
         working: false,
-        price: {}
+        price: {},
+        status: 0
     };
 };
 
@@ -46,11 +47,11 @@ component.mounted = function () {
 
 component.methods = {
     load: async function () {
-        this.result = await qv.get(`/api/activity?page=1`);
+        this.result = await qv.get(`/api/activity?page=1&status=${this.status}`);
     },
     next: async function () {
         ++this.result.currentPage;
-        var result = await qv.get(`/api/activity?page=${this.result.currentPage}`);
+        var result = await qv.get(`/api/activity?page=${this.result.currentPage}&status=${this.status}`);
         for (var i = 0; i < result.data.length; ++i) {
             this.result.data.push(result.data[i]);
         }
@@ -128,4 +129,8 @@ component.watch = {
         if (this.active == 'price') {
             this.loadPrices();
         }
-    }};
+    },
+    status: function () {
+        this.load();
+    }
+};
