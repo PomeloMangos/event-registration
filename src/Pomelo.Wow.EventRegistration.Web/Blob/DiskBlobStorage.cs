@@ -17,6 +17,10 @@ namespace Pomelo.Wow.EventRegistration.Web.Blob
         {
             _config = config;
             _storePath = String.IsNullOrWhiteSpace(_config["Storage"]) ? "Blobs" : _config["Storage"];
+            if (!Directory.Exists(_storePath))
+            {
+                Directory.CreateDirectory(_storePath);
+            }
         }
 
         public async ValueTask<Blob> GetBlobAsync(Guid id, CancellationToken cancellationToken = default)
