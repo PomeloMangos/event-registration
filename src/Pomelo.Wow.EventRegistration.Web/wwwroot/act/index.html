@@ -122,7 +122,7 @@
                                                         </div>
                                                     </div>
                                                     <div v-else>没有找到该角色的相关战斗记录</div>
-                                                    <div v-if="$root.user.token">
+                                                    <div v-if="$root.guildPermission.guildManager">
                                                         <hr />
                                                         <input type="button" value="通过申请" class="form-btn" v-on:click="setStatus(reg.id, 4, reg.role)" />
                                                         <input type="button" value="拒绝申请" class="form-btn" v-on:click="setStatus(reg.id, 1, reg.role)" />
@@ -238,7 +238,7 @@
                                                         </div>
                                                     </div>
                                                     <div v-else>没有找到该角色的相关战斗记录</div>
-                                                    <div v-if="$root.user.token">
+                                                    <div v-if="$root.guildPermission.guildManager">
                                                         <hr />
                                                         <input type="button" value="通过申请" class="form-btn" v-on:click="setStatus(reg.id, 4, reg.role)" />
                                                         <input type="button" value="拒绝申请" class="form-btn" v-on:click="setStatus(reg.id, 1, reg.role)" />
@@ -354,7 +354,7 @@
                                                         </div>
                                                     </div>
                                                     <div v-else>没有找到该角色的相关战斗记录</div>
-                                                    <div v-if="$root.user.token">
+                                                    <div v-if="$root.guildPermission.guildManager">
                                                         <hr />
                                                         <input type="button" value="通过申请" class="form-btn" v-on:click="setStatus(reg.id, 4, reg.role)" />
                                                         <input type="button" value="拒绝申请" class="form-btn" v-on:click="setStatus(reg.id, 1, reg.role)" />
