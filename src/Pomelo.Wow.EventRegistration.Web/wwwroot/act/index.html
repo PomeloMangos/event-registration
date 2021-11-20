@@ -433,6 +433,9 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div v-else class="cannot-reg">
+                            报名截止日期已过，您已无法报名
+                        </div>
                     </div>
                     <div v-if="active == 'grid'">
                         <div v-for="(grid, i) in grids.data">

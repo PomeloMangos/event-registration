@@ -3445,3 +3445,9 @@ a {
         display: none;
     }
 }
+
+.cannot-reg {
+    border-radius: 15px;
+    background: #292845;
+    padding: 15px;
+}
