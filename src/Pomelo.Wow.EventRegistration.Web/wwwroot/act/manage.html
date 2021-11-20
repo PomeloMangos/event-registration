@@ -20,6 +20,12 @@
                                 <span>WCL同步</span>
                             </a>
                         </li>
+                        <li class="color1" v-bind:class="{ 'active': active == 'clone' }">
+                            <a v-on:click="open('clone')">
+                                <i class="fa fa-fw fa-copy"></i>
+                                <span>克隆活动</span>
+                            </a>
+                        </li>
                         <li class="color1" v-bind:class="{ 'active': active == 'delete' }">
                             <a v-on:click="open('delete')">
                                 <i class="fa fa-fw fa-trash"></i>

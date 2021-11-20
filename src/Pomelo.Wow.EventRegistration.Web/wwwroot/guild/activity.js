@@ -15,7 +15,7 @@ component.methods = {
     },
     next: async function () {
         ++this.result.currentPage;
-        var result = await qv.get(`/api/activity?page=${this.result.currentPage}&status=${this.status}`);
+        var result = await qv.get(`/api/activity?page=${this.result.currentPage + 1}&status=${this.status}`);
         for (var i = 0; i < result.data.length; ++i) {
             this.result.data.push(result.data[i]);
         }

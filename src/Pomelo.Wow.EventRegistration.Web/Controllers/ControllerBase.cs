@@ -57,9 +57,15 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
         protected async ValueTask<bool> ValidateUserPermissionToCurrentGuildAsync(
             WowContext db,
+            string guildId = null,
             bool isOwner = false,
             CancellationToken cancellationToken = default)
         {
+            if (guildId == null)
+            {
+                guildId = GuildId;
+            }
+
             if (!User.Identity.IsAuthenticated)
             {
                 return false;

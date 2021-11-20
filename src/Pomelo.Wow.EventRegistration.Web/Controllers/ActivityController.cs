@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
@@ -147,7 +148,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Activity>(400, "你必须在公会中创建活动");
             }
 
-            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, false, cancellationToken))
             {
                 return ApiResult<Activity>(400, "你没有权限在这个公会中创建活动");
             }
@@ -156,6 +157,111 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             activity.UserId = Convert.ToInt32(User.Identity.Name);
             db.Activities.Add(activity);
             await db.SaveChangesAsync(cancellationToken);
+            return ApiResult(activity);
+        }
+
+        [HttpPost("clone")]
+        public async ValueTask<ApiResult<Activity>> PostClone(
+            [FromServices] WowContext db,
+            [FromBody] CloneRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return ApiResult<Activity>(403, "你没有权限创建活动");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                return ApiResult<Activity>(400, "活动名称不能为空");
+            }
+
+            if (GuildId == null)
+            {
+                return ApiResult<Activity>(400, "你必须在公会中创建活动");
+            }
+
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, false, cancellationToken))
+            {
+                return ApiResult<Activity>(400, "你没有权限在这个公会中创建活动");
+            }
+
+            var original = await db.Activities
+                .Include(x => x.Guild)
+                .Include(x => x.Registrations)
+                .SingleOrDefaultAsync(x => x.Id == request.OriginalActivityId, cancellationToken);
+
+            if (original == null)
+            {
+                return ApiResult<Activity>(404, "原活动未找到");
+            }
+
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, original.GuildId, false, cancellationToken))
+            {
+                return ApiResult<Activity>(403, "你没有权限克隆这个活动");
+            }
+
+            // 1. Clone activity
+            var activity = new Activity 
+            {
+                Name = request.Name,
+                Description = request.Description,
+                Raids = request.Raids,
+                Begin = request.Begin,
+                Deadline = request.Deadline,
+                Realm = original.Realm,
+                EstimatedDurationInHours = original.EstimatedDurationInHours,
+                Server = original.Server,
+                UserId = Convert.ToInt32(User.Identity.Name),
+                Visibility = original.Visibility,
+                GuildId = GuildId,
+                Registrations = new List<Registration>(),
+                Password = original.Password,
+                CreatedAt = DateTime.UtcNow,
+                Extension1 = original.Extension1,
+                Extension2 = original.Extension2,
+                Extension3 = original.Extension3
+            };
+
+            // 2. Clone registrations
+            foreach (var x in original.Registrations)
+            {
+                if (!request.CloneRejected && x.Status != RegistrationStatus.Accepted)
+                {
+                    continue;
+                }
+
+                activity.Registrations.Add(new Registration 
+                {
+                    RegisteredAt = DateTime.UtcNow,
+                    CharactorId = x.CharactorId,
+                    Name = x.Name,
+                    Status = x.Status,
+                    Class = x.Class,
+                    Hint = x.Hint,
+                    Microphone = x.Microphone,
+                    Role = x.Role
+                });
+            }
+
+            db.Activities.Add(activity);
+            await db.SaveChangesAsync(cancellationToken);
+
+            // 3. Patch extension fields
+            foreach(var x in activity.Registrations)
+            {
+                var originalReg = original.Registrations.FirstOrDefault(y => y.Name == x.Name && y.Class == x.Class);
+                if (originalReg == null)
+                {
+                    continue;
+                }
+
+                activity.Extension1 = activity.Extension1.Replace(originalReg.Id.ToString(), x.Id.ToString());
+                activity.Extension2 = activity.Extension2.Replace(originalReg.Id.ToString(), x.Id.ToString());
+                activity.Extension3 = activity.Extension3.Replace(originalReg.Id.ToString(), x.Id.ToString());
+            }
+            await db.SaveChangesAsync(cancellationToken);
+
             return ApiResult(activity);
         }
 

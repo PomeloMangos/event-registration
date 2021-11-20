@@ -24,8 +24,8 @@ component.methods = {
         this.raids = (await qv.get('/api/raid')).data;
     },
     patch: function () {
-        this.activity.deadline = $('#txt-deadline').val();
-        this.activity.begin = $('#txt-begin').val();
+        this.activity.deadline = new Date($('#txt-deadline').val()).toISOString();
+        this.activity.begin = new Date($('#txt-begin').val()).toISOString();
         this.activity.raids = this.selectedRaids.toString();
         qv.patch(`/api/activity/${this.activity.id}`, {
             name: this.activity.name,

@@ -475,7 +475,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="$root.user.token">
+                        <div v-if="$root.guildPermission.guildManager">
                             <h5>创建框架</h5>
                             <select class="form-input" v-model="form.newGrid.mode">
                                 <option value="0">25人团队</option>

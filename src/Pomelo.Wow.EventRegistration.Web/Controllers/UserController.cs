@@ -50,8 +50,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             return ApiResult<dynamic>(new 
             {
-                GuildOwner = await ValidateUserPermissionToCurrentGuildAsync(db, true, cancellationToken),
-                GuildManager = await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken)
+                GuildOwner = await ValidateUserPermissionToCurrentGuildAsync(db, null, true, cancellationToken),
+                GuildManager = await ValidateUserPermissionToCurrentGuildAsync(db, null, false, cancellationToken)
             });
         }
 

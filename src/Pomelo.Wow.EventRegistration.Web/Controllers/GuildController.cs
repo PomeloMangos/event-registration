@@ -115,7 +115,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult(400, "请在公会中进行该操作");
             }
 
-            if (!await ValidateUserPermissionToCurrentGuildAsync(db, true, cancellationToken))
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, true, cancellationToken))
             {
                 return ApiResult(403, "您没有权限这样做");
             }
@@ -155,7 +155,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult(400, "请在公会中进行该操作");
             }
 
-            if (!await ValidateUserPermissionToCurrentGuildAsync(db, true, cancellationToken))
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, true, cancellationToken))
             {
                 return ApiResult(403, "您没有权限这样做");
             }
@@ -218,7 +218,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromBody] Price price,
             CancellationToken cancellationToken = default)
         {
-            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, false, cancellationToken))
             {
                 return ApiResult<Price>(403, "您没有权限这样做");
             }
@@ -237,7 +237,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromBody] Price model,
             CancellationToken cancellationToken = default)
         {
-            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, false, cancellationToken))
             {
                 return ApiResult<Price>(403, "您没有权限这样做");
             }
@@ -266,7 +266,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromBody] Price model,
             CancellationToken cancellationToken = default)
         {
-            if (!await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken))
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, false, cancellationToken))
             {
                 return ApiResult(403, "您没有权限这样做");
             }
