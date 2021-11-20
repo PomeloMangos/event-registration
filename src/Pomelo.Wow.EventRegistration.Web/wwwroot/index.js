@@ -13,7 +13,10 @@ var app = new Vue({
         },
         guildId: null,
         guild: null,
-        guildPermission: {}
+        guildPermission: {
+            guildManager: false,
+            guildOwner: false
+        }
     },
     mounted: async function () {
         setInterval(function () {
