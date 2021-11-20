@@ -53,7 +53,10 @@
                             <div class="post-bottom table">
                                 <div class="table-cell valign-middle">
                                     <i class="fa fa-star color-1 fsize-14" aria-hidden="true"></i>
-                                    <span class="color-2 fsize-14 ml5">{{ act.raidLeader}}</span>
+                                    <span class="color-2 fsize-14 ml5" style="margin-right: 15px">{{ act.raidLeader }}</span>
+
+                                    <i class="fa fa-clock-o color-1 fsize-14" aria-hidden="true"></i>
+                                    <span class="color-2 fsize-14 ml5">{{ parseFloat(act.estimatedDurationInHours).toFixed(1) }}小时</span>
                                 </div>
                                 <div class="table-cell valign-middle text-right">
                                     <i class="fa fa-user color-1 fsize-14" aria-hidden="true"></i>
