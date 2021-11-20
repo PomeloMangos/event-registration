@@ -38,6 +38,23 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(users);
         }
 
+        [HttpGet("permission")]
+        public async ValueTask<ApiResult<dynamic>> GetPermission(
+            [FromServices] WowContext db,
+            CancellationToken cancellationToken = default)
+        {
+            if (GuildId == null)
+            {
+                return ApiResult<dynamic>(null);
+            }
+
+            return ApiResult<dynamic>(new 
+            {
+                GuildOwner = await ValidateUserPermissionToCurrentGuildAsync(db, true, cancellationToken),
+                GuildManager = await ValidateUserPermissionToCurrentGuildAsync(db, false, cancellationToken)
+            });
+        }
+
         [HttpPost]
         public async ValueTask<ApiResult<User>> Post(
             [FromServices] WowContext db,

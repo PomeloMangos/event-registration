@@ -22,10 +22,10 @@
                 <div class="col-sm-7 col-md-8 col-lg-8 col-sm-push-5 col-md-push-4 col-lg-push-4" v-if="result && result.data">
                     <div v-show="active == 'activity'">
                         <div class="tab-outer">
-                            <a class="tab-item" v-on:click="status = 0" v-bind:class="{ active: status == 0 }"><i class="fa fa-user-plus"></i> 全部活动</a>
-                            <a class="tab-item" v-on:click="status = 1" v-bind:class="{ active: status == 1 }"><i class="fa fa-user-plus"></i> 报名中</a>
-                            <a class="tab-item" v-on:click="status = 3" v-bind:class="{ active: status == 3 }"><i class="fa fa-user-plus"></i> 进行中</a>
-                            <a class="tab-item" v-on:click="status = 4" v-bind:class="{ active: status == 4 }"><i class="fa fa-user-plus"></i> 已结束</a>
+                            <a class="tab-item" v-on:click="status = 0" v-bind:class="{ active: status == 0 }">全部活动</a>
+                            <a class="tab-item" v-on:click="status = 1" v-bind:class="{ active: status == 1 }">报名中</a>
+                            <a class="tab-item" v-on:click="status = 3" v-bind:class="{ active: status == 3 }">进行中</a>
+                            <a class="tab-item" v-on:click="status = 4" v-bind:class="{ active: status == 4 }">已结束</a>
                         </div>
                         <article class="vertical-item format-thumb fsize-0 clearfix" v-for="act in result.data">
                             <div class="item-left-img col-lg-4 col-md-4 col-sm-12 col-xs-12 equal-height">
