@@ -26,12 +26,14 @@ component.methods = {
     patch: function () {
         this.activity.deadline = $('#txt-deadline').val();
         this.activity.begin = $('#txt-begin').val();
+        this.activity.raids = this.selectedRaids.toString();
         qv.patch(`/api/activity/${this.activity.id}`, {
             name: this.activity.name,
             description: this.activity.description,
             begin: this.activity.begin,
             deadline: this.activity.deadline,
-            estimatedDurationInHours: this.activity.estimatedDurationInHours
+            estimatedDurationInHours: this.activity.estimatedDurationInHours,
+            raids: this.activity.raids
         });
         alert('活动信息更新成功');
     }
