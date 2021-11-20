@@ -41,12 +41,11 @@
                                                     <span class="act-status blue" v-if="act.status == 2">报名截止</span>
                                                     <span class="act-status orange" v-if="act.status == 3">进行中</span>
                                                     <span class="act-status gray" v-if="act.status == 4">已结束</span>
-                                                    {{ act.realm }} - {{ act.guild.faction == 0 ? '联盟' : '部落' }} - {{ act.guild.name }}
                                                 </div>
                                             </div>
                                             <div class="table-cell valign-top text-right">
                                                 <div class="fsize-14 fweight-700 uppercase">
-                                                    {{ $root.moment(act.begin).format('YYYY年MM月DD日 HH:mm') }} 开打
+                                                    {{ $root.moment(act.begin).format('YYYY年MM月DD日 HH:mm') }}
                                                 </div>
                                             </div>
                                         </div>
