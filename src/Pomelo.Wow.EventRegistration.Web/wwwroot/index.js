@@ -12,7 +12,8 @@ var app = new Vue({
             username: window.localStorage.getItem('username')
         },
         guildId: null,
-        guild: null
+        guild: null,
+        guildPermission: {}
     },
     mounted: async function () {
         setInterval(function () {
@@ -137,6 +138,9 @@ var app = new Vue({
             qv.get('/api/guild/' + self.guildId).then(data => {
                 self.guild = data.data;
                 $('title').html(self.guild.name);
+                return qv.get('/api/user/permission');
+            }).then(data => {
+                self.guildPermission = data.data;
             });
         }
     }
