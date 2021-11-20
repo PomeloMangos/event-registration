@@ -44,9 +44,9 @@
                                         <span>关于公会</span>
                                     </a>
                                 </li>
-                                <template v-if="$root.user.token">
-                                    <li class="color1">
-                                        <a href="#">
+                                <template v-if="$root.guildPermission.guildManager">
+                                    <li class="color1" v-on:click="active = 'manager'" v-bind:class="{ 'active': active == 'manager' }">
+                                        <a>
                                             <i class="fa fa-fw fa-users"></i>
                                             <span>管理员设置</span>
                                         </a>

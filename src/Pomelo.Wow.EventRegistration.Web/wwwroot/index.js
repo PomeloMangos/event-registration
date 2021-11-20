@@ -19,6 +19,7 @@ var app = new Vue({
         }
     },
     mounted: async function () {
+        moment.locale('zh-cn');
         setInterval(function () {
             for (var i = 0; i < app.notifications.length; ++i) {
                 if (app.notifications[i].closeTime > 0) {

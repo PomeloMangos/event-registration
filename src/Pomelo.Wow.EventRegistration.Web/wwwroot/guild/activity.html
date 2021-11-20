@@ -20,6 +20,7 @@
                                     <span class="act-status blue" v-if="act.status == 2">报名截止</span>
                                     <span class="act-status orange" v-if="act.status == 3">进行中</span>
                                     <span class="act-status gray" v-if="act.status == 4">已结束</span>
+                                    <span v-if="act.status == 1">{{ $root.moment(act.deadline).fromNow() }}截止</span>
                                 </div>
                             </div>
                             <div class="table-cell valign-top text-right">

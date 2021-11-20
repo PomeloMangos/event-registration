@@ -99,6 +99,25 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(guild);
         }
 
+        [HttpGet("{guildId}/manager")]
+        public async ValueTask<ApiResult<List<GuildManagerResponse>>> GetManagers(
+            [FromServices] WowContext db,
+            [FromRoute] string guildId,
+            CancellationToken cancellationToken = default)
+        {
+            var managers = await db.GuildManagers
+                .Include(x => x.User)
+                .Where(x => x.GuildId == guildId)
+                .Select(x => new GuildManagerResponse
+                {
+                    Username = x.User.Username,
+                    DisplayName = x.User.DisplayName
+                })
+                .ToListAsync(cancellationToken);
+
+            return ApiResult(managers);
+        }
+
         [HttpPut("{guildId}/manager/{username}")]
         public async ValueTask<ApiResult> Put(
             [FromServices] WowContext db,
