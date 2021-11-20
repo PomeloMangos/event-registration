@@ -25,7 +25,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
         #region Basics
         [HttpGet]
-        public async ValueTask<PagedApiResult<Activity>> Get(
+        public async ValueTask<PagedApiResult<ActivityViewModel>> Get(
             [FromServices] WowContext db,
             [FromQuery] int pageSize = 10,
             [FromQuery] int page = 1,
@@ -77,7 +77,24 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
 
             return await PagedApiResultAsync(
-                query.OrderByDescending(x => x.Begin), 
+                query.OrderByDescending(x => x.Begin).Select(x => new ActivityViewModel 
+                {
+                    Begin = x.Begin,
+                    Server = x.Server,
+                    CreatedAt = x.CreatedAt,
+                    Deadline = x.Deadline,
+                    Description = x.Description,
+                    EstimatedDurationInHours = x.EstimatedDurationInHours,
+                    GuildId = x.GuildId,
+                    GuildName = x.Guild.Name,
+                    Name = x.Name,
+                    RaidLeader = x.User.DisplayName,
+                    Realm = x.Realm,
+                    Raids = x.Raids,
+                    RegisteredCount = x.Registrations.Count(),
+                    Visibility = x.Visibility,
+                    Faction = x.Guild.Faction
+                }), 
                 page - 1, 
                 pageSize, 
                 cancellationToken);

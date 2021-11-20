@@ -29,7 +29,7 @@
                                                 <span class="act-status blue" v-if="act.status == 2">报名截止</span>
                                                 <span class="act-status orange" v-if="act.status == 3">进行中</span>
                                                 <span class="act-status gray" v-if="act.status == 4">已结束</span>
-                                                {{ act.realm }} - {{ act.guild.faction == 0 ? '联盟' : '部落' }} - {{ act.guild.name }}
+                                                {{ act.realm }} - {{ act.faction == 0 ? '联盟' : '部落' }} - {{ act.guildName }}
                                             </div>
                                         </div>
                                         <div class="table-cell valign-top text-right">
@@ -53,11 +53,11 @@
                             <div class="post-bottom table">
                                 <div class="table-cell valign-middle">
                                     <i class="fa fa-star color-1 fsize-14" aria-hidden="true"></i>
-                                    <span class="color-2 fsize-14 ml5">{{ act.user.displayName }}</span>
+                                    <span class="color-2 fsize-14 ml5">{{ act.raidLeader}}</span>
                                 </div>
                                 <div class="table-cell valign-middle text-right">
                                     <i class="fa fa-user color-1 fsize-14" aria-hidden="true"></i>
-                                    <span class="color-2 fsize-14 ml5">{{ act.registrations.length }}</span>
+                                    <span class="color-2 fsize-14 ml5">{{ act.registeredCount }}</span>
                                 </div>
                             </div>
                         </div>
