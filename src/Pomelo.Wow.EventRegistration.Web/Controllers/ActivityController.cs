@@ -93,7 +93,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                     Raids = x.Raids,
                     RegisteredCount = x.Registrations.Count(),
                     Visibility = x.Visibility,
-                    Faction = x.Guild.Faction
+                    Faction = x.Guild.Faction,
+                    Id = x.Id
                 }), 
                 page - 1, 
                 pageSize, 
