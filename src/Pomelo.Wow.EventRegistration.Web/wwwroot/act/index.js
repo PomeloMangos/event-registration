@@ -294,12 +294,16 @@ component.methods = {
         for (var i = 0; i < this.grids.data.length; ++i) {
             for (var r = 0; r < this.grids.data[i].grid.length; ++r) {
                 for (var c = 0; c < this.grids.data[i].grid[r].length; ++c) {
-                    var regId = this.grids.data[i].grid[r][c].id;
-                    var latest = this.activity.registrations.filter(x => x.id == regId);
-                    if (!latest.length) {
-                        this.grids.data[i].grid[r][c] = null;
-                    } else {
-                        this.grids.data[i].grid[r][c] = latest[0];
+                    try {
+                        var regId = this.grids.data[i].grid[r][c].id;
+                        var latest = this.activity.registrations.filter(x => x.id == regId);
+                        if (!latest.length) {
+                            this.grids.data[i].grid[r][c] = null;
+                        } else {
+                            this.grids.data[i].grid[r][c] = latest[0];
+                        }
+                    } catch (e) {
+                        console.error(e);
                     }
                 }
             }
