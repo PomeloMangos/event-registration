@@ -111,25 +111,25 @@
                         <div class="mt60">
                             <ul class="footer-list">
                                 <li class="" v-if="!guildId" v-bind:class="{ 'active': active == 'guild' }">
-                                    <a v-on:click="$root.open('/guild')">公会</a>
+                                    <a v-on:click="open('/guild')">公会</a>
                                 </li>
                                 <li class="" v-bind:class="{ 'active': active == 'activity' }">
-                                    <a v-on:click="guildId ? $root.open('/home') : $root.open('/list')">{{ guildId ? '首页' : '活动列表' }}</a>
+                                    <a v-on:click="guildId ? open('/home') : $root.open('/list')">{{ guildId ? '首页' : '活动列表' }}</a>
                                 </li>
-                                <li v-if="!$root.user.token" class="" v-bind:class="{ 'active': active == 'reg' }">
-                                    <a v-on:click="$root.open('/reg')">注册</a>
+                                <li v-if="!user.token" class="" v-bind:class="{ 'active': active == 'reg' }">
+                                    <a v-on:click="open('/reg')">注册</a>
                                 </li>
-                                <li v-if="!$root.user.token" class="" v-bind:class="{ 'active': active == 'login' }">
-                                    <a v-on:click="$root.open('/login')">登录</a>
+                                <li v-if="!user.token" class="" v-bind:class="{ 'active': active == 'login' }">
+                                    <a v-on:click="open('/login')">登录</a>
                                 </li>
-                                <li v-if="!!$root.user.token && guildId && (guildPermission.guildManager || guildPermission.guildOwner)" class="" v-bind:class="{ 'active': active == 'login' }">
-                                    <a v-on:click="$root.open('/act/create')">创建活动</a>
+                                <li v-if="!!user.token && guildId && (guildPermission.guildManager || guildPermission.guildOwner)" class="" v-bind:class="{ 'active': active == 'login' }">
+                                    <a v-on:click="open('/act/create')">创建活动</a>
                                 </li>
-                                <li v-if="!!$root.user.token && !guildId" class="" v-bind:class="{ 'active': active == 'create-guild' }">
-                                    <a v-on:click="$root.open('/guild/create')">创建公会</a>
+                                <li v-if="!!user.token && !guildId" class="" v-bind:class="{ 'active': active == 'create-guild' }">
+                                    <a v-on:click="open('/guild/create')">创建公会</a>
                                 </li>
-                                <li v-if="!!$root.user.token" class="" v-bind:class="{ 'active': active == 'password' }">
-                                    <a v-on:click="$root.open('/password')">修改密码</a>
+                                <li v-if="!!user.token" class="" v-bind:class="{ 'active': active == 'password' }">
+                                    <a v-on:click="open('/password')">修改密码</a>
                                 </li>
                             </ul>
                         </div>
