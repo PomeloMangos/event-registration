@@ -375,7 +375,7 @@
                             </table>
                         </div>
 
-                        <div v-if="activity && activity.status == 1">
+                        <div v-if="activity && activity.status < 3">
                             <h5>我的角色</h5>
                             <table class="reg-table" style="table-layout: auto!important;">
                                 <thead>
@@ -398,17 +398,19 @@
                                             <input class="form-input" type="button" value="取消请假" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 3" v-on:click="leave(ch, false)" />
                                         </td>
                                         <td v-else-if="!inProgress">
-                                            <input type="text" class="form-input" style="width: 90px" placeholder="报名备注" v-model="ch.hint" />
-                                            <select class="form-input" v-model="ch.role">
-                                                <option value="1">输出</option>
-                                                <option value="0">坦克</option>
-                                                <option value="2">治疗</option>
-                                            </select>
-                                            <input class="form-input" type="button" value="报名" v-on:click="register(ch)" />
+                                            <template v-if="activity.status == 1">
+                                                <input type="text" class="form-input" style="width: 90px" placeholder="报名备注" v-model="ch.hint" />
+                                                <select class="form-input" v-model="ch.role">
+                                                    <option value="1">输出</option>
+                                                    <option value="0">坦克</option>
+                                                    <option value="2">治疗</option>
+                                                </select>
+                                                <input class="form-input" type="button" value="报名" v-on:click="register(ch)" />
+                                            </template>
                                         </td>
                                         <td v-else>报名中，请稍候...</td>
                                     </tr>
-                                    <tr class="table-footer">
+                                    <tr class="table-footer" v-if="activity.status == 1">
                                         <td>
                                             <select class="form-input" v-model="form.newCharactor.class">
                                                 <option value="1">战士</option>
@@ -433,7 +435,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div v-else class="cannot-reg">
+                        <div v-if="activity.status != 1" class="cannot-reg">
                             报名截止日期已过，您已无法报名
                         </div>
                     </div>
