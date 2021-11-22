@@ -8,8 +8,8 @@
         </div>
         <article class="vertical-item format-thumb fsize-0 clearfix" v-for="act in result.data">
             <div class="item-left-img col-lg-4 col-md-4 col-sm-12 col-xs-12 equal-height">
-                <img v-if="act.raids == '1,2'" src="/assets/iamges/raid/1_2.png" />
-                <img v-else-if="act.raids == '3,4'" src="/assets/iamges/raid/3_4.png" />
+                <img v-if="act.raids == '1,2'" src="/assets/images/raid/1_2.png" />
+                <img v-else-if="act.raids == '3,4'" src="/assets/images/raid/3_4.png" />
                 <img v-else v-bind:src="'/assets/images/raid/' + act.raids.split(',')[0].trim() + '.jpg'">
             </div>
             <div class="post-content col-lg-8 col-md-8 col-sm-12 col-xs-12 equal-height">
