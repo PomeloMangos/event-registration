@@ -402,8 +402,8 @@
                                                 <input type="text" class="form-input" style="width: 90px" placeholder="报名备注" v-model="ch.hint" />
                                                 <select class="form-input" v-model="ch.role">
                                                     <option value="1">输出</option>
-                                                    <option value="0">坦克</option>
-                                                    <option value="2">治疗</option>
+                                                    <option value="0" v-if="canTank(ch.class)">坦克</option>
+                                                    <option value="2" v-if="canHeal(ch.class)">治疗</option>
                                                 </select>
                                                 <input class="form-input" type="button" value="报名" v-on:click="register(ch)" />
                                             </template>

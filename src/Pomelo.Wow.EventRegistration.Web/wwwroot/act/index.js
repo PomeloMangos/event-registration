@@ -313,5 +313,27 @@ component.methods = {
         this.updateGridData();
         qv.patch(`/api/activity/${this.id}`, { extension1: JSON.stringify(this.grids) });
         alert("团队框架保存成功");
+    },
+    canDps: function () {
+        return true;
+    },
+    canTank: function (cls) {
+        return !!(35 & cls);
+    },
+    canHeal: function (cls) {
+        return !!(298 & cls);
+    }
+};
+
+component.watch = {
+    deep: true,
+    'form.newCharactor.class': function () {
+        if (!canTank(this.form.newCharactor.class) && this.form.newCharactor.role == 0) {
+            this.form.newCharactor.role = 1;
+        }
+
+        if (!canHeal(this.form.newCharactor.class) && this.form.newCharactor.role == 2) {
+            this.form.newCharactor.role = 1;
+        }
     }
 };
