@@ -151,7 +151,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
                 metric = "hps";
             }
 
-            using (var response = await clientWclCN.GetAsync($"/v1/rankings/character/{name}/{realm}/CN?includeCombatantInfo=true&metric={metric}&api_key={ApiKey}"))
+            using (var response = await clientWclCN.GetAsync($"/v1/parses/character/{name}/{realm}/CN?includeCombatantInfo=true&metric={metric}&api_key={ApiKey}"))
             {
                 var jsonStr = await response.Content.ReadAsStringAsync();
                 var obj = JsonConvert.DeserializeObject<IEnumerable<WclBattleRecord>>(jsonStr);

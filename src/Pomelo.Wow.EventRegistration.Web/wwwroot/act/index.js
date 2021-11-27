@@ -12,6 +12,12 @@
             newGrid: {
                 name: null,
                 mode: 0
+            },
+            newTaskGroup: {
+                name: ''
+            },
+            newTask: {
+                text: ''
             }
         },
         activity: null,
@@ -19,7 +25,12 @@
         bosses: [],
         inProgress: false,
         active: 'registration',
-        grids: { data: [] }
+        grids: { data: [] },
+        tasks: { groups: [] },
+        activeTask: null,
+        taskString: '',
+        activeTaskUI: 'normal',
+        taskEdit: false
     };
 };
 
@@ -65,13 +76,17 @@ component.methods = {
         var self = this;
         qv.post('/api/item/batch', { queries: itemReq }).then(data => {
             for (var i = 0; i < activity.registrations.length; ++i) {
-                var fetched = data.data.filter(x => x.group == activity.registrations[i].id);
-                if (!fetched.length) {
-                    continue;
-                }
+                try {
+                    var fetched = data.data.filter(x => x.group == activity.registrations[i].id);
+                    if (!fetched.length) {
+                        continue;
+                    }
 
-                fetched = fetched[0];
-                activity.registrations[i].items = fetched.items;
+                    fetched = fetched[0];
+                    activity.registrations[i].items = fetched.items;
+                } catch (e) {
+                    console.error(e);
+                }
             }
             self.$forceUpdate();
         });
@@ -87,6 +102,11 @@ component.methods = {
         }
 
         this.updateGridStatus();
+
+        this.tasks = JSON.parse(this.activity.extension2);
+        if (!this.tasks.groups) {
+            this.tasks.groups = [];
+        }
     },
     loadItemFor: async function (items, itemId) {
         items.push((await qv.get('/api/item/' + itemId)).data);
@@ -322,6 +342,59 @@ component.methods = {
     },
     canHeal: function (cls) {
         return !!(298 & cls);
+    },
+    createTaskGroup: function (name) {
+        this.tasks.groups.push({
+            name: name,
+            tasks: []
+        });
+        this.form.newTaskGroup.name = '';
+        this.$forceUpdate();
+    },
+    createTask: function (group, event) {
+        var text = $(event.target).prev().val();
+        group.tasks.push({
+            text: text,
+            players: []
+        });
+        $(event.target).prev().val('');
+        this.$forceUpdate();
+    },
+    findTask: function () {
+        var splited = this.activeTask.split(',');
+        var idx1 = parseInt(splited[0]);
+        var idx2 = parseInt(splited[1]);
+        return this.tasks.groups[idx1].tasks[idx2];
+    },
+    toggleTaskPlayer: function (regId) {
+        var task = this.findTask();
+        var idx = task.players.indexOf(regId);
+        if (idx < 0) {
+            task.players.push(regId);
+        } else {
+            task.players.splice(idx);
+        }
+        this.$forceUpdate();
+    },
+    getPlayer: function (regId) {
+        var reg = this.activity.registrations.filter(x => x == regId);
+        if (reg.length) {
+            return reg[0];
+        }
+
+        return null;
+    },
+    saveTasks: function () {
+        qv.patch(`/api/activity/${this.id}`, { extension2: JSON.stringify(this.tasks) });
+        alert("任务保存成功");
+    },
+    importExportTasks: function () {
+        this.taskString = JSON.stringify(this.tasks);
+        this.activeTaskUI = 'string';
+    },
+    importTasks: function () {
+        this.tasks = JSON.parse(this.taskString);
+        this.activeTaskUI = 'normal';
     }
 };
 
