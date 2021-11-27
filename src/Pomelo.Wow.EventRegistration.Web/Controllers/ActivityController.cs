@@ -155,6 +155,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             activity.GuildId = GuildId; 
             activity.UserId = Convert.ToInt32(User.Identity.Name);
+            activity.Extension1 = "{}";
+            activity.Extension2 = "{}";
+            activity.Extension3 = "{}";
             db.Activities.Add(activity);
             await db.SaveChangesAsync(cancellationToken);
             return ApiResult(activity);
