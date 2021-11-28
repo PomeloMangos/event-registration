@@ -20,6 +20,9 @@ component.methods = {
         var realm = this.id.split('@')[1];
         try {
             this.charactor = (await qv.get(`/api/charactor/${realm}/${name}`)).data;
+            if (this.charactor == null) {
+                this.notfound = true;
+            }
             this.dps = JSON.parse(this.charactor.dpsBossRanks);
             this.hps = JSON.parse(this.charactor.hpsBossRanks);
             this.charactor.items = [];
