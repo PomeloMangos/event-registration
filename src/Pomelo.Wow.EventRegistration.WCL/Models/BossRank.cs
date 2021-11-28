@@ -8,7 +8,15 @@ namespace Pomelo.Wow.EventRegistration.WCL.Models
 
         public float Highest { get; set; }
 
+        public float Lowest { get; set; }
+
         public TimeSpan Fastest { get; set; }
+
+        public TimeSpan Slowest { get; set; }
+
+        public TimeSpan AverageDuration { get; set; }
+
+        public int Killed { get; set; }
 
         public int Parse { get; set; }
 

@@ -459,7 +459,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
                 if (charactor == null)
                 {
-                    charactor = new Models.Charactor();
+                    charactor = new Charactor();
                     db.Charactors.Add(charactor);
                 }
 
@@ -469,6 +469,10 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 charactor.Equipments = String.Join(',', wclCharactorDps.Equipments);
                 charactor.DpsBossRanks = JsonConvert.SerializeObject(wclCharactorDps.BossRanks);
                 charactor.HpsBossRanks = JsonConvert.SerializeObject(wclCharactorHealer.BossRanks);
+                if (Enum.TryParse<Class>(wclCharactorDps.Class, out var cls))
+                {
+                    charactor.Class = cls;
+                }
 
                 await db.SaveChangesAsync();
 

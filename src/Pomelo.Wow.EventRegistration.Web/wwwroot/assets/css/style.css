@@ -185,7 +185,7 @@ h6 {
   font-family: "Agency FB";
   font-weight: 700;
   color: #fff;
-  text-transform: uppercase;
+  
   margin: auto;
   line-height: inherit; }
 
@@ -240,7 +240,7 @@ img {
   margin: 0 30px 30px 0; }
 
 .uppercase {
-  text-transform: uppercase; }
+   }
 
 .align-left {
   float: left;
@@ -517,7 +517,7 @@ img {
 
 .btn {
   border-radius: 10px;
-  text-transform: uppercase;
+  
   font-size: 14px;
   font-weight: 700;
   border: 0; }
@@ -563,7 +563,7 @@ img {
     font-size: 40px;
     font-weight: 700;
     text-shadow: 0 2px 4.8px rgba(30, 29, 50, 0.3);
-    text-transform: uppercase;
+    
     /* padding-top: 25px;
 		padding-bottom: 25px; */ }
   .title-bl .subtitle {
@@ -579,7 +579,7 @@ img {
     font-family: "Agency FB";
     font-size: 88px;
     font-weight: 700;
-    text-transform: uppercase;
+    
     white-space: nowrap;
     width: 100%;
     overflow: hidden;
@@ -622,7 +622,7 @@ img {
     font-family: "Agency FB";
     font-size: 48px;
     font-weight: 700;
-    text-transform: uppercase;
+    
     text-align: center; }
   .page-name .breadcrumbs {
     text-align: center;
@@ -631,14 +631,14 @@ img {
     .page-name .breadcrumbs a {
       display: inline-block;
       padding: 0 12.5px;
-      text-transform: uppercase;
+      
       color: #fff;
       transition: all 0.3s ease-out; }
       .page-name .breadcrumbs a:hover {
         color: #3dd0d8;
         transition: all 0.3s ease-out; }
     .page-name .breadcrumbs span {
-      text-transform: uppercase;
+      
       color: #3dd0d8;
       padding: 0 12.5px; }
 
@@ -715,7 +715,7 @@ ol.list-2 {
   .progress-line .progress-title {
     font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase;
+    
     opacity: 0.8; }
   .progress-line .progressbar-text {
     font-size: 14px;
@@ -901,25 +901,25 @@ body .dataTables_wrapper .dataTables_filter {
     border-radius: 10px; }
     body .dataTables_wrapper .dataTables_filter input::-webkit-input-placeholder {
       color: #c2d4f8;
-      text-transform: uppercase;
+      
       font-style: italic;
       font-size: 14px;
       font-weight: normal; }
     body .dataTables_wrapper .dataTables_filter input::-moz-placeholder {
       color: #c2d4f8;
-      text-transform: uppercase;
+      
       font-style: italic;
       font-size: 14px;
       font-weight: normal; }
     body .dataTables_wrapper .dataTables_filter input:-moz-placeholder {
       color: #c2d4f8;
-      text-transform: uppercase;
+      
       font-style: italic;
       font-size: 14px;
       font-weight: normal; }
     body .dataTables_wrapper .dataTables_filter input:-ms-input-placeholder {
       color: #c2d4f8;
-      text-transform: uppercase;
+      
       font-style: italic;
       font-size: 14px;
       font-weight: normal; }
@@ -931,7 +931,7 @@ body .dataTables_wrapper .dTables {
   body .dataTables_wrapper .dTables th {
     border: 1px solid #292845;
     color: #fff;
-    text-transform: uppercase;
+    
     font-size: 14px;
     padding: 22px;
     background: transparent !important; }
@@ -1343,7 +1343,7 @@ header {
       header .main-menu .menu > li a {
         display: block;
         height: 100%;
-        text-transform: uppercase;
+        
         color: #fff;
         font-family: "Roboto", sans-serif;
         font-size: 14px;
@@ -1374,7 +1374,7 @@ header {
       background-color: #fff;
       border: none;
       padding: 20px 30px;
-      text-transform: uppercase;
+      
       font-size: 14px;
       color: #1e1d32;
       width: 360px;
@@ -1382,28 +1382,28 @@ header {
       /* Firefox 18- */ }
       header .right-bl .search-content input::-webkit-input-placeholder {
         color: #1e1d32;
-        text-transform: uppercase;
+        
         font-family: "Roboto", sans-serif;
         opacity: 0.5;
         font-style: italic;
         font-size: 14px; }
       header .right-bl .search-content input::-moz-placeholder {
         color: #1e1d32;
-        text-transform: uppercase;
+        
         font-family: "Roboto", sans-serif;
         opacity: 0.5;
         font-style: italic;
         font-size: 14px; }
       header .right-bl .search-content input:-moz-placeholder {
         color: #1e1d32;
-        text-transform: uppercase;
+        
         font-family: "Roboto", sans-serif;
         opacity: 0.5;
         font-style: italic;
         font-size: 14px; }
       header .right-bl .search-content input:-ms-input-placeholder {
         color: #1e1d32;
-        text-transform: uppercase;
+        
         font-family: "Roboto", sans-serif;
         opacity: 0.5;
         font-style: italic;
@@ -1492,7 +1492,7 @@ header {
           visibility: hidden;
           background-image: linear-gradient(to right, rgba(0, 180, 214, 0.64) 0%, rgba(124, 105, 227, 0.64) 100%); }
       .tm-tabs .nav-tabs li a .nav-header-bl {
-        text-transform: uppercase; }
+         }
         .tm-tabs .nav-tabs li a .nav-header-bl .nav-title {
           font-family: "Agency FB";
           font-size: 40px;
@@ -1592,7 +1592,7 @@ header {
       font-size: 24px;
       font-weight: 700;
       font-family: "Agency FB";
-      text-transform: uppercase;
+      
       line-height: 28px;
       transition: all 0.3s ease-out; }
     .blog-section .item-info .item-text {
@@ -1666,7 +1666,7 @@ header {
   font-size: 14px;
   font-weight: 700;
   color: #fff;
-  text-transform: uppercase;
+  
   margin: 0 30px 20px 30px;
   cursor: pointer; }
   .gallery .filter-item.active {
@@ -1743,7 +1743,7 @@ header {
   color: #fff;
   font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase; }
+   }
 
 .st-tabs .nav-tabs {
   border: none;
@@ -1821,7 +1821,7 @@ header {
     .st-tabs .tab-content .video-bl .video-bottom .video-title {
       font-size: 32px;
       font-weight: 700;
-      text-transform: uppercase;
+      
       color: #fff;
       font-family: "Agency FB";
       text-shadow: 0 2px 4.8px rgba(30, 29, 50, 0.3); }
@@ -1923,7 +1923,7 @@ header {
   text-shadow: 0 2px 4.8px rgba(30, 29, 50, 0.3);
   font-size: 24px;
   font-weight: 700;
-  text-transform: uppercase;
+  
   font-family: "Agency FB";
   color: #fff; }
 
@@ -1936,7 +1936,7 @@ header {
 .register-section .reg-wrapper .reg-title {
   font-size: 40px;
   font-weight: 700;
-  text-transform: uppercase;
+  
   font-family: "Agency FB";
   color: #fff; }
 
@@ -1956,7 +1956,7 @@ header {
     background: #fff;
     border-radius: 10px;
     padding: 20px 40px;
-    text-transform: uppercase;
+    
     font-style: italic;
     color: #1e1d32;
     /* Firefox 19+ */
@@ -2020,7 +2020,7 @@ footer.footer {
       footer.footer .footer-menu > li:last-child {
         margin-right: 0; }
       footer.footer .footer-menu > li a {
-        text-transform: uppercase;
+        
         color: #fff;
         font-size: 14px;
         font-weight: 700;
@@ -2042,7 +2042,7 @@ footer.footer {
   font-size: 56px;
   font-weight: 400;
   line-height: 25px;
-  text-transform: uppercase; }
+   }
 
 .s_subtitle {
   color: #fff;
@@ -2050,7 +2050,7 @@ footer.footer {
   font-size: 32px;
   font-weight: 700;
   line-height: 30px;
-  text-transform: uppercase; }
+   }
 
 .vjs-tech {
   width: 100%;
@@ -2109,7 +2109,7 @@ footer.footer {
     font-size: 32px;
     font-weight: 700;
     line-height: 27px;
-    text-transform: uppercase; }
+     }
   .page-404 .footer-line {
     height: 80px; }
     .page-404 .footer-line .footer-404 {
@@ -2193,7 +2193,7 @@ footer.footer {
     border: none;
     border-radius: 10px;
     background: #292845;
-    text-transform: uppercase;
+    
     font-style: italic;
     font-size: 14px;
     outline: none;
@@ -2216,7 +2216,7 @@ footer.footer {
     border-radius: 10px;
     background: #292845;
     resize: none;
-    text-transform: uppercase;
+    
     font-style: italic;
     font-size: 14px;
     outline: none;
@@ -2278,7 +2278,7 @@ footer.footer {
   .item-content .text-container .position {
     font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase; }
+     }
   .item-content .text-container .social a {
     margin: 0 15px; }
     .item-content .text-container .social a:first-child {
@@ -2676,7 +2676,7 @@ footer.footer {
     background-color: #fff;
     border: none;
     padding: 20px 30px;
-    text-transform: uppercase;
+    
     font-size: 14px;
     color: #1e1d32;
     width: 100%;
@@ -2811,7 +2811,7 @@ footer.footer {
     outline: none;
     border: none;
     padding: 20px 30px;
-    text-transform: uppercase;
+    
     font-size: 14px;
     color: #1e1d32;
     width: 100%;
@@ -2950,7 +2950,7 @@ footer.footer {
     font-weight: 700;
     float: right;
     margin-top: 20px;
-    text-transform: uppercase;
+    
     transition: all 0.3s ease-out; }
     .post-commet-bl .reply:hover {
       color: #7c69e3;
@@ -2961,7 +2961,7 @@ footer.footer {
     font-family: "Agency FB";
     font-size: 24px;
     font-weight: 700;
-    text-transform: uppercase;
+    
     transition: all 0.3s ease-out; }
     .post-commet-bl .author-url:hover {
       color: #3dd0d8;
@@ -2987,7 +2987,7 @@ footer.footer {
   padding: 19px 30px;
   border: none;
   border-radius: 10px;
-  text-transform: uppercase;
+  
   color: #c2d4f8;
   font-size: 14px;
   margin-bottom: 20px;
@@ -3097,35 +3097,35 @@ footer.footer {
 }
 
 .class-1 {
-    color: #c79c6e;
+    color: #c79c6e !important;
 }
 
 .class-2 {
-    color: #f58cba;
+    color: #f58cba !important;
 }
 
 .class-4 {
-    color: #abd473;
+    color: #abd473 !important;
 }
 
 .class-8 {
-    color: #2459ff;
+    color: #2459ff !important;
 }
 
 .class-16 {
-    color: #fff569;
+    color: #fff569 !important;
 }
 
 .class-32 {
-    color: #ff7d0a;
+    color: #ff7d0a !important;
 }
 
 .class-64 {
-    color: #9482c9;
+    color: #9482c9 !important;
 }
 
 .class-128 {
-    color: #69ccf0;
+    color: #69ccf0 !important;
 }
 
 .class-256 {
@@ -3354,7 +3354,7 @@ a {
     border: none;
     border-radius: 10px;
     background: #292845;
-    text-transform: uppercase;
+    
     font-style: italic;
     font-size: 14px;
     outline: none;

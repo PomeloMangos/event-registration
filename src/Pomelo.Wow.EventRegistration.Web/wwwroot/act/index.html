@@ -78,11 +78,12 @@
                                                             <a v-bind:class="{ active: reg.active == 'item' }" v-on:click="reg.active = 'item'">装备列表</a>
                                                         </div>
                                                         <div v-if="reg.active == 'boss'">
-                                                            <table class="reg-table">
+                                                            <table class="reg-table" style="table-layout: auto">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>首领名称</th>
                                                                         <th>装等</th>
+                                                                        <th>击杀</th>
                                                                         <th>WCL %</th>
                                                                         <th>击杀用时</th>
                                                                         <th>{{ reg.role == 2 ? 'HPS' : 'DPS' }}</th>
@@ -93,6 +94,8 @@
                                                                         <td>{{ boss }}</td>
                                                                         <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
                                                                         <td v-else v-bind:class="getItemColor(boss, reg.boss.filter(x => x.Name == boss)[0].ItemLevel)">{{ reg.boss.filter(x => x.Name == boss)[0].ItemLevel }}</td>
+                                                                        <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
+                                                                        <td v-else>{{ reg.boss.filter(x => x.Name == boss)[0].Killed }}</td>
                                                                         <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
                                                                         <td v-else v-bind:class="{ gray: reg.boss.filter(x => x.Name == boss)[0].Parse <= 25, green: reg.boss.filter(x => x.Name == boss)[0].Parse > 25 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 50, blue: reg.boss.filter(x => x.Name == boss)[0].Parse > 50 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 75, purple: reg.boss.filter(x => x.Name == boss)[0].Parse > 75 && reg.boss.filter(x => x.Name == boss)[0].Parse < 95, orange: reg.boss.filter(x => x.Name == boss)[0].Parse >= 95 }">{{ reg.boss.filter(x => x.Name == boss)[0].Parse }}</td>
                                                                         <td v-if="!reg.boss || !reg.boss.filter(x => x.Name == boss)[0]">-</td>
@@ -194,11 +197,12 @@
                                                             <a v-bind:class="{ active: reg.active == 'item' }" v-on:click="reg.active = 'item'">装备列表</a>
                                                         </div>
                                                         <div v-if="reg.active == 'boss'">
-                                                            <table class="reg-table">
+                                                            <table class="reg-table" style="table-layout: auto">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>首领名称</th>
                                                                         <th>装等</th>
+                                                                        <th>击杀</th>
                                                                         <th>WCL %</th>
                                                                         <th>击杀用时</th>
                                                                         <th>{{ reg.role == 2 ? 'HPS' : 'DPS' }}</th>
@@ -209,6 +213,8 @@
                                                                         <td>{{ boss }}</td>
                                                                         <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
                                                                         <td v-else v-bind:class="getItemColor(boss, reg.boss.filter(x => x.Name == boss)[0].ItemLevel)">{{ reg.boss.filter(x => x.Name == boss)[0].ItemLevel }}</td>
+                                                                        <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
+                                                                        <td v-else>{{ reg.boss.filter(x => x.Name == boss)[0].Killed }}</td>
                                                                         <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
                                                                         <td v-else v-bind:class="{ gray: reg.boss.filter(x => x.Name == boss)[0].Parse <= 25, green: reg.boss.filter(x => x.Name == boss)[0].Parse > 25 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 50, blue: reg.boss.filter(x => x.Name == boss)[0].Parse > 50 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 75, purple: reg.boss.filter(x => x.Name == boss)[0].Parse > 75 && reg.boss.filter(x => x.Name == boss)[0].Parse < 95, orange: reg.boss.filter(x => x.Name == boss)[0].Parse >= 95 }">{{ reg.boss.filter(x => x.Name == boss)[0].Parse }}</td>
                                                                         <td v-if="!reg.boss || !reg.boss.filter(x => x.Name == boss)[0]">-</td>
@@ -310,11 +316,12 @@
                                                             <a v-bind:class="{ active: reg.active == 'item' }" v-on:click="reg.active = 'item'">装备列表</a>
                                                         </div>
                                                         <div v-if="reg.active == 'boss'">
-                                                            <table class="reg-table">
+                                                            <table class="reg-table" style="table-layout: auto">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>首领名称</th>
                                                                         <th>装等</th>
+                                                                        <th>击杀</th>
                                                                         <th>WCL %</th>
                                                                         <th>击杀用时</th>
                                                                         <th>{{ reg.role == 2 ? 'HPS' : 'DPS' }}</th>
@@ -325,6 +332,8 @@
                                                                         <td>{{ boss }}</td>
                                                                         <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
                                                                         <td v-else v-bind:class="getItemColor(boss, reg.boss.filter(x => x.Name == boss)[0].ItemLevel)">{{ reg.boss.filter(x => x.Name == boss)[0].ItemLevel }}</td>
+                                                                        <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
+                                                                        <td v-else>{{ reg.boss.filter(x => x.Name == boss)[0].Killed }}</td>
                                                                         <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
                                                                         <td v-else v-bind:class="{ gray: reg.boss.filter(x => x.Name == boss)[0].Parse <= 25, green: reg.boss.filter(x => x.Name == boss)[0].Parse > 25 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 50, blue: reg.boss.filter(x => x.Name == boss)[0].Parse > 50 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 75, purple: reg.boss.filter(x => x.Name == boss)[0].Parse > 75 && reg.boss.filter(x => x.Name == boss)[0].Parse < 95, orange: reg.boss.filter(x => x.Name == boss)[0].Parse >= 95 }">{{ reg.boss.filter(x => x.Name == boss)[0].Parse }}</td>
                                                                         <td v-if="!reg.boss || !reg.boss.filter(x => x.Name == boss)[0]">-</td>

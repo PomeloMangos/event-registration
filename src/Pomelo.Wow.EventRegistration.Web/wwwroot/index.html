@@ -15,7 +15,7 @@
     <!-- Bootstrap-->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <!-- Style -->
-    <link rel="stylesheet" href="/assets/css/style.css?v=20211128" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=20211128-1" />
     <!-- Responsive Style -->
     <link rel="stylesheet" href="/assets/css/responsive.css" />
     <!-- Animate CSS -->
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="/assets/plugins/slick-1.8.0/slick/slick-theme.css" />
     <link href="/assets/css/datetimepicker.css" rel="stylesheet" />
     <script>
-        var __version = '20211128';
+        var __version = '20211128-1';
     </script>
 </head>
 
@@ -62,6 +62,9 @@
                                 <ul class="menu clearfix">
                                     <li class="inline-block" v-if="!guildId" v-bind:class="{ 'active': active == 'guild' }">
                                         <a v-on:click="$root.open('/guild')">公会</a>
+                                    </li>
+                                    <li class="inline-block" v-bind:class="{ 'active': active == 'ch' }">
+                                        <a v-on:click="$root.open('/ch/search')">角色</a>
                                     </li>
                                     <li class="inline-block" v-bind:class="{ 'active': active == 'activity' }">
                                         <a v-on:click="guildId ? $root.open('/home') : $root.open('/list')">{{ guildId ? '首页' : '活动列表' }}</a>
@@ -153,8 +156,8 @@
     <script src="/assets/js/vue.js"></script>
     <script src="/assets/js/moment.js"></script>
     <script src="/assets/js/marked.js"></script>
-    <script src="/assets/js/pomelo.container.js?v=20211128"></script>
-    <script src="/assets/js/pomelo.queryview.js?v=20211128"></script>
+    <script src="/assets/js/pomelo.container.js?v=20211128-1"></script>
+    <script src="/assets/js/pomelo.queryview.js?v=20211128-1"></script>
     <script src="/assets/js/dragula.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script src="/assets/js/datetimepicker.js"></script>
@@ -172,7 +175,7 @@
     <script src="/assets/plugins/jquery-date-range-picker-master/dist/jquery.daterangepicker.min.js"></script>
     <script src="/assets/plugins/wow-master/dist/wow.min.js"></script>
     <script src="/assets/js/script.js"></script>
-    <script src="/index.js?v=20211128"></script>
+    <script src="/index.js?v=20211128-1"></script>
     <script>
         $('#lbl-build').text(__version);
     </script>

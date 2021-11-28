@@ -15,6 +15,8 @@ namespace Pomelo.Wow.EventRegistration.WCL.Models
 
         public string Realm { get; set; }
 
+        public string Class { get; set; }
+
         public CharactorRole Role { get; set; }
 
         public int HighestItemLevel { get; set; }

@@ -20,6 +20,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
         private static Regex imageUrlRegex = new Regex("(?<=<link rel=\"image_src\" href=\").*(?=\">)");
         private static Regex itemNameRegex = new Regex("(?<=<title>)((?!&mdash).)*");
         private static Regex qualityRegex = new Regex("(?<=\"quality\":)[0-9]{1,}");
+        private static Regex classRegex = new Regex("(?<=<div id=\"character-class\" class=\").*(?=\">)");
 
         public static string ApiKey = "f6933f6f7489bdcda1f779fa7ee79f71";
 
@@ -37,6 +38,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
             charactor.Role = role;
             charactor.Equipments = GetItemIds(html);
             charactor.BossRanks = await GetBossRanksAsync(name, realm, role);
+            charactor.Class = classRegex.Match(html).Value;
             if (charactor.BossRanks.Count() > 0)
             {
                 charactor.HighestItemLevel = charactor.BossRanks.Where(x => !x.Name.Contains("凯尔萨斯")).Max(x => x.ItemLevel);
@@ -77,7 +79,16 @@ namespace Pomelo.Wow.EventRegistration.WCL
                     ret.ItemLevel = Convert.ToInt32(itemLevelRegex.Match(html).Value);
                     ret.ImageUrl = imageUrlRegex.Match(html).Value;
                     ret.Name = await GetEquipmentNameCNAsync(itemId);
-                    ret.Quality = (EquipmentQuality)Convert.ToInt32(qualityRegex.Match(html).Value);
+                    var quality = qualityRegex
+                        .Matches(html)
+                        .Cast<Match>()
+                        .Select(x => Convert.ToInt32(x.Value))
+                        .GroupBy(x => x)
+                        .Select(x => new { x.Key, Count = x.Count() })
+                        .OrderByDescending(x => x.Count)
+                        .Select(x => x.Key)
+                        .FirstOrDefault();
+                    ret.Quality = (EquipmentQuality)quality;
                     ret.Position = GetEquipmentPosition(html);
                 }
 
@@ -168,7 +179,20 @@ namespace Pomelo.Wow.EventRegistration.WCL
                     });
                 }
 
-                return ret;
+                return ret.GroupBy(x => x.Name)
+                    .Select(x => new BossRank
+                    {
+                        Name = x.Key,
+                        Slowest = x.Max(x => x.Fastest),
+                        Fastest = x.Min(x => x.Fastest),
+                        AverageDuration = new TimeSpan(Convert.ToInt64(x.Average(x => x.Fastest.Ticks))),
+                        Highest = x.Max(x => x.Highest),
+                        Lowest = x.Min(x => x.Highest),
+                        ItemLevel = x.Max(x => x.ItemLevel),
+                        Killed = x.Count(),
+                        Parse = x.Max(x => x.Parse)
+                    })
+                    .ToList();
             }
         }
     }

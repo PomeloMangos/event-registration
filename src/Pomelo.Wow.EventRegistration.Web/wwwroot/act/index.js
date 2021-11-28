@@ -52,6 +52,11 @@ component.methods = {
     loadActivity: async function () {
         this.raids = (await qv.get('/api/raid')).data;
         var activity = (await qv.get('/api/activity/' + this.id)).data;
+
+        if (activity.guildId != app.guildId && app.guildId) {
+            window.location = `https://${activity.guildId}.mwow.org/act?id=${this.id}`;
+        }
+
         $('title').html(activity.name);
         this.form.newCharactor.realm = activity.realm;
         this.bosses = this.getBossNames(activity.raids);
