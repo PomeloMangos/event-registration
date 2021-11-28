@@ -23,6 +23,9 @@ component.methods = {
             if (this.charactor == null) {
                 this.notfound = true;
             }
+
+            $('title').html(`${name} - ${realm} - ${this.getClassName(this.charactor.class)} - ${this.charactor.highestItemLevel}装等`);
+
             this.dps = JSON.parse(this.charactor.dpsBossRanks);
             this.hps = JSON.parse(this.charactor.hpsBossRanks);
             this.charactor.items = [];
