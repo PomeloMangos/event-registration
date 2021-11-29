@@ -49,12 +49,10 @@ component.methods = {
         this.form.begin = new Date($('#txt-begin').val()).toISOString();
         this.form.deadline = new Date($('#txt-deadline').val()).toISOString();
         this.form.raids = this.selectedRaids.toString();
-        try
-        {
+        try {
             var result = await qv.post('/api/activity', this.form);
         }
-        catch (e)
-        {
+        catch (e) {
             if (e.responseJSON) {
                 alert(e.responseJSON.message);
                 return;

@@ -11,7 +11,11 @@ component.created = function () {
 component.mounted = function () {
     this.$container = new PomeloComponentContainer('#guild-container', app, this, function (view) {
     }, function () { });
-    this.$container.open(`/guild/${this.active}`);
+    if (this.active != 'activity') {
+        this.open(this.active);
+    } else {
+        this.$container.open(`/guild/${this.active}`);
+    }
 
     var calendarBl = $('.calendar-bl');
     if (calendarBl.length) {
@@ -31,6 +35,13 @@ component.mounted = function () {
 
 component.watch = {
     active: function () {
-        this.$container.open(`/guild/${this.active}`);
+        this.open(this.active);
+    }
+};
+
+component.methods = {
+    open: function (page) {
+        window.history.pushState(null, null, `/home?active=${page}`);
+        this.$container.open(`/guild/${page}`);
     }
 };

@@ -134,6 +134,9 @@ var app = new Vue({
         },
         moment: function (date) {
             return moment(date);
+        },
+        openNewAct: function () {
+            this.open('/home?active=new-act', { active: 'new-act' }, true);
         }
     },
     watch: {

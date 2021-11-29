@@ -4,6 +4,7 @@
         <div class="container">
             <div class="row">
                 <h1 class="page-title" v-if="active == 'activity'">公会活动</h1>
+                <h1 class="page-title" v-if="active == 'new-act'">创建活动</h1>
                 <h1 class="page-title" v-if="active == 'about'">关于公会</h1>
                 <h1 class="page-title" v-if="active == 'price'">装备价目表</h1>
                 <h1 class="page-title" v-if="active == 'manager'">管理员设置</h1>
@@ -32,6 +33,12 @@
                                     <a>
                                         <i class="fa fa-fw fa-calendar"></i>
                                         <span>公会活动</span>
+                                    </a>
+                                </li>
+                                <li class="color1" v-if="$root.guildPermission.guildManager" v-on:click="active = 'new-act'" v-bind:class="{ 'active': active == 'new-act' }">
+                                    <a>
+                                        <i class="fa fa-fw fa-calendar-plus-o"></i>
+                                        <span>创建活动</span>
                                     </a>
                                 </li>
                                 <li class="color1" v-on:click="active = 'price'" v-bind:class="{ 'active': active == 'price' }">
