@@ -30,6 +30,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public DbSet<UserSession> UserSessions { get; set; }
 
+        public DbSet<WclApiKey> WclApiKeys { get; set; }
+
         public async ValueTask InitAsync()
         {
             if (Database.EnsureCreated())

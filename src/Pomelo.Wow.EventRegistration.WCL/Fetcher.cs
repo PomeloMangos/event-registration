@@ -21,8 +21,12 @@ namespace Pomelo.Wow.EventRegistration.WCL
         private static Regex itemNameRegex = new Regex("(?<=<title>)((?!&mdash).)*");
         private static Regex qualityRegex = new Regex("(?<=\"quality\":)[0-9]{1,}");
         private static Regex classRegex = new Regex("(?<=<div id=\"character-class\" class=\").*(?=\">)");
+        private static string apiKey = null;
 
-        public static string ApiKey = "f6933f6f7489bdcda1f779fa7ee79f71";
+        public static void SetApiKey(string key)
+        {
+            apiKey = key;
+        }
 
         public static async ValueTask<Charactor> FetchAsync(string name, string realm, CharactorRole role)
         {
@@ -162,7 +166,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
                 metric = "hps";
             }
 
-            using (var response = await clientWclCN.GetAsync($"/v1/parses/character/{name}/{realm}/CN?includeCombatantInfo=true&metric={metric}&api_key={ApiKey}"))
+            using (var response = await clientWclCN.GetAsync($"/v1/parses/character/{name}/{realm}/CN?includeCombatantInfo=true&metric={metric}&api_key={apiKey}"))
             {
                 var jsonStr = await response.Content.ReadAsStringAsync();
                 var obj = JsonConvert.DeserializeObject<IEnumerable<WclBattleRecord>>(jsonStr);
