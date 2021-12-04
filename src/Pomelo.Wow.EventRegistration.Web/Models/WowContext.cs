@@ -18,6 +18,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public DbSet<Item> Items { get; set; }
 
+        public DbSet<ItemSet> ItemSets { get; set; }
+
         public DbSet<Price> Prices { get; set; }
 
         public DbSet<Raid> Raids { get; set; }

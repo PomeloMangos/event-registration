@@ -101,5 +101,18 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             });
             return ApiResult<dynamic>(ret);
         }
+
+        [HttpGet("set")]
+        public async ValueTask<ApiResult<dynamic>> GetItemSets(
+            [FromServices] WowContext db,
+            CancellationToken cancellationToken = default)
+        {
+            var sets = (await db.ItemSets
+                .ToListAsync(cancellationToken))
+                .GroupBy(x => x.Role)
+                .ToDictionary(x => (int)x.Key, x => x.OrderByDescending(y => y.Phase).Select(y => new { y.Name, y.Phase, Items = y.Items.Split(',').Select(z => Convert.ToInt32(z.Trim())) }).ToList());
+
+            return ApiResult<dynamic>(sets);
+        }
     }
 }

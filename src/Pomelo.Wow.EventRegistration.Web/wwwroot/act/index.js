@@ -30,7 +30,8 @@
         activeTask: null,
         taskString: '',
         activeTaskUI: 'normal',
-        taskEdit: false
+        taskEdit: false,
+        itemsets: null
     };
 };
 
@@ -40,6 +41,7 @@ component.created = function () {
 };
 
 component.mounted = async function () {
+    await this.loadItemSets();
     await this.loadActivity();
     this.bindDragula();
 
@@ -49,6 +51,9 @@ component.mounted = async function () {
 };
 
 component.methods = {
+    loadItemSets: async function () {
+        this.itemsets = (await qv.get('/api/item/set')).data;
+    },
     loadActivity: async function () {
         this.raids = (await qv.get('/api/raid')).data;
         var activity = (await qv.get('/api/activity/' + this.id)).data;
@@ -74,6 +79,23 @@ component.methods = {
             activity.registrations[i].wcl = this.getWcl(bossObj);
             activity.registrations[i].items = [];
             activity.registrations[i].charactor.equipments = activity.registrations[i].charactor.equipments.split(',').map(x => x.trim());
+
+            // Finding item set
+            var sets = this.itemsets[activity.registrations[i].role.toString()];
+            for (var j = 0; j < sets.length; ++j) {
+                activity.registrations[i].setName = sets[j].name;
+                activity.registrations[i].setCount = 0;
+
+                for (var k = 0; k < sets[j].items.length; ++k) {
+                    if (activity.registrations[i].charactor.equipments.some(x => x == sets[j].items[k])) {
+                        ++activity.registrations[i].setCount;
+                    }
+                }
+
+                if (activity.registrations[i].setCount > 0) {
+                    break;
+                }
+            }
         }
         var itemReq = activity.registrations
             .filter(x => x.charactor && x.charactor.equipments)
