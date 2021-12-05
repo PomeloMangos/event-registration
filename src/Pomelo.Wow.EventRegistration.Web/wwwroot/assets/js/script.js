@@ -9,6 +9,10 @@ function loaded() {
 	$preloader.delay(350).fadeOut('slow');
 }
 
+$(document).ready(function () {
+	loaded();
+});
+
 ( function( $ )
 {
 	var winObj = $( window ),

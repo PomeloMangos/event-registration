@@ -115,6 +115,9 @@ var app = new Vue({
                 window.history.pushState(null, null, url);
             }
         },
+        openWindow: function (url) {
+            window.open(url);
+        },
         signOut: function () {
             window.sessionStorage.removeItem('user');
             window.sessionStorage.removeItem('token');
