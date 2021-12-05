@@ -2,19 +2,18 @@
 
 // JavaScript Document
 
+function loaded() {
+	var $preloader = $('.loader-wrapper');
+
+	$preloader.find('.cssload-loader').fadeOut();
+	$preloader.delay(350).fadeOut('slow');
+}
+
 ( function( $ )
 {
 	var winObj = $( window ),
 		bodyObj = $( 'body' ),
 		headerObj = $( 'header' );
-
-		winObj.on( 'load', function()
-		{
-			var $preloader = $( '.loader-wrapper' );
-				
-			$preloader.find( '.cssload-loader' ).fadeOut();
-			$preloader.delay( 350 ).fadeOut( 'slow' );
-		} );
 		
  	/*----------------------------------------------------*/
 	/* Adaptive Menu Width

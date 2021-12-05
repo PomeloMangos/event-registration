@@ -1,0 +1,118 @@
+﻿<div>
+    <!-- PRELOADER START -->
+    <div class="loader-wrapper">
+        <div class='cssload-loader'>
+            <div class='cssload-inner cssload-one'></div>
+            <div class='cssload-inner cssload-two'></div>
+            <div class='cssload-inner cssload-three'></div>
+        </div>
+    </div>
+    <!-- PRELOADER END -->
+    <!-- HEADER START -->
+    <div class="header-line-wrapper">
+        <header class="header-wrapper fixed-top plr100">
+            <div class="table height-100p">
+                <div class="table-row">
+                    <div class="table-cell valign-middle text-left">
+                        <a v-on:click="$root.guildId ? $root.open('/home') : $root.open('/guild')" class="logo">
+                            <img v-if="!$root.guild || !$root.guild.guildLogoUrl" src="/assets/images/logo.png" alt="" class="img-responsive inline-block">
+                            <img v-else v-bind:src="$root.guild.guildLogoUrl" alt="" class="img-responsive inline-block">
+                        </a>
+                    </div>
+                    <div class="table-cell valign-top text-center vm-sm">
+                        <div class="main-menu">
+                            <ul class="menu clearfix">
+                                <li class="inline-block" v-if="!$root.guildId" v-bind:class="{ 'active': active == 'guild' }">
+                                    <a v-on:click="$root.open('/guild')">公会</a>
+                                </li>
+                                <li class="inline-block" v-if="!$root.guildId" v-bind:class="{ 'active': active == 'ch' }">
+                                    <a v-on:click="$root.open('/ch/search')">角色</a>
+                                </li>
+                                <li class="inline-block" v-bind:class="{ 'active': active == 'activity' }">
+                                    <a v-on:click="$root.guildId ? $root.open('/home') : $root.open('/list')">{{ $root.guildId ? '首页' : '活动列表' }}</a>
+                                </li>
+                                <li class="inline-block" v-if="$root.guildId" v-bind:class="{ 'active': active == 'ch' }">
+                                    <a v-on:click="$root.open('/ch/search')">角色</a>
+                                </li>
+                                <li v-if="!$root.user.token && !$root.guildId" class="inline-block" v-bind:class="{ 'active': active == 'reg' }">
+                                    <a v-on:click="$root.open('/reg')">注册</a>
+                                </li>
+                                <li v-if="!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
+                                    <a v-on:click="$root.open('/login')">登录</a>
+                                </li>
+                                <li v-if="$root.guildPermission.guildManager" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
+                                    <a v-on:click="openNewAct">创建活动</a>
+                                </li>
+                                <li v-if="!!$root.user.token && !$root.guildId" class="inline-block" v-bind:class="{ 'active': active == 'create-guild' }">
+                                    <a v-on:click="$root.open('/guild/create')">创建公会</a>
+                                </li>
+                                <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'password' }">
+                                    <a v-on:click="$root.open('/password')">修改密码</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="table-cell valign-top text-right">
+                        <div class="right-bl">
+                            <ul class="menu clearfix">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+    <!-- HEADER END -->
+    <div id="main">
+    </div>
+    <!-- FOOTER START -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row mb110">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <a href="https://mwow.org" target="_blank">
+                        <img src="/assets/images/logo.png" alt="Mirai 公会管理平台">
+                    </a>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-right">
+                    <div class="mt60">
+                        <ul class="footer-list">
+                            <li class="" v-if="!$root.guildId" v-bind:class="{ 'active': active == 'guild' }">
+                                <a v-on:click="open('/guild')">公会</a>
+                            </li>
+                            <li class="" v-bind:class="{ 'active': active == 'activity' }">
+                                <a v-on:click="$root.guildId ? open('/home') : $root.open('/list')">{{ $root.guildId ? '首页' : '活动列表' }}</a>
+                            </li>
+                            <li v-if="!$root.user.token" class="" v-bind:class="{ 'active': active == 'reg' }">
+                                <a v-on:click="open('/reg')">注册</a>
+                            </li>
+                            <li v-if="!$root.user.token" class="" v-bind:class="{ 'active': active == 'login' }">
+                                <a v-on:click="open('/login')">登录</a>
+                            </li>
+                            <li v-if="$root.guildPermission.guildManager" class="" v-bind:class="{ 'active': active == 'login' }">
+                                <a v-on:click="openNewAct">创建活动</a>
+                            </li>
+                            <li v-if="!!$root.user.token && !$root.guildId" class="" v-bind:class="{ 'active': active == 'create-guild' }">
+                                <a v-on:click="open('/guild/create')">创建公会</a>
+                            </li>
+                            <li v-if="!!$root.user.token" class="" v-bind:class="{ 'active': active == 'password' }">
+                                <a v-on:click="open('/password')">修改密码</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="copyright ptb30 col-lg-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        本平台由<a href="https://mwow.org/reg" target="_blank">Mirai</a>提供
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+                        V<span id="lbl-build"></span>-beta
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER END -->
+</div>

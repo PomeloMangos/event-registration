@@ -36,16 +36,6 @@ var app = new Vue({
             var len = window.location.host.length - '.mwow.org'.length;
             app.guildId = window.location.host.substr(0, len);
         }
-
-        if (window.location.pathname != '/') {
-            app.open(window.location.pathname + window.location.search);
-        } else {
-            if (app.guildId) {
-                app.open('/home');
-            } else {
-                app.open('/guild');
-            }
-        }
     },
     methods: {
         checkToken: async function () {
@@ -106,8 +96,8 @@ var app = new Vue({
             }
         },
         open: async function (url, params, pushState = true) {
-            if (this.$container.active) {
-                this.$container.close(this.$container.active);
+            if (this.$container.active.$container.active) {
+                this.$container.active.$container.close(this.$container.active.$container.active);
             }
 
             var splited = url.split('?');
@@ -119,10 +109,8 @@ var app = new Vue({
                     _params[_splited[0]] = decodeURIComponent(_splited[1]);
                 }
             }
-            if (this.$container.active) {
-                this.$container.close(this.$container.active);
-            }
-            this.child = await this.$container.open(splited[0], _params);
+
+            this.child = await this.$container.active.$container.open(splited[0], _params);
             if (pushState) {
                 window.history.pushState(null, null, url);
             }
@@ -149,14 +137,18 @@ var app = new Vue({
             }).then(data => {
                 self.guildPermission = data.data;
             });
+        },
+        active: function () {
+            app.$container.active.active = this.active;
         }
     }
 });
 
-var mainContainer = new PomeloComponentContainer('#main', app, app, function (view) {
+var container = new PomeloComponentContainer('#layout', app, app, function (view) {
 }, function () { });
+container.open('/layout');
 
-app.$container = mainContainer;
+app.$container = container;
 app.$mount('#app');
 
 window.onpopstate = function (event) {

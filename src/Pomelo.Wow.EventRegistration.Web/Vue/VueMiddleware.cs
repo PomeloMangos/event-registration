@@ -20,7 +20,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Vue
         {
             var env = httpContext.RequestServices.GetRequiredService<IWebHostEnvironment>();
             var path = Path.Combine(env.WebRootPath, httpContext.Request.Path.ToString().Split('?')[0].Trim('/'));
-            if (File.Exists(path + ".html") || File.Exists(path + "/index.html"))
+            if (File.Exists(path + ".html") || File.Exists(path + "/index.html") || File.Exists(path + ".m.html") || File.Exists(path + "/index.m.html") || File.Exists(path + "/main.html"))
             {
                 httpContext.Response.StatusCode = 200;
                 httpContext.Response.ContentType = "text/html";
@@ -28,9 +28,13 @@ namespace Pomelo.Wow.EventRegistration.Web.Vue
                 {
                     await httpContext.Response.WriteAsync(File.ReadAllText(path + ".html"));
                 }
+                else if (File.Exists(path + ".m.html") && path.Substring(env.WebRootPath.Length).Trim('/').IndexOf('/') == -1)
+                {
+                    await httpContext.Response.WriteAsync(File.ReadAllText(path + ".m.html"));
+                }
                 else
                 {
-                    await httpContext.Response.WriteAsync(File.ReadAllText(Path.Combine(env.WebRootPath, "index.html")));
+                    await httpContext.Response.WriteAsync(File.ReadAllText(Path.Combine(env.WebRootPath, "main.html")));
                 }
                 await httpContext.Response.CompleteAsync();
                 httpContext.Response.Body.Close();

@@ -16,7 +16,7 @@
     <section class="team-bl ptb150">
         <div class="container">
             <div class="row">
-                <div class="container-wrapper">
+                <div class="container-wrapper" v-if="result && result.data">
                     <div class="item-content col-lg-4 col-md-4 col-sm-6 col-xs-12 mb30 equal-height wow fadeInUp" data-wow-duration="1s" v-for="guild in result.data">
                         <div class="border-img">
                             <img v-if="!guild.guildListImageUrl" style="width:370px;height:320px;" src="/assets/images/guild-image.jpg" alt="" class="img-responsive">
