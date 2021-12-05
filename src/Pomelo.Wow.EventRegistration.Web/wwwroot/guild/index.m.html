@@ -10,7 +10,8 @@
                 </colgroup>
                 <tr v-on:click="$root.openWindow(`https://${guild.id}.mwow.org`)">
                     <td>
-                        <img src="https://mwow.org/api/blob/72897803-6b4a-44f0-b198-24fda5aaa230" />
+                        <img v-if="!guild.guildListImageUrl" src="/assets/images/guild-image.jpg" alt="" class="img-responsive">
+                        <img v-else v-bind:src="guild.guildListImageUrl" alt="" class="img-responsive">
                     </td>
                     <td>
                         {{ guild.name }}

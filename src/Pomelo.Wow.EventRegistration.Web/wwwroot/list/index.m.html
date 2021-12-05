@@ -24,9 +24,9 @@
                             {{ act.name }}
                         </div>
                         <div class="subline">
-                            <i class="fa fa-home"></i> {{ act.guildName }} ({{ act.realm }} - {{ act.faction == 0 ? '联盟' : '部落' }})
-                            &nbsp;
                             <i class="fa fa-calendar"></i> {{ $root.moment(act.begin).format('MM月DD日 HH:mm') }}
+                            &nbsp;
+                            <i class="fa fa-home"></i> {{ act.guildName }} ({{ act.realm }} - {{ act.faction == 0 ? '联盟' : '部落' }})
                         </div>
                     </td>
                 </tr>

@@ -3,6 +3,8 @@
     color: #c2d4f8;
     background-color: #1e1d32;
     padding: 60px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .header {
@@ -176,11 +178,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: lighter;
 }
 
 #layout {
     max-width: 100%;
-    overflow-x: hidden;
 }
 
 .tab-item {
