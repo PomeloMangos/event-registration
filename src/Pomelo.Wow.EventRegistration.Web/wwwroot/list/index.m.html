@@ -1,5 +1,5 @@
 ﻿<div>
-    <div class="search-dropdown-box">
+    <div class="act-dropdown-box">
         <div class="tab-outer">
             <a class="tab-item" v-on:click="status = 0" v-bind:class="{ active: status == 0 }">全部活动</a>
             <a class="tab-item" v-on:click="status = 1" v-bind:class="{ active: status == 1 }">报名中</a>
@@ -13,7 +13,7 @@
                 <colgroup>
                     <col style="width: 50px;" />
                 </colgroup>
-                <tr v-on:click="$root.openWindow(`https://${guild.id}.mwow.org`)">
+                <tr v-on:click="$root.open('/act?id=' + act.id)">
                     <td>
                         <img v-if="act.raids == '1,2'" src="/assets/images/raid/1_2.png" />
                         <img v-else-if="act.raids == '3,4'" src="/assets/images/raid/3_4.png" />

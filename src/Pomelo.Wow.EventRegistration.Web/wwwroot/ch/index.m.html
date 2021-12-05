@@ -19,7 +19,7 @@
     </div>
     <div class="ch-detail-wrapper">
         <div v-if="charactor">
-            <div class="tab-outer">
+            <div class="tab-outer" style="margin-bottom: 15px">
                 <a class="tab-item" v-on:click="active = 'dps'" v-bind:class="{ active: active == 'dps' }"><i class="fa fa-flag-checkered"></i> 输出经验</a>
                 <a class="tab-item" v-on:click="active = 'hps'" v-bind:class="{ active: active == 'hps' }"><i class="fa fa-flag-checkered"></i> 治疗经验</a>
                 <a class="tab-item" v-on:click="active = 'item'" v-bind:class="{ active: active == 'item' }"><i class="fa fa-shield"></i> 装备列表</a>
@@ -30,8 +30,8 @@
                         <tr>
                             <th>首领名称</th>
                             <th>装等</th>
-                            <th>WCL %</th>
-                            <th>击杀次数</th>
+                            <th>%</th>
+                            <th>击杀</th>
                             <th>最快</th>
                             <th>最慢</th>
                             <th>最高DPS</th>
@@ -53,13 +53,13 @@
                 </table>
             </div>
             <div v-if="active == 'hps'">
-                <table class="reg-table" style="table-layout: auto">
+                <table class="wcl-table" style="table-layout: auto">
                     <thead>
                         <tr>
                             <th>首领名称</th>
                             <th>装等</th>
-                            <th>WCL %</th>
-                            <th>击杀次数</th>
+                            <th>%</th>
+                            <th>击杀</th>
                             <th>最快</th>
                             <th>最慢</th>
                             <th>最高HPS</th>
@@ -72,8 +72,8 @@
                             <td>{{ boss.ItemLevel }}</td>
                             <td v-bind:class="{ gray: boss.Parse <= 25, green: boss.Parse > 25 && boss.Parse <= 50, blue: boss.Parse > 50 && boss.Parse <= 75, purple: boss.Parse > 75 && boss.Parse < 95, orange: boss.Parse >= 95 }">{{ boss.Parse }}</td>
                             <td>{{ boss.Killed }}</td>
-                            <td>{{ boss.Fastest }}</td>
-                            <td>{{ boss.Slowest }}</td>
+                            <td>{{ parseTimeSpan(boss.Fastest) }}</td>
+                            <td>{{ parseTimeSpan(boss.Slowest) }}</td>
                             <td>{{ parseInt(boss.Highest) }}</td>
                             <td>{{ parseInt(boss.Lowest) }}</td>
                         </tr>
@@ -81,7 +81,7 @@
                 </table>
             </div>
             <div v-if="active == 'item'">
-                <table class="reg-table">
+                <table class="wcl-table">
                     <thead>
                         <tr>
                             <th>装备名称</th>
@@ -90,7 +90,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="item in charactor.items">
-                            <td v-on:click="openItem(item.id)" v-bind:class="{ gray: item.quality == 0, white: item.quality == 1, green: item.quality == 2, blue: item.quality == 3, purple: item.quality == 4, orange: item.quality == 5 }"><img class="class-img" v-bind:src="item.imageUrl" /> {{ item.name }}</td>
+                            <td v-on:click="openItem(item.id)" v-bind:class="{ gray: item.quality == 0, white: item.quality == 1, green: item.quality == 2, blue: item.quality == 3, purple: item.quality == 4, orange: item.quality == 5 }"><img class="class-img" v-bind:src="item.imageUrl" /> <span>{{ item.name }}</span></td>
                             <td>{{ item.itemLevel }}</td>
                         </tr>
                     </tbody>

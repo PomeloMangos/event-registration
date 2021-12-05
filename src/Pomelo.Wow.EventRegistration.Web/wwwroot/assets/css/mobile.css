@@ -99,6 +99,19 @@
     border-top: 1px solid #1e1d32;
 }
 
+.act-dropdown-box {
+    background-color: rgb(41,40,69);
+    z-index: 5;
+    box-shadow: rgba(0,0,0,0.2);
+    height: 40px;
+    left: 0;
+    top: 60px;
+    right: 0;
+    position: fixed;
+    border-top: 1px solid #1e1d32;
+    height: 50px;
+}
+
 .ch-dropdown-box {
     background-color: rgb(41,40,69);
     z-index: 5;
@@ -187,7 +200,7 @@
 }
 
 .tab-item {
-    padding: 2px 6px;
+    padding: 4px 10px;
     background: rgba(0,0,0,0);
     border-radius: 50px;
     font-size: 14px;
@@ -195,7 +208,7 @@
 
 .tab-outer {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .tab-item:hover, .tab-item.active {
@@ -316,4 +329,38 @@
 .wcl-table {
     width: 100%;
     font-size: 12px;
+    background: rgb(41,40,69);
+    border-collapse: collapse;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
+
+    .wcl-table tr {
+        border-bottom: 0.7px solid #1e1d32;
+    }
+
+    .wcl-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .wcl-table td {
+        padding: 10px 6px;
+        zoom: 0.9;
+        font-weight: bold;
+    }
+
+    .wcl-table th {
+        padding: 10px 6px;
+        text-align: left;
+        zoom: 0.9;
+    }
+
+    .wcl-table img {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+    }
+
+    .wcl-table span {
+        vertical-align: middle;
+    }
