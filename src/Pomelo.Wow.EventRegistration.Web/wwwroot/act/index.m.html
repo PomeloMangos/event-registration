@@ -3,7 +3,7 @@
         <a v-on:click="$root.back()"><i class="fa fa-angle-left"></i> 返回</a>
     </div>
 
-    <div class="ch-wrapper">
+    <div class="ch-wrapper" v-if="active == 'registration'">
         <template v-for="group in mobile.groups">
             <div class="section-title">
                 <span>{{ group.name }}</span>
@@ -53,6 +53,72 @@
                 </template>
             </table>
         </template>
+    </div>
+    <div class="ch-wrapper" v-if="active == 'task'">
+        <div v-if="activeTaskUI == 'normal'">
+            <div class="task-group" v-for="(group, i) in tasks.groups">
+                <div class="section-title">
+                    {{ group.name }}
+                    <a v-if="taskEdit && $root.guildPermission.guildManager" class="form-btn" style="float:right; font-weight: normal" v-on:click="tasks.groups.splice(i, 1);$forceUpdate();"><i class="fa fa-trash"></i> 删除任务组</a>
+                </div>
+                <div class="task-item" v-for="(task, j) in group.tasks">
+                    <a class="delete-task" v-if="taskEdit && $root.guildPermission.guildManager" v-on:click="group.tasks.splice(j, 1);$forceUpdate();"><i class="fa fa-minus-circle"></i></a>
+                    <img src="/assets/images/task.svg" />
+                    <span>{{ task.text }}</span>
+                    <div class="task-players">
+                        <template v-if="activity && activity.registrations">
+                            <span v-on:click="activeTask = `${i},${j}`" v-for="reg in activity.registrations" v-if="task.players.some(x => x == reg.id)" v-bind:class="'class-' + reg.class" class="task-player">
+                                <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
+                                <i class="fa fa-shield" v-if="reg.role == 0"></i>
+                                <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
+                                <span v-if="reg.status == 4">{{ reg.name }}</span>
+                                <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
+                            </span>
+                        </template>
+                        <a v-on:click="activeTask = `${i},${j}`" style="color: #3dd0d8" v-if="taskEdit && $root.guildPermission.guildManager"><i class="fa fa-user"></i></a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="task-item-new" v-if="taskEdit && $root.guildPermission.guildManager">
+                    <div class="form-row">
+                        <div class="input-wrap">
+                            <input type="text" placeholder="任务内容" class="general_input italic task-content" style="width: calc(100% - 140px);">
+                            <input type="button" value="创建" class="btn gradient color-white color-white plr50 ptb19" style="width: 120px; margin-left: 10px;" v-on:click="createTask(group, $event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <template v-if="$root.guildPermission.guildManager">
+                <template v-if="taskEdit">
+                    <div class="task-title">创建任务组</div>
+                    <div class="form-row">
+                        <div class="input-wrap">
+                            <input type="text" placeholder="任务组名称" class="general_input italic" v-model="form.newTaskGroup.name" style="width: 50%;">
+                            <input type="button" value="创建" class="btn gradient color-white color-white plr50 ptb19" style="width: 120px; margin-left: 10px;" v-on:click="createTaskGroup(form.newTaskGroup.name)">
+                        </div>
+                    </div>
+                </template>
+                <div style="margin-top: 30px">
+                    <div class="input-wrap">
+                        <template v-if="taskEdit">
+                            <input type="button" value="保存任务列表" class="btn gradient color-white color-white plr50 ptb19" style="width: 200px;" v-on:click="saveTasks()">
+                            <input type="button" value="导入/导出任务" class="btn gradient color-white color-white plr50 ptb19;" style="width: 200px; margin-left: 10px" v-on:click="importExportTasks()">
+                            <input type="button" value="取消编辑" class="btn gradient color-white color-white plr50 ptb19;" style="width: 200px; margin-left: 10px" v-on:click="taskEdit = false">
+                        </template>
+                        <template v-else>
+                            <input type="button" value="编辑任务" class="btn gradient color-white color-white plr50 ptb19" style="width: 200px;" v-on:click="taskEdit = true">
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </div>
+        <div v-else>
+            <div class="input-wrap">
+                <textarea placeholder="任务字符串" class="general_input italic" style="text-transform: none;" v-model="taskString"></textarea>
+            </div>
+            <input type="button" value="导入任务" class="btn gradient color-white color-white plr50 ptb19" style="width: 200px;" v-on:click="importTasks()">
+            <input type="button" value="返回" class="btn gradient color-white color-white plr50 ptb19" style="width: 200px;" v-on:click="activeTaskUI = 'normal'">
+        </div>
     </div>
 
     <div class="dialog" style="margin-top:-217px" v-if="mobile.selectedReg">
