@@ -77,29 +77,58 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 query = query.Where(x => x.Begin.AddHours(x.EstimatedDurationInHours) < DateTime.UtcNow);
             }
 
-            return await PagedApiResultAsync(
-                query.OrderByDescending(x => x.Begin).Select(x => new ActivityViewModel 
-                {
-                    Begin = x.Begin,
-                    Server = x.Server,
-                    CreatedAt = x.CreatedAt,
-                    Deadline = x.Deadline,
-                    Description = x.Description,
-                    EstimatedDurationInHours = x.EstimatedDurationInHours,
-                    GuildId = x.GuildId,
-                    GuildName = x.Guild.Name,
-                    Name = x.Name,
-                    RaidLeader = x.User.DisplayName,
-                    Realm = x.Realm,
-                    Raids = x.Raids,
-                    RegisteredCount = x.Registrations.Count(),
-                    Visibility = x.Visibility,
-                    Faction = x.Guild.Faction,
-                    Id = x.Id
-                }), 
-                page - 1, 
-                pageSize, 
-                cancellationToken);
+            if (status == ActivityStatus.InProgress || status == ActivityStatus.Registering)
+            {
+                return await PagedApiResultAsync(
+                    query.OrderBy(x => x.Begin).Select(x => new ActivityViewModel
+                    {
+                        Begin = x.Begin,
+                        Server = x.Server,
+                        CreatedAt = x.CreatedAt,
+                        Deadline = x.Deadline,
+                        Description = x.Description,
+                        EstimatedDurationInHours = x.EstimatedDurationInHours,
+                        GuildId = x.GuildId,
+                        GuildName = x.Guild.Name,
+                        Name = x.Name,
+                        RaidLeader = x.User.DisplayName,
+                        Realm = x.Realm,
+                        Raids = x.Raids,
+                        RegisteredCount = x.Registrations.Count(),
+                        Visibility = x.Visibility,
+                        Faction = x.Guild.Faction,
+                        Id = x.Id
+                    }),
+                    page - 1,
+                    pageSize,
+                    cancellationToken);
+            }
+            else
+            {
+                return await PagedApiResultAsync(
+                    query.OrderByDescending(x => x.Begin).Select(x => new ActivityViewModel
+                    {
+                        Begin = x.Begin,
+                        Server = x.Server,
+                        CreatedAt = x.CreatedAt,
+                        Deadline = x.Deadline,
+                        Description = x.Description,
+                        EstimatedDurationInHours = x.EstimatedDurationInHours,
+                        GuildId = x.GuildId,
+                        GuildName = x.Guild.Name,
+                        Name = x.Name,
+                        RaidLeader = x.User.DisplayName,
+                        Realm = x.Realm,
+                        Raids = x.Raids,
+                        RegisteredCount = x.Registrations.Count(),
+                        Visibility = x.Visibility,
+                        Faction = x.Guild.Faction,
+                        Id = x.Id
+                    }),
+                    page - 1,
+                    pageSize,
+                    cancellationToken);
+            }
         }
 
         [HttpGet("{id:long}")]
