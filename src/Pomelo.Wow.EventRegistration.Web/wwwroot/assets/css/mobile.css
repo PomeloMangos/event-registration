@@ -209,7 +209,7 @@ table {
     white-space: nowrap;
     max-width: 100%;
     margin-bottom: 5px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: normal;
 }
 
@@ -639,7 +639,7 @@ table {
 }
 
 .raid-icon {
-    width: 40px!important;
-    height: 40px!important;
+    width: 50px!important;
+    height: 50px!important;
     border-radius: 10px;
 }
