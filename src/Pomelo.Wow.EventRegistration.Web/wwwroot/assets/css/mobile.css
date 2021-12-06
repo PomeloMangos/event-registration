@@ -255,7 +255,7 @@ table {
 }
 
 .inline-textbox, .inline-textbox:focus {
-    width: 100%;
+    width: 100%!important;
     border: none;
     background: none;
     color: #fff;
