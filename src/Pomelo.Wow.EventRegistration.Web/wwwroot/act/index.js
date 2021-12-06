@@ -433,6 +433,10 @@ component.methods = {
         this.activeTaskUI = 'normal';
     },
     mobileSelectRegisitration: function (reg) {
+        if (!app.guildPermission.guildManager) {
+            return;
+        }
+
         this.mobile.selectedReg = reg;
     },
     mobileCloseDialog: function () {
