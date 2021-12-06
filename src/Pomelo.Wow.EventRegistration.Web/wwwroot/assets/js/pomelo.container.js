@@ -15,7 +15,7 @@ var PomeloComponentContainer = function (el, root, parent, onActive, onViewOpen)
         getTemplate: async function (url) {
             var result = { status: 404 };
 
-            if (true) { // Feature switch for mobile layouts
+            if (window.history.host != 'mwow.org') { // Feature switch for mobile layouts
                 if (window.innerWidth < 768) {
                     result = await fetch(url + '.m.html?v=' + __version);
                 }
