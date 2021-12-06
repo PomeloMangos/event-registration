@@ -3,7 +3,8 @@
     <div class="header">
     </div>
     <div class="header-logo">
-        <img src="/assets/images/logo.png" />
+        <img v-if="!$root.guild || !$root.guild.guildLogoUrl" src="/assets/images/logo.png" alt="">
+        <img v-else v-bind:src="$root.guild.guildLogoUrl" alt="">
     </div>
     <div id="main"></div>
     <div class="footer">
