@@ -477,6 +477,13 @@ component.methods = {
         this.active = 'registration';
         this.leave(this.mobile.ch, takeLeave);
         this.mobile.ch = null;
+    },
+    mobileBack: function () {
+        if (app.guildId) {
+            app.open('/home');
+        } else {
+            app.open('/guild');
+        }
     }
 };
 
