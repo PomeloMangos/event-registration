@@ -83,6 +83,10 @@
                 color: #3dd0d8;
             }
 
+.left {
+    float: left;
+}
+
 .right {
     float: right;
 }
@@ -184,6 +188,10 @@
 .subline {
     zoom: 0.8;
     opacity: 0.6;
+}
+
+.reg-subline {
+    zoom: 0.9;
 }
 
 .first-line {
@@ -364,3 +372,75 @@
     .wcl-table span {
         vertical-align: middle;
     }
+
+.z-100 {
+    z-index: 100;
+}
+
+.class-img {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.reg-icon {
+    color: #fff;
+    font-weight: bold;
+    opacity: 0.9;
+}
+
+
+.label-gray {
+    background: #777;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.label-orange {
+    background: orange;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.label-red {
+    background: rgb(255, 95, 95);
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.label-purple {
+    background: rgb(154, 61, 199);
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.label-green {
+    background: rgb(24, 188, 60);
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.reg-label span {
+    line-height: 24px;
+    padding: 0 4px;
+}
