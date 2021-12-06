@@ -1,0 +1,112 @@
+﻿<div>
+    <div class="header-buttons">
+        <a v-on:click="$root.back()"><i class="fa fa-angle-left"></i> 返回</a>
+    </div>
+
+    <div class="ch-wrapper">
+        <template v-for="group in mobile.groups">
+            <div class="section-title">
+                <span>{{ group.name }}</span>
+                <span class="right">报名：{{ activity.registrations.filter(x => x.role == group.id).length }} / 确认：{{ activity.registrations.filter(x => x.role == group.id && x.status == 4).length }} / 替补：{{ activity.registrations.filter(x => x.role == group.id && x.status == 2).length }}</span>
+            </div>
+            <table class="form-table reg-table">
+                <template v-for="reg in activity.registrations.filter(x => x.role == group.id)">
+                    <tr>
+                        <td>
+                            <a v-on:click="mobileSelectRegisitration(reg)">
+                                <div>
+                                    <div>
+                                        <span v-bind:class="'class-' + reg.class">
+                                            <img class="class-img" v-bind:src="'/assets/images/class-' + reg.class + '.png'" />
+                                            {{ reg.name }}
+                                        </span>
+                                        <span class="right reg-label">
+                                            <span class="label-gray" v-if="reg.status == 0">待审核</span>
+                                            <span class="label-red" v-if="reg.status == 1">被拒绝</span>
+                                            <span class="label-orange" v-if="reg.status == 2">替补队员</span>
+                                            <span class="label-purple" v-if="reg.status == 3">已请假</span>
+                                            <span class="label-green" v-if="reg.status == 4">已通过</span>
+                                        </span>
+                                    </div>
+                                    <div class="reg-subline" style="margin-top: -14px;">
+                                        <span class="reg-icon"><i class="fa fa-trophy"></i></span>
+                                        <span v-bind:class="{ gray: reg.wcl <= 25, green: reg.wcl > 25 && reg.wcl <= 50, blue: reg.wcl > 50 && reg.wcl <= 75, purple: reg.wcl > 75 && reg.wcl < 95, orange: reg.wcl >= 95 }">
+                                            {{ parseInt(reg.wcl || 0) || '未知' }}
+                                        </span>
+                                        &nbsp;
+                                        <span class="reg-icon">iLvl.</span>
+                                        <span v-if="reg.charactor" v-bind:class="getItemColor(bosses[0], reg.charactor.highestItemLevel)">{{ reg.charactor.highestItemLevel }}<span v-if="reg.setCount"> ({{ reg.setCount }}{{ reg.setName }})</span></span>
+                                        <span v-else>未知</span>
+                                        &nbsp;
+                                        <span class="reg-icon"><i class="fa fa-star"></i></span>
+                                        <span v-bind:class="{ purple: reg.bossPassed == bosses.length, gray: !!!reg.bossPassed, green: (reg.bossPassed || 0) < bosses.length / 2, blue: (reg.bossPassed || 0) >= bosses.length / 2 && (reg.bossPassed || 0) != bosses.length  }">{{ reg.bossPassed || 0 }} / {{ bosses.length }}</span>
+                                        <template v-if="reg.hint">
+                                            &nbsp;
+                                            <span class="reg-icon"><i class="fa fa-comment-o"></i></span>
+                                            <span class="hint">{{ reg.hint }}</span>
+                                        </template>
+                                    </div>
+                                </div>
+                            </a>
+                        </td>
+                    </tr>
+                </template>
+            </table>
+        </template>
+    </div>
+
+    <div class="dialog" style="margin-top:-217px" v-if="mobile.selectedReg">
+        <div class="dialog-header">
+            <span v-bind:class="'class-' + mobile.selectedReg.class">
+                <img class="class-img" v-bind:src="'/assets/images/class-' + mobile.selectedReg.class + '.png'" />
+                {{ mobile.selectedReg.name }}
+            </span>
+            <a class="right" v-on:click="mobileCloseDialog"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dialog-body" style="padding: 0 15px">
+            <div class="dialog-select-row" v-on:click="mobile.action = 'accept'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'accept' }"><div></div></div> 通过申请</div>
+            <div class="dialog-select-row" v-on:click="mobile.action = 'standby'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'standby' }"><div></div></div> 设为替补</div>
+            <div class="dialog-select-row" v-on:click="mobile.action = 'reject'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'reject' }"><div></div></div> 拒绝申请</div>
+            <div class="dialog-select-row" v-on:click="mobile.action = 'tank'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'tank' }"><div></div></div> 设为坦克</div>
+            <div class="dialog-select-row" v-on:click="mobile.action = 'dps'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'dps' }"><div></div></div> 设为输出</div>
+            <div class="dialog-select-row" v-on:click="mobile.action = 'hps'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'hps' }"><div></div></div> 设为治疗</div>
+            <div class="dialog-select-row" v-on:click="mobile.action = 'delete'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'delete' }"><div></div></div> 删除申请</div>
+        </div>
+        <div class="dialog-footer">
+            <table>
+                <tr>
+                    <td><a v-on:click="mobileSetReg">确定</a></td>
+                    <td><a v-on:click="mobileCloseDialog">取消</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer z-100">
+        <table>
+            <tr>
+                <td v-if="!$root.guildId" v-bind:class="{ 'active': active == 'registration' }" v-on:click="active = 'registration'">
+                    <i class="fa fa-users"></i>
+                    <br />
+                    <div>人员</div>
+                </td>
+                <td v-bind:class="{ 'active': active == 'task' }" v-on:click="active = 'task'">
+                    <i class="fa fa-book"></i>
+                    <br />
+                    <div>任务</div>
+                </td>
+                <td v-bind:class="{ 'active': $root.active == 'ch' }" v-on:click="$root.open('/ch/search')">
+                    <i class="fa fa-pencil"></i>
+                    <br />
+                    <div>报名</div>
+                </td>
+                <td v-bind:class="{ 'active': active == 'manage' }" v-on:click="active = 'manage'">
+                    <i class="fa fa-cog"></i>
+                    <br />
+                    <div>设置</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div v-show="false" id="act-manage-container"></div>
+</div>

@@ -115,6 +115,9 @@ var app = new Vue({
                 window.history.pushState(null, null, url);
             }
         },
+        openWindow: function (url) {
+            window.open(url);
+        },
         signOut: function () {
             window.sessionStorage.removeItem('user');
             window.sessionStorage.removeItem('token');
@@ -125,6 +128,9 @@ var app = new Vue({
         },
         openNewAct: function () {
             this.open('/home?active=new-act', { active: 'new-act' }, true);
+        },
+        back: function () {
+            window.history.go(-1);
         }
     },
     watch: {
@@ -152,8 +158,8 @@ app.$container = container;
 app.$mount('#app');
 
 window.onpopstate = function (event) {
-    if (app.$container.active) {
-        app.$container.close(app.$container.active);
+    if (app.$container.active.$container.active) {
+        app.$container.active.$container.close(app.$container.active.$container.active);
     }
     if (window.location.pathname !== '/') {
         app.open(window.location.pathname + window.location.search);

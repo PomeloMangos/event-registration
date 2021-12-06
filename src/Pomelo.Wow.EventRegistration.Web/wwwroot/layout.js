@@ -9,7 +9,6 @@ component.created = function () {
 
 component.mounted = async function () {
     var container = new PomeloComponentContainer('#main', app, this, function (view) {
-        loaded();
     }, function () { });
     this.$container = container;
 

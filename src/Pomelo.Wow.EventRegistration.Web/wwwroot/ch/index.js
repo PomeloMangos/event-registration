@@ -74,5 +74,12 @@ component.methods = {
         } else {
             return '未知';
         }
+    },
+    parseTimeSpan: function (str) {
+        if (str.indexOf('00:') == 0) {
+            return str.substr(3);
+        } else {
+            return str;
+        }
     }
 };
