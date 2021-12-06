@@ -74,7 +74,7 @@
                                     <a v-on:click="$root.open('/login')">登录</a>
                                 </li>
                                 <li v-if="$root.guildPermission.guildManager" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
-                                    <a v-on:click="openNewAct">创建活动</a>
+                                    <a v-on:click="$root.openNewAct()">创建活动</a>
                                 </li>
                                 <li v-if="!!$root.user.token && !$root.guildId" class="inline-block" v-bind:class="{ 'active': active == 'create-guild' }">
                                     <a v-on:click="$root.open('/guild/create')">创建公会</a>
