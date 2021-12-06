@@ -490,5 +490,16 @@ component.watch = {
         if (!canHeal(this.form.newCharactor.class) && this.form.newCharactor.role == 2) {
             this.form.newCharactor.role = 1;
         }
+    },
+    'mobile.ch': function () {
+        if (this.mobile.ch == null) return;
+
+        if (!this.canTank(this.mobile.ch.class) && this.mobile.ch.role == 0) {
+            this.mobile.ch.role = 1;
+        }
+
+        if (!this.canHeal(this.mobile.ch.class) && this.mobile.ch.role == 2) {
+            this.mobile.ch.role = 1;
+        }
     }
 };

@@ -160,7 +160,7 @@
             <tr>
                 <td>职业</td>
                 <td>
-                    <select class="inline-textbox" v-model="form.newCharactor.class">
+                    <select class="inline-textbox" v-model="form.newCharactor.class" style="background: rgb(41,40,69);">
                         <option value="1">战士</option>
                         <option value="2">圣骑士</option>
                         <option value="8">萨满祭司</option>
@@ -226,8 +226,8 @@
             <div style="padding: 15px 0; border-bottom: 0.8px solid #1e1d32;">
                 <div class="section-title">职责</div>
                 <div class="dialog-select-row" v-on:click="mobile.ch.role = 1"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 1 }"><div></div></div> 输出</div>
-                <div class="dialog-select-row" v-on:click="mobile.ch.role = 0"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 0 }"><div></div></div> 坦克</div>
-                <div class="dialog-select-row" v-on:click="mobile.ch.role = 2"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 2 }"><div></div></div> 治疗</div>
+                <div class="dialog-select-row" v-bind:disabled="!canTank(mobile.ch.class)" v-on:click="canTank(mobile.ch.class) ? mobile.ch.role = 0 : null"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 0 }"><div></div></div> 坦克 <span v-if="!canTank(mobile.ch.class)">(不可用)</span></div>
+                <div class="dialog-select-row" v-bind:disabled="!canHeal(mobile.ch.class)" v-on:click="canHeal(mobile.ch.class) ? mobile.ch.role = 2 : null"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 2 }"><div></div></div> 治疗 <span v-if="!canHeal(mobile.ch.class)">(不可用)</span></div>
             </div>
             <div style="padding-bottom: 15px; margin-top: 10px">
                 <div class="section-title">备注</div>
