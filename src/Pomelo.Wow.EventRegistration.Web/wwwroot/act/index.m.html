@@ -98,7 +98,7 @@
                         </div>
                     </div>
                 </template>
-                <div style="margin-top: 30px">
+                <div style="margin-top: 30px" v-if="false">
                     <div class="input-wrap">
                         <template v-if="taskEdit">
                             <input type="button" value="保存任务列表" class="btn gradient color-white color-white plr50 ptb19" style="width: 200px;" v-on:click="saveTasks()">
@@ -120,6 +120,73 @@
             <input type="button" value="返回" class="btn gradient color-white color-white plr50 ptb19" style="width: 200px;" v-on:click="activeTaskUI = 'normal'">
         </div>
     </div>
+    <div class="ch-wrapper" v-if="active == 'reg'">
+        <div class="section-title">
+            <span>请点击角色进行报名</span>
+        </div>
+        <table class="form-table" style="margin-bottom: 30px">
+            <tr v-for="(ch, i) in myCharactors.filter(x => x.realm == activity.realm)" v-on:click="mobile.ch = ch">
+                <td v-bind:class="'class-' + ch.class">
+                    <img v-bind:src="'/assets/images/class-' + ch.class + '.png'" class="class-img" />
+                    {{ ch.name }}
+                    <template v-if="activity.registrations.filter(x => x.name == ch.name).length">
+                        <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 0">待审核</span>
+                        <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 1">被拒绝</span>
+                        <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 2">替补队员</span>
+                        <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 3">已请假</span>
+                        <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 4">已通过</span>
+                    </template>
+                </td>
+            </tr>
+            <tr v-if="myCharactors.filter(x => x.realm == activity.realm).length == 0">
+                您还没有添加任何角色
+            </tr>
+        </table>
+
+        <div class="section-title">
+            <span>添加新角色</span>
+        </div>
+        <table class="form-table ch-table" style="margin-bottom: 30px">
+            <colgroup>
+                <col style="width: 80px" />
+                <col />
+            </colgroup>
+            <tr>
+                <td>角色名</td>
+                <td>
+                    <input class="inline-textbox" placeholder="点击以输入角色名..." style="width: 110px" type="text" v-model="form.newCharactor.name" />
+                </td>
+            </tr>
+            <tr>
+                <td>职业</td>
+                <td>
+                    <select class="inline-textbox" v-model="form.newCharactor.class">
+                        <option value="1">战士</option>
+                        <option value="2">圣骑士</option>
+                        <option value="8">萨满祭司</option>
+                        <option value="4">猎人</option>
+                        <option value="32">德鲁伊</option>
+                        <option value="16">潜行者</option>
+                        <option value="128">法师</option>
+                        <option value="64">术士</option>
+                        <option value="256">牧师</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>服务器</td>
+                <td>
+                    <input disabled class="inline-textbox" style="width: 110px" type="text" v-model="form.newCharactor.realm" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center">
+                    <a style="display:block" v-on:click="addCharactor">添加角色</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 
     <div class="dialog" style="margin-top:-217px" v-if="mobile.selectedReg">
         <div class="dialog-header">
@@ -147,6 +214,54 @@
             </table>
         </div>
     </div>
+    <div class="dialog" style="margin-top:-192px" v-if="mobile.ch && !activity.registrations.filter(x => x.name == mobile.ch.name).length">
+        <div class="dialog-header">
+            <span v-bind:class="'class-' + mobile.ch.class">
+                <img class="class-img" v-bind:src="'/assets/images/class-' + mobile.ch.class + '.png'" />
+                {{ mobile.ch.name }}
+            </span>
+            <a class="right" v-on:click="mobile.ch = null"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dialog-body" style="padding: 0 15px">
+            <div style="padding: 15px 0; border-bottom: 0.8px solid #1e1d32;">
+                <div class="section-title">职责</div>
+                <div class="dialog-select-row" v-on:click="mobile.ch.role = 1"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 1 }"><div></div></div> 输出</div>
+                <div class="dialog-select-row" v-on:click="mobile.ch.role = 0"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 0 }"><div></div></div> 坦克</div>
+                <div class="dialog-select-row" v-on:click="mobile.ch.role = 2"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 2 }"><div></div></div> 治疗</div>
+            </div>
+            <div style="padding-bottom: 15px; margin-top: 10px">
+                <div class="section-title">备注</div>
+                <input class="textbox" placeholder="点击以输入备注..." />
+            </div>
+        </div>
+        <div class="dialog-footer">
+            <table>
+                <tr>
+                    <td><a v-on:click="mobileReg">报名</a></td>
+                    <td><a style="color: rgb(255,128,128);" v-on:click="mobileDeleteCh">删除角色</a></td>
+                    <td><a v-on:click="mobile.ch = null">取消</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="dialog" style="margin-top:-53px" v-if="mobile.ch && activity.registrations.filter(x => x.name == mobile.ch.name).length">
+        <div class="dialog-header">
+            <span v-bind:class="'class-' + mobile.ch.class">
+                <img class="class-img" v-bind:src="'/assets/images/class-' + mobile.ch.class + '.png'" />
+                {{ mobile.ch.name }}
+            </span>
+            <a class="right" v-on:click="mobile.ch = null"><i class="fa fa-close"></i></a>
+        </div>
+        <div class="dialog-footer">
+            <table>
+                <tr>
+                    <td><a v-on:click="mobileLeave(activity.registrations.filter(x => x.name == mobile.ch.name)[0].status != 3)">{{ activity.registrations.filter(x => x.name == mobile.ch.name)[0].status != 3 ? '请假' : '取消请假' }}</a></td>
+                    <td><a style="color: rgb(255,128,128);" v-on:click="mobileDeleteCh">删除角色</a></td>
+                    <td><a v-on:click="mobile.ch = null">取消</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
     <div class="footer z-100">
         <table>
@@ -161,12 +276,12 @@
                     <br />
                     <div>任务</div>
                 </td>
-                <td v-bind:class="{ 'active': $root.active == 'ch' }" v-on:click="$root.open('/ch/search')">
+                <td v-bind:class="{ 'active': active == 'reg' }" v-on:click="active = 'reg'">
                     <i class="fa fa-pencil"></i>
                     <br />
                     <div>报名</div>
                 </td>
-                <td v-bind:class="{ 'active': active == 'manage' }" v-on:click="active = 'manage'">
+                <td v-if="$root.guildPermission.guildManager" v-bind:class="{ 'active': active == 'manage' }" v-on:click="active = 'manage'">
                     <i class="fa fa-cog"></i>
                     <br />
                     <div>设置</div>

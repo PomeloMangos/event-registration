@@ -35,7 +35,8 @@
         mobile: {
             selectedReg: null,
             action: 'accept',
-            groups: [{ id: 0, name: '坦克' }, { id: 2, name: '治疗' }, { id: 1, name: '输出' }]
+            groups: [{ id: 0, name: '坦克' }, { id: 2, name: '治疗' }, { id: 1, name: '输出' }],
+            ch: null
         }
     };
 };
@@ -209,13 +210,13 @@ component.methods = {
         this.form.newCharactor = {
             class: 1,
             name: '',
-            realm: '',
+            realm: this.activity ? this.activity.realm : '',
             role: 0
         };
     },
     deleteCharactor: function (ch, i) {
         if (confirm(`你确定要删除角色"${ch.name}"吗？`)) {
-            this.myCharactors.splice(i);
+            this.myCharactors.splice(i, 1);
             window.localStorage.setItem('my_charactors', JSON.stringify(this.myCharactors));
         }
     },
@@ -461,6 +462,21 @@ component.methods = {
 
         this.mobileCloseDialog();
         this.mobile.action = 'accept';
+    },
+    mobileReg: async function () {
+        this.active = 'registration';
+        var ch = this.mobile.ch;
+        this.mobile.ch = null;
+        await this.register(ch);
+    },
+    mobileDeleteCh: function () {
+        this.deleteCharactor(this.mobile.ch, this.myCharactors.indexOf(this.mobile.ch));
+        this.mobile.ch = null;
+    },
+    mobileLeave: function (takeLeave) {
+        this.active = 'registration';
+        this.leave(this.mobile.ch, takeLeave);
+        this.mobile.ch = null;
     }
 };
 
