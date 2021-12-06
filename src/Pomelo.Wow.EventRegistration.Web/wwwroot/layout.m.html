@@ -14,7 +14,7 @@
                     <br />
                     <div>公会</div>
                 </td>
-                <td v-bind:class="{ 'active': $root.active == 'home' || $root.active == 'activity' }" v-on:click="$root.open('/list')">
+                <td v-bind:class="{ 'active': $root.active == 'home' || $root.active == 'activity' }" v-on:click="$root.guildId ? $root.open('/home') : $root.open('/list')">
                     <i class="fa fa-rocket"></i>
                     <br />
                     <div>活动</div>
