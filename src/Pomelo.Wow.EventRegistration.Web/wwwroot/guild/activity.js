@@ -1,6 +1,6 @@
 ﻿component.data = function () {
     return {
-        status: 0,
+        status: 1,
         result: null
     };
 };

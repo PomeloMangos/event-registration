@@ -9,7 +9,7 @@
     <div class="footer">
         <table>
             <tr>
-                <td v-if="!$root.guildId" v-bind:class="{ 'active': $root.active == 'guild' }"  v-on:click="$root.open('/guild')">
+                <td v-if="!$root.guildId" v-bind:class="{ 'active': $root.active == 'guild' }" v-on:click="$root.open('/guild')">
                     <i class="fa fa-home"></i>
                     <br />
                     <div>公会</div>
@@ -28,6 +28,11 @@
                     <i class="fa fa-user"></i>
                     <br />
                     <div>我的</div>
+                </td>
+                <td v-else v-bind:class="{ 'active': $root.active == 'login' }" v-on:click="$root.open('/login')">
+                    <i class="fa fa-cog"></i>
+                    <br />
+                    <div>管理</div>
                 </td>
             </tr>
         </table>
