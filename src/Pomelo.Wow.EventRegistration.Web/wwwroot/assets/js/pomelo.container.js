@@ -14,13 +14,16 @@ var PomeloComponentContainer = function (el, root, parent, onActive, onViewOpen)
         },
         getTemplate: async function (url) {
             var result = { status: 404 };
-            if (window.innerWidth < 768) {
-                console.warn('loading mobile layout...');
-                result = await fetch(url + '.m.html?v=' + __version);
+
+            if (window.location.host == 'not-found.mwow.org') { // Feature switch for mobile layouts
+                if (window.innerWidth < 768) {
+                    result = await fetch(url + '.m.html?v=' + __version);
+                }
+                if (result.status == 404 && window.innerWidth < 768) {
+                    result = await fetch(url + '/index.m.html?v=' + __version);
+                }
             }
-            if (result.status == 404 && window.innerWidth < 768) {
-                result = await fetch(url + '/index.m.html?v=' + __version);
-            }
+
             if (result.status == 404) {
                 result = await fetch(url + '.html?v=' + __version);
             }

@@ -31,7 +31,12 @@
         taskString: '',
         activeTaskUI: 'normal',
         taskEdit: false,
-        itemsets: null
+        itemsets: null,
+        mobile: {
+            selectedReg: null,
+            action: 'accept',
+            groups: [{ id: 0, name: '坦克' }, { id: 2, name: '治疗' }, { id: 1, name: '输出' }]
+        }
     };
 };
 
@@ -426,6 +431,32 @@ component.methods = {
     importTasks: function () {
         this.tasks = JSON.parse(this.taskString);
         this.activeTaskUI = 'normal';
+    },
+    mobileSelectRegisitration: function (reg) {
+        this.mobile.selectedReg = reg;
+    },
+    mobileCloseDialog: function () {
+        this.mobile.selectedReg = null;
+    },
+    mobileSetReg: function () {
+        if (this.mobile.action == 'accept') {
+            this.setStatus(this.mobile.selectedReg.id, 4, this.mobile.selectedReg.role);
+        } else if (this.mobile.action == 'reject') {
+            this.setStatus(this.mobile.selectedReg.id, 1, this.mobile.selectedReg.role);
+        } else if (this.mobile.action == 'standby') {
+            this.setStatus(this.mobile.selectedReg.id, 2, this.mobile.selectedReg.role);
+        } else if (this.mobile.action == 'dps') {
+            this.setStatus(this.mobile.selectedReg.id, this.mobile.selectedReg.status, 1);
+        } else if (this.mobile.action == 'hps') {
+            this.setStatus(this.mobile.selectedReg.id, this.mobile.selectedReg.status, 2);
+        } else if (this.mobile.action == 'tank') {
+            this.setStatus(this.mobile.selectedReg.id, this.mobile.selectedReg.status, 0);
+        } else if (this.mobile.action == 'delete') {
+            this.deleteReg(this.mobile.selectedReg.id);
+        }
+
+        this.mobileCloseDialog();
+        this.mobile.action = 'accept';
     }
 };
 

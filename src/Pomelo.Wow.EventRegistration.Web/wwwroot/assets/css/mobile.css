@@ -7,6 +7,11 @@
     overflow-x: hidden;
 }
 
+a {
+    color: #3dd0d8;
+    cursor: pointer;
+}
+
 .header {
     position: fixed;
     height: 60px;
@@ -16,7 +21,7 @@
     background-color: rgb(41,40,69);
     line-height: 60px;
     z-index: 5;
-    box-shadow: rgba(0,0,0,0.2);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
 .header-logo {
@@ -56,7 +61,7 @@
     right: 0;
     background-color: rgb(41,40,69);
     z-index: 5;
-    box-shadow: rgba(0,0,0,0.2);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
     .footer table {
@@ -443,4 +448,89 @@
 .reg-label span {
     line-height: 24px;
     padding: 0 4px;
+}
+
+
+
+.dialog {
+    position: fixed;
+    background-color: rgb(61,61,101);
+    border-radius: 15px;
+    left: 40px;
+    right: 40px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    overflow: hidden;
+    top: 50%;
+}
+
+.dialog-header {
+    font-weight: bold;
+}
+
+.dialog-header, .dialog-body {
+    border-bottom: 0.8px solid #1e1d32;
+    padding: 15px;
+}
+
+.dialog-body, .dialog-footer {
+    background: rgb(41,40,69);
+}
+
+.dialog-footer table {
+    width: 100%;
+}
+
+    .dialog-footer table td {
+        text-align: center;
+        padding: 15px;
+        border-right: 0.8px solid #1e1d32;
+    }
+
+        .dialog-footer table td:last-child {
+            border-right: none;
+        }
+
+        .dialog-footer table td a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+.dialog-select-row {
+    line-height: 46px;
+    border-bottom: 0.8px solid #1e1d32;
+}
+
+    .dialog-select-row:last-child {
+        border-bottom: none;
+    }
+
+.ratio {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    padding: 1.5px;
+    border: 1.7px solid #3dd0d8;
+    vertical-align: middle;
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+    .ratio div {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 50%;
+    }
+
+    .ratio.selected div {
+        background: #3dd0d8;
+    }
+
+.reg-subline .hint {
+    color: #ccc;
+}
+
+.reg-table {
+    margin-bottom: 30px;
 }
