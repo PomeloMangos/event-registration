@@ -48,8 +48,8 @@
                 <div class="table-row">
                     <div class="table-cell valign-middle text-left">
                         <a v-on:click="$root.guildId ? $root.open('/home') : $root.open('/guild')" class="logo">
-                            <img v-if="!$root.guild || !$root.guild.guildLogoUrl" src="/assets/images/logo.png" alt="" class="img-responsive inline-block">
-                            <img v-else v-bind:src="$root.guild.guildLogoUrl" alt="" class="img-responsive inline-block">
+                            <img v-if="!$root.guild || !$root.guild.guildLogoUrl" src="/assets/images/logo.png" alt="" style="max-height: 90px;" class="img-responsive inline-block">
+                            <img v-else v-bind:src="$root.guild.guildLogoUrl" style="max-height: 90px;" alt="" class="img-responsive inline-block">
                         </a>
                     </div>
                     <div class="table-cell valign-top text-center vm-sm">
