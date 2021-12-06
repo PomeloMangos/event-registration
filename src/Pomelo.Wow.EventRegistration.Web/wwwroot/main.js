@@ -130,7 +130,15 @@ var app = new Vue({
             this.open('/home?active=new-act', { active: 'new-act' }, true);
         },
         back: function () {
-            window.history.go(-1);
+            if (window.history.length) {
+                window.history.go(-1);
+            } else {
+                if (app.guildId) {
+                    app.open('/home');
+                } else {
+                    app.open('/guild');
+                }
+            }
         }
     },
     watch: {
