@@ -10,22 +10,22 @@
     <div class="footer z-100">
         <table>
             <tr>
-                <td v-bind:class="{ 'active': active == 'common' }" v-on:click="active = 'common'">
+                <td v-bind:class="{ 'active': active == 'common' }" v-on:click="open('common')">
                     <i class="fa fa-pencil"></i>
                     <br />
                     <div>基本</div>
                 </td>
-                <td v-bind:class="{ 'active': active == 'task' }" v-on:click="active = 'task'">
-                    <i class="fa fa-book"></i>
+                <td v-bind:class="{ 'active': active == 'wcl' }" v-on:click="open('wcl')">
+                    <i class="fa fa-globe"></i>
                     <br />
                     <div>WCL</div>
                 </td>
-                <td v-bind:class="{ 'active': active == 'reg' }" v-on:click="active = 'reg'">
+                <td v-bind:class="{ 'active': active == 'clone' }" v-on:click="open('clone')">
                     <i class="fa fa-copy"></i>
                     <br />
                     <div>克隆</div>
                 </td>
-                <td v-if="$root.guildPermission.guildManager" v-bind:class="{ 'active': active == 'manage' }" v-on:click="active = 'manage'">
+                <td v-if="$root.guildPermission.guildManager" v-bind:class="{ 'active': active == 'delete' }" v-on:click="open('delete')">
                     <i class="fa fa-trash"></i>
                     <br />
                     <div>删除</div>

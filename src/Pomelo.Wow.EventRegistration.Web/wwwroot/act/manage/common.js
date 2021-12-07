@@ -36,5 +36,13 @@ component.methods = {
             raids: this.activity.raids
         });
         alert('活动信息更新成功');
+    },
+    mobileToggleRaid: function (id) {
+        var idx = this.selectedRaids.indexOf(id.toString());
+        if (idx >= 0) {
+            this.selectedRaids.splice(idx, 1);
+        } else {
+            this.selectedRaids.push(id.toString());
+        }
     }
 };
