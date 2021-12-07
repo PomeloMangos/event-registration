@@ -1,0 +1,36 @@
+﻿<div>
+    <div class="header-buttons">
+        <a v-on:click="$parent.active = 'registration'"><i class="fa fa-angle-left"></i> 返回活动</a>
+    </div>
+
+    <div>
+        <div id="act-manage-inner-container"></div>
+    </div>
+
+    <div class="footer z-100">
+        <table>
+            <tr>
+                <td v-bind:class="{ 'active': active == 'common' }" v-on:click="active = 'common'">
+                    <i class="fa fa-pencil"></i>
+                    <br />
+                    <div>基本</div>
+                </td>
+                <td v-bind:class="{ 'active': active == 'task' }" v-on:click="active = 'task'">
+                    <i class="fa fa-book"></i>
+                    <br />
+                    <div>WCL</div>
+                </td>
+                <td v-bind:class="{ 'active': active == 'reg' }" v-on:click="active = 'reg'">
+                    <i class="fa fa-copy"></i>
+                    <br />
+                    <div>克隆</div>
+                </td>
+                <td v-if="$root.guildPermission.guildManager" v-bind:class="{ 'active': active == 'manage' }" v-on:click="active = 'manage'">
+                    <i class="fa fa-trash"></i>
+                    <br />
+                    <div>删除</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
