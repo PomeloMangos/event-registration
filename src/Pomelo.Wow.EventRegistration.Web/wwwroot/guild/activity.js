@@ -19,7 +19,7 @@ component.methods = {
         for (var i = 0; i < result.data.length; ++i) {
             this.result.data.push(result.data[i]);
         }
-    },
+    }
 };
 
 component.watch = {

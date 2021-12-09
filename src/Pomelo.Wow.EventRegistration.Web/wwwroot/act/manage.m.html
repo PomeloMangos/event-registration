@@ -1,5 +1,5 @@
 ﻿<div>
-    <div class="header-buttons">
+    <div class="header-buttons z-100">
         <a v-on:click="$parent.active = 'registration'"><i class="fa fa-angle-left"></i> 返回活动</a>
     </div>
 
@@ -20,11 +20,11 @@
                     <br />
                     <div>WCL</div>
                 </td>
-                <td v-bind:class="{ 'active': active == 'clone' }" v-on:click="open('clone')">
+                <!--<td v-bind:class="{ 'active': active == 'clone' }" v-on:click="open('clone')">
                     <i class="fa fa-copy"></i>
                     <br />
                     <div>克隆</div>
-                </td>
+                </td>-->
                 <td v-if="$root.guildPermission.guildManager" v-bind:class="{ 'active': active == 'delete' }" v-on:click="open('delete')">
                     <i class="fa fa-trash"></i>
                     <br />
