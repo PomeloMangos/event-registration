@@ -1,4 +1,7 @@
 ﻿<div>
+    <div class="header-buttons z-100" v-if="$root.guildPermission.guildManager" v-on:click="$parent.active = 'new-act'">
+        <a class="right"><i class="fa fa-plus"></i></a>
+    </div>
     <div class="act-dropdown-box">
         <div class="tab-outer">
             <a class="tab-item" v-on:click="status = 0" v-bind:class="{ active: status == 0 }">全部活动</a>
