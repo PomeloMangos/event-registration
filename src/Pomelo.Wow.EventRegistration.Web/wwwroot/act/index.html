@@ -29,11 +29,11 @@
                         </div>
                         <div v-if="active == 'registration'">
                             <h5>报名情况</h5>
-                            <div class="reg-section">
+                            <div class="reg-section" v-for="group in groups">
                                 <div class="class-group">
-                                    <img src="/assets/images/tank.jpg" style="margin-right: 10px;" />
-                                    <strong>坦克</strong>
-                                    <small style="line-height: 36px" class="float-right">报名：{{ activity.registrations.filter(x => x.role == 0).length }} / 确认：{{ activity.registrations.filter(x => x.role == 0 && x.status == 4).length }} / 替补：{{ activity.registrations.filter(x => x.role == 0 && x.status == 2).length }}</small>
+                                    <img v-bind:src="group.img" style="margin-right: 10px;" />
+                                    <strong>{{ group.name }}</strong>
+                                    <small style="line-height: 36px" class="float-right">报名：{{ activity.registrations.filter(x => x.role == group.id).length }} / 确认：{{ activity.registrations.filter(x => x.role == group.id && x.status == 4).length }} / 替补：{{ activity.registrations.filter(x => x.role == group.id && x.status == 2).length }}</small>
                                 </div>
                                 <table class="reg-table">
                                     <colgroup>
@@ -51,7 +51,7 @@
                                         </tr>
                                     </thead>
                                     <tbody v-if="activity">
-                                        <template v-for="reg in activity.registrations.filter(x => x.role == 0)">
+                                        <template v-for="reg in activity.registrations.filter(x => x.role == group.id)">
                                             <tr v-on:click="reg.toggle = !!!reg.toggle">
                                                 <td class="mobile-hidden">
                                                     <span class="label-gray" v-if="reg.status == 0">待审核</span>
@@ -135,251 +135,14 @@
                                                             <input type="button" value="设为坦克" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 0)" />
                                                             <input type="button" value="设为输出" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 1)" />
                                                             <input type="button" value="设为治疗" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 2)" />
+                                                            <input type="button" value="设为消费" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 3)" />
                                                             <input type="button" value="删除申请" class="form-btn" v-on:click="deleteReg(reg.id)" />
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                         </template>
-                                        <tr v-if="activity.registrations.filter(x => x.role == 0).length == 0">
-                                            <td colspan="6">暂无报名</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="reg-section">
-                                <div class="class-group">
-                                    <img src="/assets/images/healer.jpg" style="margin-right: 10px;" />
-                                    <strong>治疗</strong>
-                                    <small style="line-height: 36px" class="float-right">报名：{{ activity.registrations.filter(x => x.role == 2).length }} / 确认：{{ activity.registrations.filter(x => x.role == 2 && x.status == 4).length }} / 替补：{{ activity.registrations.filter(x => x.role == 2 && x.status == 2).length }}</small>
-                                </div>
-                                <table class="reg-table">
-                                    <colgroup>
-                                        <col style="width: 160px" class="mobile-hidden" />
-                                        <col style="width: 160px" />
-                                    </colgroup>
-                                    <thead>
-                                        <tr>
-                                            <th class="mobile-hidden">状态</th>
-                                            <th>名称</th>
-                                            <th>装等</th>
-                                            <th>WCL %</th>
-                                            <th>经验</th>
-                                            <th>备注</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template v-for="reg in activity.registrations.filter(x => x.role == 2)">
-                                            <tr v-on:click="reg.toggle = !!!reg.toggle">
-                                                <td class="mobile-hidden">
-                                                    <span class="label-gray" v-if="reg.status == 0">待审核</span>
-                                                    <span class="label-red" v-if="reg.status == 1">被拒绝</span>
-                                                    <span class="label-orange" v-if="reg.status == 2">替补队员</span>
-                                                    <span class="label-purple" v-if="reg.status == 3">已请假</span>
-                                                    <span class="label-green" v-if="reg.status == 4">已通过</span>
-                                                </td>
-                                                <td v-bind:class="'class-' + reg.class">
-                                                    <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
-                                                    {{ reg.name }}
-                                                </td>
-                                                <td v-if="reg.charactor" v-bind:class="getItemColor(bosses[0], reg.charactor.highestItemLevel)">{{ reg.charactor.highestItemLevel }}<span v-if="reg.setCount"> ({{ reg.setCount }}{{ reg.setName }})</span></td>
-                                                <td v-else>-</td>
-                                                <td v-if="!reg.wcl">-</td>
-                                                <td v-else v-bind:class="{ gray: reg.wcl <= 25, green: reg.wcl > 25 && reg.wcl <= 50, blue: reg.wcl > 50 && reg.wcl <= 75, purple: reg.wcl > 75 && reg.wcl < 95, orange: reg.wcl >= 95 }">{{ parseInt(reg.wcl) }}</td>
-                                                <td v-bind:class="{ purple: reg.bossPassed == bosses.length, gray: !!!reg.bossPassed, green: (reg.bossPassed || 0) < bosses.length / 2, blue: (reg.bossPassed || 0) >= bosses.length / 2 && (reg.bossPassed || 0) != bosses.length  }">{{ reg.bossPassed || 0 }} / {{ bosses.length }}</td>
-                                                <td>{{ reg.hint }}</td>
-                                            </tr>
-                                            <tr v-show="reg.toggle">
-                                                <td colspan="6">
-                                                    <div class="ch-detail">
-                                                        <div v-if="reg.charactor">
-                                                            <div class="ch-tab">
-                                                                <a v-bind:class="{ active: reg.active == 'boss' }" v-on:click="reg.active = 'boss'">击杀概览</a>
-                                                                <a v-bind:class="{ active: reg.active == 'item' }" v-on:click="reg.active = 'item'">装备列表</a>
-                                                            </div>
-                                                            <div v-if="reg.active == 'boss'">
-                                                                <table class="reg-table" style="table-layout: auto">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>首领名称</th>
-                                                                            <th>装等</th>
-                                                                            <th>击杀</th>
-                                                                            <th>WCL %</th>
-                                                                            <th>击杀用时</th>
-                                                                            <th>{{ reg.role == 2 ? 'HPS' : 'DPS' }}</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr v-for="boss in bosses">
-                                                                            <td>{{ boss }}</td>
-                                                                            <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
-                                                                            <td v-else v-bind:class="getItemColor(boss, reg.boss.filter(x => x.Name == boss)[0].ItemLevel)">{{ reg.boss.filter(x => x.Name == boss)[0].ItemLevel }}</td>
-                                                                            <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
-                                                                            <td v-else>{{ reg.boss.filter(x => x.Name == boss)[0].Killed }}</td>
-                                                                            <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
-                                                                            <td v-else v-bind:class="{ gray: reg.boss.filter(x => x.Name == boss)[0].Parse <= 25, green: reg.boss.filter(x => x.Name == boss)[0].Parse > 25 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 50, blue: reg.boss.filter(x => x.Name == boss)[0].Parse > 50 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 75, purple: reg.boss.filter(x => x.Name == boss)[0].Parse > 75 && reg.boss.filter(x => x.Name == boss)[0].Parse < 95, orange: reg.boss.filter(x => x.Name == boss)[0].Parse >= 95 }">{{ reg.boss.filter(x => x.Name == boss)[0].Parse }}</td>
-                                                                            <td v-if="!reg.boss || !reg.boss.filter(x => x.Name == boss)[0]">-</td>
-                                                                            <td v-else>{{ reg.boss.filter(x => x.Name == boss)[0].Fastest }}</td>
-                                                                            <td v-if="!reg.boss || !reg.boss.filter(x => x.Name == boss)[0]">-</td>
-                                                                            <td v-else>{{ parseInt(reg.boss.filter(x => x.Name == boss)[0].Highest) }}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-
-                                                            <div v-if="reg.active == 'item'">
-                                                                <table class="reg-table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>装备名称</th>
-                                                                            <th>装等</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr v-for="item in reg.items">
-                                                                            <td v-on:click="openItem(item.id)" v-bind:class="{ gray: item.quality == 0, white: item.quality == 1, green: item.quality == 2, blue: item.quality == 3, purple: item.quality == 4, orange: item.quality == 5 }"><img class="class-img" v-bind:src="item.imageUrl" /> {{ item.name }}</td>
-                                                                            <td v-bind:class="getItemColor(bosses[0], item.itemLevel)">{{ item.itemLevel }}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <div v-else>没有找到该角色的相关战斗记录</div>
-                                                        <div v-if="$root.guildPermission.guildManager">
-                                                            <hr />
-                                                            <input type="button" value="通过申请" class="form-btn" v-on:click="setStatus(reg.id, 4, reg.role)" />
-                                                            <input type="button" value="拒绝申请" class="form-btn" v-on:click="setStatus(reg.id, 1, reg.role)" />
-                                                            <input type="button" value="设为替补" class="form-btn" v-on:click="setStatus(reg.id, 2, reg.role)" />
-                                                            <input type="button" value="设为坦克" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 0)" />
-                                                            <input type="button" value="设为输出" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 1)" />
-                                                            <input type="button" value="设为治疗" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 2)" />
-                                                            <input type="button" value="删除申请" class="form-btn" v-on:click="deleteReg(reg.id)" />
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                        <tr v-if="activity.registrations.filter(x => x.role == 2).length == 0">
-                                            <td colspan="6">暂无报名</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="reg-section">
-                                <div class="class-group">
-                                    <img src="/assets/images/dps.jpg" style="margin-right: 10px;" />
-                                    <strong>输出</strong>
-                                    <small style="line-height: 36px" class="float-right">报名：{{ activity.registrations.filter(x => x.role == 1).length }} / 确认：{{ activity.registrations.filter(x => x.role == 1 && x.status == 4).length }} / 替补：{{ activity.registrations.filter(x => x.role == 1 && x.status == 2).length }}</small>
-                                </div>
-                                <table class="reg-table">
-                                    <colgroup>
-                                        <col style="width: 160px" class="mobile-hidden" />
-                                        <col style="width: 160px" />
-                                    </colgroup>
-                                    <thead>
-                                        <tr>
-                                            <th class="mobile-hidden">状态</th>
-                                            <th>名称</th>
-                                            <th>装等</th>
-                                            <th>WCL %</th>
-                                            <th>经验</th>
-                                            <th>备注</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template v-for="reg in activity.registrations.filter(x => x.role == 1)">
-                                            <tr v-on:click="reg.toggle = !!!reg.toggle">
-                                                <td class="mobile-hidden">
-                                                    <span class="label-gray" v-if="reg.status == 0">待审核</span>
-                                                    <span class="label-red" v-if="reg.status == 1">被拒绝</span>
-                                                    <span class="label-orange" v-if="reg.status == 2">替补队员</span>
-                                                    <span class="label-purple" v-if="reg.status == 3">已请假</span>
-                                                    <span class="label-green" v-if="reg.status == 4">已通过</span>
-                                                </td>
-                                                <td v-bind:class="'class-' + reg.class">
-                                                    <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
-                                                    {{ reg.name }}
-                                                </td>
-                                                <td v-if="reg.charactor" v-bind:class="getItemColor(bosses[0], reg.charactor.highestItemLevel)">{{ reg.charactor.highestItemLevel }}<span v-if="reg.setCount"> ({{ reg.setCount }}{{ reg.setName }})</span></td>
-                                                <td v-else>-</td>
-                                                <td v-if="!reg.wcl">-</td>
-                                                <td v-else v-bind:class="{ gray: reg.wcl <= 25, green: reg.wcl > 25 && reg.wcl <= 50, blue: reg.wcl > 50 && reg.wcl <= 75, purple: reg.wcl > 75 && reg.wcl < 95, orange: reg.wcl >= 95 }">{{ parseInt(reg.wcl) }}</td>
-                                                <td v-bind:class="{ purple: reg.bossPassed == bosses.length, gray: !!!reg.bossPassed, green: (reg.bossPassed || 0) < bosses.length / 2, blue: (reg.bossPassed || 0) >= bosses.length / 2 && (reg.bossPassed || 0) != bosses.length  }">{{ reg.bossPassed || 0 }} / {{ bosses.length }}</td>
-                                                <td>{{ reg.hint }}</td>
-                                            </tr>
-                                            <tr v-show="reg.toggle">
-                                                <td colspan="6">
-                                                    <div class="ch-detail">
-                                                        <div v-if="reg.charactor">
-                                                            <div class="ch-tab">
-                                                                <a v-bind:class="{ active: reg.active == 'boss' }" v-on:click="reg.active = 'boss'">击杀概览</a>
-                                                                <a v-bind:class="{ active: reg.active == 'item' }" v-on:click="reg.active = 'item'">装备列表</a>
-                                                            </div>
-                                                            <div v-if="reg.active == 'boss'">
-                                                                <table class="reg-table" style="table-layout: auto">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>首领名称</th>
-                                                                            <th>装等</th>
-                                                                            <th>击杀</th>
-                                                                            <th>WCL %</th>
-                                                                            <th>击杀用时</th>
-                                                                            <th>{{ reg.role == 2 ? 'HPS' : 'DPS' }}</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr v-for="boss in bosses">
-                                                                            <td>{{ boss }}</td>
-                                                                            <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
-                                                                            <td v-else v-bind:class="getItemColor(boss, reg.boss.filter(x => x.Name == boss)[0].ItemLevel)">{{ reg.boss.filter(x => x.Name == boss)[0].ItemLevel }}</td>
-                                                                            <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
-                                                                            <td v-else>{{ reg.boss.filter(x => x.Name == boss)[0].Killed }}</td>
-                                                                            <td v-if="!reg.boss || !(reg.boss.filter(x => x.Name == boss).length > 0)">-</td>
-                                                                            <td v-else v-bind:class="{ gray: reg.boss.filter(x => x.Name == boss)[0].Parse <= 25, green: reg.boss.filter(x => x.Name == boss)[0].Parse > 25 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 50, blue: reg.boss.filter(x => x.Name == boss)[0].Parse > 50 && reg.boss.filter(x => x.Name == boss)[0].Parse <= 75, purple: reg.boss.filter(x => x.Name == boss)[0].Parse > 75 && reg.boss.filter(x => x.Name == boss)[0].Parse < 95, orange: reg.boss.filter(x => x.Name == boss)[0].Parse >= 95 }">{{ reg.boss.filter(x => x.Name == boss)[0].Parse }}</td>
-                                                                            <td v-if="!reg.boss || !reg.boss.filter(x => x.Name == boss)[0]">-</td>
-                                                                            <td v-else>{{ reg.boss.filter(x => x.Name == boss)[0].Fastest }}</td>
-                                                                            <td v-if="!reg.boss || !reg.boss.filter(x => x.Name == boss)[0]">-</td>
-                                                                            <td v-else>{{ parseInt(reg.boss.filter(x => x.Name == boss)[0].Highest) }}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-
-                                                            <div v-if="reg.active == 'item'">
-                                                                <table class="reg-table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>装备名称</th>
-                                                                            <th>装等</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr v-for="item in reg.items">
-                                                                            <td v-on:click="openItem(item.id)" v-bind:class="{ gray: item.quality == 0, white: item.quality == 1, green: item.quality == 2, blue: item.quality == 3, purple: item.quality == 4, orange: item.quality == 5 }"><img class="class-img" v-bind:src="item.imageUrl" /> {{ item.name }}</td>
-                                                                            <td v-bind:class="getItemColor(bosses[0], item.itemLevel)">{{ item.itemLevel }}</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                        <div v-else>没有找到该角色的相关战斗记录</div>
-                                                        <div v-if="$root.guildPermission.guildManager">
-                                                            <hr />
-                                                            <input type="button" value="通过申请" class="form-btn" v-on:click="setStatus(reg.id, 4, reg.role)" />
-                                                            <input type="button" value="拒绝申请" class="form-btn" v-on:click="setStatus(reg.id, 1, reg.role)" />
-                                                            <input type="button" value="设为替补" class="form-btn" v-on:click="setStatus(reg.id, 2, reg.role)" />
-                                                            <input type="button" value="设为坦克" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 0)" />
-                                                            <input type="button" value="设为输出" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 1)" />
-                                                            <input type="button" value="设为治疗" class="form-btn" v-on:click="setStatus(reg.id, reg.status, 2)" />
-                                                            <input type="button" value="删除申请" class="form-btn" v-on:click="deleteReg(reg.id)" />
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                        <tr v-if="activity.registrations.filter(x => x.role == 1).length == 0">
+                                        <tr v-if="activity.registrations.filter(x => x.role == group.id).length == 0">
                                             <td colspan="6">暂无报名</td>
                                         </tr>
                                     </tbody>
@@ -415,6 +178,7 @@
                                                         <option value="1">输出</option>
                                                         <option value="0" v-if="canTank(ch.class)">坦克</option>
                                                         <option value="2" v-if="canHeal(ch.class)">治疗</option>
+                                                        <option value="3">消费</option>
                                                     </select>
                                                     <input class="form-input" type="button" value="报名" v-on:click="register(ch)" />
                                                 </template>
@@ -473,6 +237,7 @@
                                                         <img v-bind:src="'/assets/images/class-' + col.class + '.png'" />
                                                         <i class="fa fa-shield" v-if="col.role == 0"></i>
                                                         <i class="fa fa-plus-circle" v-if="col.role == 2"></i>
+                                                        <i class="fa fa-money" v-if="col.role == 3"></i>
                                                         <span v-if="col.status == 4">{{ col.name }}</span>
                                                         <s style="opacity: 0.5" v-else>{{ col.name }}</s>
                                                     </div>
@@ -486,6 +251,7 @@
                                         <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" />
                                         <i class="fa fa-shield" v-if="reg.role == 0"></i>
                                         <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
+                                        <i class="fa fa-money" v-if="col.role == 3"></i>
                                         <span v-if="reg.status == 4">{{ reg.name }}</span>
                                         <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
                                     </div>
@@ -518,6 +284,7 @@
                                                     <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
                                                     <i class="fa fa-shield" v-if="reg.role == 0"></i>
                                                     <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
+                                                    <i class="fa fa-money" v-if="col.role == 3"></i>
                                                     <span v-if="reg.status == 4">{{ reg.name }}</span>
                                                     <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
                                                 </span>
@@ -588,6 +355,7 @@
                 <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
                 <i class="fa fa-shield" v-if="reg.role == 0"></i>
                 <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
+                <i class="fa fa-money" v-if="col.role == 3"></i>
                 <span v-if="reg.status == 4">{{ reg.name }}</span>
                 <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
                 <i v-if="activeTask && findTask().players.some(x => x == reg.id)" class="fa fa-check-circle" style="color: greenyellow; float:right"></i>

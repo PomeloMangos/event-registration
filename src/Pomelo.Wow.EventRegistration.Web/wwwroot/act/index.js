@@ -35,19 +35,19 @@
         mobile: {
             selectedReg: null,
             action: 'accept',
-            groups: [{ id: 0, name: '坦克' }, { id: 2, name: '治疗' }, { id: 1, name: '输出' }],
             ch: null
-        }
+        },
+        groups: [{ id: 0, name: '坦克', img: 'tank.jpg' }, { id: 2, name: '治疗', img: '/assets/images/healer.jpg' }, { id: 1, name: '输出', img: '/assets/images/dps.jpg' }, { id: 3, name: '消费', img: '/assets/images/consumer.jpg' }]
     };
 };
 
-component.created = function () {
+component.created = async function () {
     app.active = 'activity';
     this.myCharactors = JSON.parse(window.localStorage.getItem('my_charactors') || '[]');
+    await this.loadItemSets();
 };
 
 component.mounted = async function () {
-    await this.loadItemSets();
     await this.loadActivity();
     this.bindDragula();
 
@@ -87,25 +87,29 @@ component.methods = {
             activity.registrations[i].charactor.equipments = activity.registrations[i].charactor.equipments.split(',').map(x => x.trim());
 
             // Finding item set
-            var sets = this.itemsets[activity.registrations[i].role.toString()];
-            for (var j = 0; j < sets.length; ++j) {
-                try {
-                    activity.registrations[i].setName = sets[j].name;
-                    activity.registrations[i].setCount = 0;
+            try {
+                var sets = this.itemsets[activity.registrations[i].role.toString()];
+                for (var j = 0; j < sets.length; ++j) {
+                    try {
+                        activity.registrations[i].setName = sets[j].name;
+                        activity.registrations[i].setCount = 0;
 
-                    for (var k = 0; k < sets[j].items.length; ++k) {
-                        if (activity.registrations[i].charactor.equipments.some(x => x == sets[j].items[k])) {
-                            ++activity.registrations[i].setCount;
+                        for (var k = 0; k < sets[j].items.length; ++k) {
+                            if (activity.registrations[i].charactor.equipments.some(x => x == sets[j].items[k])) {
+                                ++activity.registrations[i].setCount;
+                            }
                         }
-                    }
 
-                    if (activity.registrations[i].setCount > 0) {
-                        break;
+                        if (activity.registrations[i].setCount > 0) {
+                            break;
+                        }
+                    } catch (e) {
+                        continue;
                     }
-                } catch (e) {
-                    continue;
                 }
+            } catch (e) {
             }
+            
         }
         var itemReq = activity.registrations
             .filter(x => x.charactor && x.charactor.equipments)
@@ -456,6 +460,8 @@ component.methods = {
             this.setStatus(this.mobile.selectedReg.id, this.mobile.selectedReg.status, 2);
         } else if (this.mobile.action == 'tank') {
             this.setStatus(this.mobile.selectedReg.id, this.mobile.selectedReg.status, 0);
+        } else if (this.mobile.action == 'consumer') {
+            this.setStatus(this.mobile.selectedReg.id, this.mobile.selectedReg.status, 3);
         } else if (this.mobile.action == 'delete') {
             this.deleteReg(this.mobile.selectedReg.id);
         }

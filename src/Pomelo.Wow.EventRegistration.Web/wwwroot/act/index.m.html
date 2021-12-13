@@ -5,7 +5,7 @@
 
     <template v-if="activity">
         <div class="ch-wrapper" v-if="active == 'registration'">
-            <template v-for="group in mobile.groups">
+            <template v-for="group in groups">
                 <div class="section-title">
                     <span>{{ group.name }}</span>
                     <span class="right">报名：{{ activity.registrations.filter(x => x.role == group.id).length }} / 确认：{{ activity.registrations.filter(x => x.role == group.id && x.status == 4).length }} / 替补：{{ activity.registrations.filter(x => x.role == group.id && x.status == 2).length }}</span>
@@ -72,6 +72,7 @@
                                     <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
                                     <i class="fa fa-shield" v-if="reg.role == 0"></i>
                                     <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
+                                    <i class="fa fa-money" v-if="col.role == 3"></i>
                                     <span v-if="reg.status == 4">{{ reg.name }}</span>
                                     <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
                                 </span>
@@ -188,7 +189,7 @@
             </table>
         </div>
 
-        <div class="dialog" style="margin-top:-217px" v-if="mobile.selectedReg">
+        <div class="dialog" style="margin-top:-240px" v-if="mobile.selectedReg">
             <div class="dialog-header">
                 <span v-bind:class="'class-' + mobile.selectedReg.class">
                     <img class="class-img" v-bind:src="'/assets/images/class-' + mobile.selectedReg.class + '.png'" />
@@ -203,6 +204,7 @@
                 <div class="dialog-select-row" v-on:click="mobile.action = 'tank'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'tank' }"><div></div></div> 设为坦克</div>
                 <div class="dialog-select-row" v-on:click="mobile.action = 'dps'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'dps' }"><div></div></div> 设为输出</div>
                 <div class="dialog-select-row" v-on:click="mobile.action = 'hps'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'hps' }"><div></div></div> 设为治疗</div>
+                <div class="dialog-select-row" v-on:click="mobile.action = 'consumer'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'consumer' }"><div></div></div> 设为消费</div>
                 <div class="dialog-select-row" v-on:click="mobile.action = 'delete'"><div class="ratio" v-bind:class="{ 'selected': mobile.action == 'delete' }"><div></div></div> 删除申请</div>
             </div>
             <div class="dialog-footer">
@@ -214,7 +216,7 @@
                 </table>
             </div>
         </div>
-        <div class="dialog" style="margin-top:-192px" v-if="mobile.ch && !activity.registrations.filter(x => x.name == mobile.ch.name).length">
+        <div class="dialog" style="margin-top:-215px" v-if="mobile.ch && !activity.registrations.filter(x => x.name == mobile.ch.name).length">
             <div class="dialog-header">
                 <span v-bind:class="'class-' + mobile.ch.class">
                     <img class="class-img" v-bind:src="'/assets/images/class-' + mobile.ch.class + '.png'" />
@@ -228,6 +230,7 @@
                     <div class="dialog-select-row" v-on:click="mobile.ch.role = 1"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 1 }"><div></div></div> 输出</div>
                     <div class="dialog-select-row" v-bind:disabled="!canTank(mobile.ch.class)" v-on:click="canTank(mobile.ch.class) ? mobile.ch.role = 0 : null"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 0 }"><div></div></div> 坦克 <span v-if="!canTank(mobile.ch.class)">(不可用)</span></div>
                     <div class="dialog-select-row" v-bind:disabled="!canHeal(mobile.ch.class)" v-on:click="canHeal(mobile.ch.class) ? mobile.ch.role = 2 : null"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 2 }"><div></div></div> 治疗 <span v-if="!canHeal(mobile.ch.class)">(不可用)</span></div>
+                    <div class="dialog-select-row" v-on:click="mobile.ch.role = 3"><div class="ratio" v-bind:class="{ 'selected': mobile.ch.role == 3 }"><div></div></div> 消费</div>
                 </div>
                 <div style="padding-bottom: 15px; margin-top: 10px">
                     <div class="section-title">备注</div>
