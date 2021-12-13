@@ -1,6 +1,6 @@
 ﻿<div>
-    <div class="header-buttons z-100" v-if="$root.guildPermission.guildManager" v-on:click="$parent.active = 'new-act'">
-        <a class="right"><i class="fa fa-plus"></i></a>
+    <div class="header-buttons z-100" v-if="$root.guildPermission.guildManager">
+        <a class="right" v-on:click="$parent.active = 'new-act'"><i class="fa fa-plus"></i></a>
     </div>
     <div class="act-dropdown-box">
         <div class="tab-outer">

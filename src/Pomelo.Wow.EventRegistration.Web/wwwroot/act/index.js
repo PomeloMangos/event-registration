@@ -44,6 +44,15 @@
 component.created = async function () {
     app.active = 'activity';
     this.myCharactors = JSON.parse(window.localStorage.getItem('my_charactors') || '[]');
+    for (var i = 0; i < this.myCharactors.length; ++i) {
+        if (this.myCharactors.role == 0 && !this.canTank(this.myCharactors.class)) {
+            this.myCharactors.role = 1;
+        }
+
+        if (this.myCharactors.role == 2 && !this.canHeal(this.myCharactors.class)) {
+            this.myCharactors.role = 1;
+        }
+    }
     await this.loadItemSets();
 };
 

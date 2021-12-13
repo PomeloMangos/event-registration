@@ -391,6 +391,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromBody] Registration registration,
             CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrEmpty(registration.Name))
+            {
+                return ApiResult<Registration>(400, "Invalid charactor name");
+            }
+
             var activity = await db.Activities.SingleOrDefaultAsync(x => x.Id == activityId, cancellationToken);
             if (activity == null)
             {
