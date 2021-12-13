@@ -4426,10 +4426,96 @@ function weakTableToWAString(tableStr)
 	end
 end
 
+function SerializeTable(data)
+  local lines = {"{"}
+  recurseStringify(data, 1, lines)
+  table.insert(lines, "}")
+  return table.concat(lines, "\n")
+end
+
+function recurseStringify(data, level, lines)
+  for k, v in pairs(data) do
+    local lineFormat = string.rep("    ", level).."[%s] = %s"
+    local form1, form2, value
+    local kType, vType = type(k), type(v)
+    if kType == "string" then
+      form1 = "%q"
+    elseif kType == "number" then
+      form1 = "%d"
+    else
+      form1 = "%s"
+    end
+    if vType == "string" then
+      form2 = "%q"
+      v = v:gsub("\\", "\\\\"):gsub("\n", "\\n"):gsub("\"", "\\\"")
+    elseif vType == "boolean" then
+      v = tostring(v)
+      form2 = "%s"
+    else
+      form2 = "%s"
+    end
+    lineFormat = lineFormat:format(form1, form2)
+    if vType == "table" then
+      table.insert(lines, lineFormat:format(k, "{"))
+      recurseStringify(v, level + 1, lines)
+      table.insert(lines, string.rep("    ", level) .. "},")
+	else
+      table.insert(lines, lineFormat:format(k, v) .. ",")
+    end
+  end
+end
+
+function StringToTable(inString)
+    -- encoding format:
+    -- version 0: simple b64 string, compressed with LC and serialized with AS
+    -- version 1: b64 string prepended with "!", compressed with LD and serialized with AS
+    -- version 2+: b64 string prepended with !WA:N! (where N is encode version)
+    --   compressed with LD and serialized with LS
+    local _, _, encodeVersion, encoded = inString:find("^(!WA:%d+!)(.+)$")
+    if encodeVersion then
+      encodeVersion = tonumber(encodeVersion:match("%d+"))
+    else
+      encoded, encodeVersion = inString:gsub("^%!", "")
+    end
+
+    local decoded 
+	if encodeVersion > 0 then
+      decoded = LibDeflate:DecodeForPrint(encoded)
+    else
+      decoded = decodeB64(encoded)
+    end
+
+    if not decoded then
+      return "Error decoding."
+    end
+  
+    local decompressed, errorMsg = nil, "unknown compression method"
+    if encodeVersion > 0 then
+      decompressed = LibDeflate:DecompressDeflate(decoded)
+    else
+      decompressed, errorMsg = Compresser:Decompress(decoded)
+    end
+    if not(decompressed) then
+      return "Error decompressing: " .. errorMsg
+    end
+  
+    local success, deserialized
+    if encodeVersion < 2 then
+      success, deserialized = Serializer:Deserialize(decompressed)
+    else
+      success, deserialized = LibSerialize:Deserialize(decompressed)
+    end
+    if not(success) then
+      return "Error deserializing "..deserialized
+    end
+    return SerializeTable(deserialized)
+  end
+
 local arg = _G.arg
 local input = arg[1]
 local output = arg[2]
 
-local tableContent = ReadFile(input);
-local compressed = weakTableToWAString(tableContent)
-WriteFile(output, compressed);
+local waContent = ReadFile(input);
+local decompressed = StringToTable(waContent)
+
+WriteFile(output, decompressed);

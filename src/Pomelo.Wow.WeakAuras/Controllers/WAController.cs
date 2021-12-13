@@ -11,8 +11,8 @@ namespace Pomelo.Wow.WeakAuras.Controllers
     [ApiController]
     public class WAController : ControllerBase
     {
-        [HttpPost]
-        public async ValueTask<string> Post([FromServices] IConfiguration configuration)
+        [HttpPost("encode")]
+        public async ValueTask<string> PostEncode([FromServices] IConfiguration configuration)
         {
             string weaktable = "";
             using (var sr = new StreamReader(Request.Body))
@@ -34,7 +34,7 @@ namespace Pomelo.Wow.WeakAuras.Controllers
                 {
                     UseShellExecute = false,
                     FileName = configuration["LUA"],
-                    Arguments = $"wa_convert.lua {weakTablePath} {waStringPath}",
+                    Arguments = $"wa_encode.lua {weakTablePath} {waStringPath}",
                     CreateNoWindow = true
                 };
                 process.Start();
@@ -61,6 +61,60 @@ namespace Pomelo.Wow.WeakAuras.Controllers
                 }
 
                 return ret;
+            }
+        }
+
+
+        [HttpPost("decode")]
+        public async ValueTask<string> PostDecode([FromServices] IConfiguration configuration)
+        {
+            string weaktable = "";
+            using (var sr = new StreamReader(Request.Body))
+            {
+                weaktable = await sr.ReadToEndAsync();
+            }
+            if (!Directory.Exists("Temp"))
+            {
+                Directory.CreateDirectory("Temp");
+            }
+
+            var id = Guid.NewGuid();
+            var waStringPath = Path.Combine("Temp", $"{id}.wa");
+            var weakTablePath = Path.Combine("Temp", $"{id}.txt");
+            System.IO.File.WriteAllText(waStringPath, weaktable);
+            using (var process = new Process())
+            {
+                process.StartInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = false,
+                    FileName = configuration["LUA"],
+                    Arguments = $"wa_decode.lua {waStringPath} {weakTablePath}",
+                    CreateNoWindow = true
+                };
+                process.Start();
+                process.WaitForExit();
+                if (!System.IO.File.Exists(weakTablePath) || process.ExitCode != 0)
+                {
+                    if (System.IO.File.Exists(waStringPath))
+                    {
+                        System.IO.File.Delete(waStringPath);
+                    }
+                    return null;
+                }
+
+                var ret = System.IO.File.ReadAllText(weakTablePath);
+
+                if (System.IO.File.Exists(waStringPath))
+                {
+                    System.IO.File.Delete(waStringPath);
+                }
+
+                if (System.IO.File.Exists(weakTablePath))
+                {
+                    System.IO.File.Delete(weakTablePath);
+                }
+
+                return ret.Replace("\\\\\\", "\\").Replace("\\\\", "\\");
             }
         }
     }
