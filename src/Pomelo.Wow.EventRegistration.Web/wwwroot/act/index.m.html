@@ -156,7 +156,8 @@
         </div>
         <div class="ch-wrapper" v-if="active == 'reg'">
             <div class="section-title">
-                <span>请点击角色进行报名</span>
+                <span v-if="activity.status == 1">请点击角色进行报名</span>
+                <span v-else>点击角色可请假</span>
             </div>
             <table class="form-table" style="margin-bottom: 30px">
                 <tr v-for="(ch, i) in myCharactors.filter(x => x.realm == activity.realm)" v-on:click="mobile.ch = ch">
@@ -177,48 +178,55 @@
                 </tr>
             </table>
 
-            <div class="section-title">
-                <span>添加新角色 (请填写完整角色名)</span>
-            </div>
-            <table class="form-table ch-table" style="margin-bottom: 30px">
-                <colgroup>
-                    <col style="width: 80px" />
-                    <col />
-                </colgroup>
-                <tr>
-                    <td>角色名</td>
-                    <td>
-                        <input class="inline-textbox" placeholder="点击以输入角色名..." style="width: 110px" type="text" v-model="form.newCharactor.name" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>职业</td>
-                    <td>
-                        <select class="inline-textbox" v-model="form.newCharactor.class" style="background: rgb(41,40,69);">
-                            <option value="1">战士</option>
-                            <option value="2">圣骑士</option>
-                            <option value="8">萨满祭司</option>
-                            <option value="4">猎人</option>
-                            <option value="32">德鲁伊</option>
-                            <option value="16">潜行者</option>
-                            <option value="128">法师</option>
-                            <option value="64">术士</option>
-                            <option value="256">牧师</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>服务器</td>
-                    <td>
-                        <input disabled class="inline-textbox" style="width: 110px" type="text" v-model="form.newCharactor.realm" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align:center">
-                        <a style="display:block" v-on:click="addCharactor">添加角色</a>
-                    </td>
-                </tr>
-            </table>
+            <template v-if="activity.status == 1">
+                <div class="section-title">
+                    <span>添加新角色 (请填写完整角色名)</span>
+                </div>
+                <table class="form-table ch-table" style="margin-bottom: 30px">
+                    <colgroup>
+                        <col style="width: 80px" />
+                        <col />
+                    </colgroup>
+                    <tr>
+                        <td>角色名</td>
+                        <td>
+                            <input class="inline-textbox" placeholder="点击以输入角色名..." style="width: 110px" type="text" v-model="form.newCharactor.name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>职业</td>
+                        <td>
+                            <select class="inline-textbox" v-model="form.newCharactor.class" style="background: rgb(41,40,69);">
+                                <option value="1">战士</option>
+                                <option value="2">圣骑士</option>
+                                <option value="8">萨满祭司</option>
+                                <option value="4">猎人</option>
+                                <option value="32">德鲁伊</option>
+                                <option value="16">潜行者</option>
+                                <option value="128">法师</option>
+                                <option value="64">术士</option>
+                                <option value="256">牧师</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>服务器</td>
+                        <td>
+                            <input disabled class="inline-textbox" style="width: 110px" type="text" v-model="form.newCharactor.realm" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <a style="display:block" v-on:click="addCharactor">添加角色</a>
+                        </td>
+                    </tr>
+                </table>
+            </template>
+            <template v-else>
+                <div class="section-title">
+                    <span>报名截止日期已过，您已无法报名</span>
+                </div>
+            </template>
         </div>
 
         <div class="dialog" style="margin-top:-240px" v-if="mobile.selectedReg">
@@ -272,7 +280,7 @@
             <div class="dialog-footer">
                 <table>
                     <tr>
-                        <td><a v-on:click="mobileReg">报名</a></td>
+                        <td><a v-if="activity.status == 1" v-on:click="mobileReg">报名</a><span style="color: #888" v-else>无法报名</span></td>
                         <td><a style="color: rgb(255,128,128);" v-on:click="mobileDeleteCh">删除角色</a></td>
                         <td><a v-on:click="mobile.ch = null">取消</a></td>
                     </tr>
