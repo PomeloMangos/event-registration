@@ -1,7 +1,7 @@
 ﻿<div>
     <div class="header-buttons" v-if="active != 'manage'">
         <a v-on:click="mobileBack"><i class="fa fa-angle-left"></i> 返回</a>
-        <a v-on:click="active = (active == 'registration' ? 'grid' : 'registration')" class="right">切换视图</a>
+        <a v-on:click="active = (active == 'registration' ? 'grid' : 'registration')" class="right" v-if="active == 'registration' || active == 'grid'">切换视图</a>
     </div>
 
     <template v-if="activity">
