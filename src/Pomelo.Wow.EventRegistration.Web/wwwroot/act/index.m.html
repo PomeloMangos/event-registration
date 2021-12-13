@@ -61,30 +61,30 @@
                 <div class="section-title" style="color: rgb(255, 255, 255) !important; background-color: rgb(41,40,69); padding: 5px 10px; border-radius: 10px; opacity: 1; font-weight: bold;">
                     <span>{{ grid.name }}</span>
                 </div>
-                <div v-for="(grid, i) in grids.data">
+                <template v-for="(row, r) in grid.grid">
                     <div class="section-title" style="color:#fff">
-                        <span>小队{{ i + 1 }}</span>
+                        <span>小队{{ r + 1 }}</span>
                     </div>
                     <table class="form-table reg-table">
-                        <template v-for="(row, r) in grid.grid">
-                            <tr v-for="(col, c) in row" v-if="col">
-                                <td>
+                        <tr v-for="(col, c) in row" v-if="col">
+                            <td>
+                                <div>
                                     <div>
-                                        <div>
-                                            <span v-bind:class="'class-' + col.class">
-                                                <img class="class-img" v-bind:src="'/assets/images/class-' + col.class + '.png'" />
-                                                <i class="fa fa-shield" v-if="col.role == 0"></i>
-                                                <i class="fa fa-plus-circle" v-if="col.role == 2"></i>
-                                                <i class="fa fa-money" v-if="col.role == 3"></i>
-                                                {{ col.name }}
-                                            </span>
-                                        </div>
+                                        <span v-bind:class="'class-' + col.class">
+                                            <img class="class-img" v-bind:src="'/assets/images/class-' + col.class + '.png'" />
+                                            <i class="fa fa-shield" v-if="col.role == 0"></i>
+                                            <i class="fa fa-plus-circle" v-if="col.role == 2"></i>
+                                            <i class="fa fa-money" v-if="col.role == 3"></i>
+                                            <span v-if="col.status == 4">{{ col.name }}</span>
+                                            <s style="opacity: 0.5" v-else>{{ col.name }}</s>
+                                        </span>
                                     </div>
-                                </td>
-                            </tr>
-                        </template>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
-                </div>
+                </template>
+
             </template>
         </div>
         <div class="ch-wrapper" v-if="active == 'task'">
