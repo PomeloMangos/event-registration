@@ -1,8 +1,9 @@
 ﻿<div>
     <div v-if="result && result.data">
         <div class="tab-outer">
-            <a class="tab-item" v-on:click="status = 0" v-bind:class="{ active: status == 0 }">全部活动</a>
+            <a class="tab-item" v-on:click="status = 0" v-bind:class="{ active: status == 0 }">全部</a>
             <a class="tab-item" v-on:click="status = 1" v-bind:class="{ active: status == 1 }">报名中</a>
+            <a class="tab-item" v-on:click="status = 2" v-bind:class="{ active: status == 2 }">报名截止</a>
             <a class="tab-item" v-on:click="status = 3" v-bind:class="{ active: status == 3 }">进行中</a>
             <a class="tab-item" v-on:click="status = 4" v-bind:class="{ active: status == 4 }">已结束</a>
         </div>
