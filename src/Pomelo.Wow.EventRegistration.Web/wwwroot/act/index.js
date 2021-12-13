@@ -37,7 +37,7 @@
             action: 'accept',
             ch: null
         },
-        groups: [{ id: 0, name: '坦克', img: 'tank.jpg' }, { id: 2, name: '治疗', img: '/assets/images/healer.jpg' }, { id: 1, name: '输出', img: '/assets/images/dps.jpg' }, { id: 3, name: '消费', img: '/assets/images/consumer.jpg' }]
+        groups: [{ id: 0, name: '坦克', img: '/assets/images/tank.jpg' }, { id: 2, name: '治疗', img: '/assets/images/healer.jpg' }, { id: 1, name: '输出', img: '/assets/images/dps.jpg' }, { id: 3, name: '消费', img: '/assets/images/consumer.jpg' }]
     };
 };
 
