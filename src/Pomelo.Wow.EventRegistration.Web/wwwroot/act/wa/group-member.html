@@ -1,0 +1,23 @@
+﻿<div>
+
+    <table class="act-table">
+        <tr>
+            <td>自动邀请密语</td>
+            <td class="input-wrap">
+                <input type="text" v-model="whisper" class="general_input italic" placeholder="自动邀请密语" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="button" class="btn gradient mt30 color-white color-white plr50 ptb19" value="生成WA字符串" v-on:click="generate" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="input-wrap">
+                <textarea class="general_input italic" disabled v-model="waString" placeholder="生成的WA字符串"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>

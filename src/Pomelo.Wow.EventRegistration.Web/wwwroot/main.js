@@ -139,6 +139,29 @@ var app = new Vue({
                     app.open('/guild');
                 }
             }
+        },
+        getClassName: function (classId) {
+            if (classId == 1) {
+                return '战士';
+            } else if (classId == 2) {
+                return '圣骑士';
+            } else if (classId == 4) {
+                return '猎人';
+            } else if (classId == 8) {
+                return '萨满祭司';
+            } else if (classId == 16) {
+                return '潜行者';
+            } else if (classId == 32) {
+                return '德鲁伊';
+            } else if (classId == 64) {
+                return '术士';
+            } else if (classId == 128) {
+                return '法师';
+            } else if (classId == 256) {
+                return '牧师';
+            } else {
+                return '未知';
+            }
         }
     },
     watch: {
