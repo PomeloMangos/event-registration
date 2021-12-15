@@ -21,6 +21,8 @@ component.methods = {
             return;
         }
 
+        this.waString = '正在生成...';
+
         var ret = "";
         var reg = this.activity.registrations.filter(x => x.status == 4 || x.status == 2);
         for (var i = 0; i < reg.length; ++i) {
