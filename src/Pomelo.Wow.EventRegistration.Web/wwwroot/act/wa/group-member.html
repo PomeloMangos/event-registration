@@ -18,6 +18,15 @@
             </td>
         </tr>
         <tr>
+            <td style="vertical-align: top">人员选项</td>
+            <td class="input-wrap">
+                <select class="general_input input" v-model="scope">
+                    <option value="0">已通过审核人员和替补人员</option>
+                    <option value="1">仅包括已通过审核人员</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td></td>
             <td>
                 <input type="button" class="btn gradient mt30 color-white color-white plr50 ptb19" value="生成WA字符串" v-on:click="generate" />

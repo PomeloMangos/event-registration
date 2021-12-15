@@ -3,7 +3,8 @@
         activity: null,
         whisper: app.guildId || '123',
         members: '',
-        waString: null
+        waString: null,
+        scope: 0
     }
 };
 
@@ -24,7 +25,11 @@ component.methods = {
         this.waString = '正在生成...';
 
         var ret = "";
-        var reg = this.activity.registrations.filter(x => x.status == 4 || x.status == 2);
+        if (this.scope == 0) {
+            var reg = this.activity.registrations.filter(x => x.status == 4 || x.status == 2);
+        } else {
+            var reg = this.activity.registrations.filter(x => x.status == 4);
+        }
         for (var i = 0; i < reg.length; ++i) {
             ret += reg[i].name + "(" + app.getClassName(reg[i].class) + "),";
         }
