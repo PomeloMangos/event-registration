@@ -20,12 +20,7 @@ namespace Pomelo.Wow.WeakAuras.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return Content("WeakAuras Web API is running...");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,16 +1,16 @@
-{
+﻿{
   "Id": "group-member",
-  "Name": "��Mirai���Ŷӳ�Ա����",
+  "Name": "【Mirai】团队成员助手",
   "Arguments": [
     {
       "Key": "MEMBER_LIST",
       "Default": "",
-      "Description": "�Ŷӳ�Ա�б�����Ӣ�Ķ��ŷָ��ɫ���������Ӣ�����ű�ע��ְҵ"
+      "Description": "团队成员列表，用英文逗号分割，角色名后可添加英文括号备注其职业"
     },
     {
       "Key": "WHISPER_MSG",
       "Default": "123",
-      "Description": "�����������"
+      "Description": "密语进组内容"
     }
   ]
 }
