@@ -360,7 +360,7 @@
             ["outline"] = "OUTLINE",
             ["xOffset"] = 0,
             ["displayText"] = "%c",
-            ["customText"] = "function()\n    local members = split(aura_env.config[\"members\"], \",\")\n    if #members == 0 then\n        return \"\"\n    end\n\n    local ret = \"|cffff0000未进组人员：|r\r\n\"\n\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if not UnitInRaid(name) then\n            ret = ret..getColorizedCharacterName(getCharacterName(members[i]), getClassName(members[i]))..\" \r\n\"\n        end\n    end\n\n    return ret\nend",
+            ["customText"] = "function()\n    local members = split(aura_env.config[\"members\"], \",\")\n    if #members == 0 then\n        return \"\"\n    end\n\n    local ret = \"|cffff0000未进组人员：|r\\r\\n\"\n\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if not UnitInRaid(name) then\n            ret = ret..getColorizedCharacterName(getCharacterName(members[i]), getClassName(members[i]))..\" \\r\\n\"\n        end\n    end\n\n    return ret\nend",
             ["shadowYOffset"] = -1,
             ["anchorPoint"] = "CENTER",
             ["displayText_format_p_time_format"] = 0,
