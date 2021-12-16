@@ -15,12 +15,12 @@
             <td style="vertical-align: top">参数设置</td>
             <td class="input-wrap">
                 请前往任务分配页面，将任务分配后即可生成WA字符串
-                <!--<div class="task-item" v-if="taskIndex >= 0" v-for="(task, j) in tasks.groups[taskIndex].tasks">
+                <div class="task-item" v-if="taskIndex >= 0" v-for="(task, j) in tasks.groups[taskIndex].tasks">
                     <img src="/assets/images/task.svg" />
                     <span>{{ task.text }}</span>
                     <div class="task-players">
                         <template>
-                            <span v-on:click="$parent.$parent.activeTask = `${taskIndex},${j}`" v-for="reg in activity.registrations" v-if="task.players.some(x => x == reg.id)" v-bind:class="'class-' + reg.class" class="task-player">
+                            <span v-for="reg in activity.registrations" v-if="task.players.some(x => x == reg.id)" v-bind:class="'class-' + reg.class" class="task-player">
                                 <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
                                 <i class="fa fa-shield" v-if="reg.role == 0"></i>
                                 <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
@@ -28,11 +28,11 @@
                                 <span v-if="reg.status == 4">{{ reg.name }}</span>
                                 <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
                             </span>
+                            <span v-if="!task.players.length">未分配</span>
                         </template>
-                        <a v-on:click="$parent.$parent.activeTask = `${taskIndex},${j}`" style="color: #3dd0d8" v-if="$root.guildPermission.guildManager"><i class="fa fa-user"></i></a>
                     </div>
                     <div class="clear"></div>
-                </div>-->
+                </div>
             </td>
         </tr>
         <tr>

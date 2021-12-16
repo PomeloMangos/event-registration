@@ -102,15 +102,15 @@ component.mounted = function () {
                     players: []
                 },
                 {
-                    text: '全团拯救',
-                    players: []
-                },
-                {
-                    text: '全团王者/猎人力量',
+                    text: '全团拯救/猎人力量',
                     players: []
                 },
                 {
                     text: '全团回蓝',
+                    players: []
+                },
+                {
+                    text: '全团王者',
                     players: []
                 }
             ],
