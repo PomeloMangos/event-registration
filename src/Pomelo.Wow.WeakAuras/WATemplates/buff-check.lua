@@ -22,6 +22,7 @@
                         ["useStacks"] = false,
                         ["auranames"] = {
                             [1] = "进食充分",
+                            [2] = "启迪",
                         },
                         ["combinePerUnit"] = true,
                         ["useClass"] = false,
@@ -68,7 +69,7 @@
                                 ["raid"] = true,
                             },
                         },
-                        ["duration"] = "3",
+                        ["duration"] = "20",
                         ["event"] = "Ready Check",
                         ["debuffType"] = "HELPFUL",
                     },

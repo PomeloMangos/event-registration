@@ -117,7 +117,9 @@ component.mounted = function () {
             wa: 'buff-check'
         });
 
-        this.saveTasks();
+        if (app.guildPermission.guildManager) {
+            this.saveTasks();
+        }
     }
 
     this.taskIndex = this.findIndex();
@@ -140,7 +142,9 @@ component.methods = {
             return;
         }
 
-        this.saveTasks();
+        if (app.guildPermission.guildManager) {
+            this.saveTasks();
+        }
         this.waString = '正在生成...';
 
         var tasks = this.tasks.groups[this.taskIndex].tasks;

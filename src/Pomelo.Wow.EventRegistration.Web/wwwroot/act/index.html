@@ -271,7 +271,10 @@
                             <div v-if="activeTaskUI == 'normal'">
                                 <div class="task-group" v-for="(group, i) in tasks.groups">
                                     <div class="task-title">
-                                        {{ group.name }}
+                                        <img src="/assets/images/wa.png" v-if="group.wa" style="height: 20px" title="这项任务是一个WA智能任务，您可以导出这项任务的WA字符串，导入游戏后将会在游戏中显示该任务的提示信息。" />
+                                        <span v-if="!group.wa">{{ group.name }}</span>
+                                        <span v-else-if="group.name.indexOf('WeakAuras - ') == 0">{{ group.name.substr('WeakAuras - '.length) }}</span>
+                                        <span v-else>{{ group.name }}</span>
                                         <a v-if="taskEdit && $root.guildPermission.guildManager" class="form-btn" style="float:right; font-weight: normal" v-on:click="tasks.groups.splice(i, 1);$forceUpdate();"><i class="fa fa-trash"></i> 删除任务组</a>
                                     </div>
                                     <div class="task-item" v-for="(task, j) in group.tasks">
