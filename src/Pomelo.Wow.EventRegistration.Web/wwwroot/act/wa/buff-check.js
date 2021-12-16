@@ -186,6 +186,5 @@ component.methods = {
     },
     saveTasks: function () {
         qv.patch(`/api/activity/${this.activity.id}`, { extension2: JSON.stringify(this.tasks) });
-        this.$parent.$parent.loadActivity();
     }
 };

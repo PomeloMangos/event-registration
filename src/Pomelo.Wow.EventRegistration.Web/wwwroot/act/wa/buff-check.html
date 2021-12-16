@@ -20,7 +20,7 @@
                     <span>{{ task.text }}</span>
                     <div class="task-players">
                         <template>
-                            <span v-for="reg in activity.registrations" v-if="task.players.some(x => x == reg.id)" v-bind:class="'class-' + reg.class" class="task-player">
+                            <span v-for="reg in activity.registrations" v-on:click="$parent.$parent.activeTask = `${taskIndex},${j}`" v-if="task.players.some(x => x == reg.id)" v-bind:class="'class-' + reg.class" class="task-player">
                                 <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
                                 <i class="fa fa-shield" v-if="reg.role == 0"></i>
                                 <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
@@ -28,7 +28,7 @@
                                 <span v-if="reg.status == 4">{{ reg.name }}</span>
                                 <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
                             </span>
-                            <span v-if="!task.players.length">未分配</span>
+                            <a style="color: #3dd0d8" v-if="!task.players.length" v-on:click="$parent.$parent.activeTask = `${taskIndex},${j}`">未分配</a>
                         </template>
                     </div>
                     <div class="clear"></div>
