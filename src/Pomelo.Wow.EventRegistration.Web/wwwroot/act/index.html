@@ -25,7 +25,7 @@
                             <a class="tab-item" v-on:click="active = 'grid'; bindDragula()" v-bind:class="{ active: active == 'grid' }"><i class="fa fa-braille"></i> 团队框架</a>
                             <a class="tab-item" v-on:click="active = 'task'" v-bind:class="{ active: active == 'task' }"><i class="fa fa-puzzle-piece"></i> 任务分配</a>
                             <a class="tab-item" v-on:click="active = 'wa'" v-bind:class="{ active: active == 'wa' }"><i class="fa fa-bolt"></i> WeakAuras</a>
-                            <a class="tab-item" v-on:click="active = 'manage';" v-bind:class="{ active: active == 'manage' }" v-if="$root.guildPermission.guildManager"><i class="fa fa-cog"></i> 管理活动</a>
+                            <a class="tab-item" v-on:click="active = 'manage'" v-bind:class="{ active: active == 'manage' }" v-if="$root.guildPermission.guildManager"><i class="fa fa-cog"></i> 管理活动</a>
                         </div>
                         <div v-if="active == 'registration'">
                             <h5>报名情况</h5>

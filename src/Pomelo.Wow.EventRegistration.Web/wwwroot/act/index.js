@@ -66,7 +66,7 @@ component.mounted = async function () {
 
     this.$container2 = new PomeloComponentContainer('#act-wa-container', app, this, function (view) {
     }, function () { });
-    this.$container2.open(`/act/wa`, { activity: this.activity });
+    this.$container2.open(`/act/wa`, { activity: this.activity, tasks: this.tasks, grids: this.grids });
 };
 
 component.methods = {
