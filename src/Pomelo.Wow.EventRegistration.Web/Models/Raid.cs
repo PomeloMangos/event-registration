@@ -19,5 +19,7 @@
         public int ItemLevelFarm { get; set; }
 
         public float EstimatedDuration { get; set; }
+
+        public string Enemies { get; set; }
     }
 }

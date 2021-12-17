@@ -20,6 +20,12 @@
                                 <span>BUFF检查</span>
                             </a>
                         </li>
+                        <li class="color1" v-bind:class="{ 'active': active == 'auto-mark' }">
+                            <a v-on:click="open('auto-mark')">
+                                <i class="fa fa-fw fa-bolt"></i>
+                                <span>自动标记</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

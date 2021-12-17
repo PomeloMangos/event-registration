@@ -16,6 +16,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public DbSet<GuildManager> GuildManagers { get; set; }
 
+        public DbSet<GuildVariable> GuildVariables { get; set; }
+
         public DbSet<Item> Items { get; set; }
 
         public DbSet<ItemSet> ItemSets { get; set; }
@@ -34,33 +36,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public async ValueTask InitAsync()
         {
-            if (Database.EnsureCreated())
+            if (await Database.EnsureCreatedAsync())
             {
-                Raids.Add(new Raid
-                {
-                    Id = 1,
-                    BossList = "不稳定的海度斯,鱼斯拉,盲眼者莱欧瑟拉斯,深水领主卡拉瑟雷斯,莫洛格里·踏潮者,瓦丝琪",
-                    Name = "毒蛇神殿",
-                    ItemLevelEntrance = 115,
-                    ItemLevelPreference = 120,
-                    ItemLevelGraduated = 128,
-                    ItemLevelFarm = 130,
-                    EstimatedDuration = 2.5f
-                });
-
-                Raids.Add(new Raid
-                {
-                    Id = 2,
-                    BossList = "奥,空灵机甲,大星术师索兰莉安,凯尔萨斯·逐日者",
-                    Name = "风暴要塞",
-                    ItemLevelEntrance = 115,
-                    ItemLevelPreference = 120,
-                    ItemLevelGraduated = 128,
-                    ItemLevelFarm = 130,
-                    EstimatedDuration = 2f
-                });
-
-                await SaveChangesAsync();
+                // Init 
             }
         }
 
@@ -90,6 +68,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
             builder.Entity<GuildManager>(e =>
             {
                 e.HasKey(x => new { x.GuildId, x.UserId });
+            });
+
+            builder.Entity<GuildVariable>(e =>
+            {
+                e.HasKey(x => new { x.GuildId, x.Key });
             });
 
             builder.Entity<User>(e =>

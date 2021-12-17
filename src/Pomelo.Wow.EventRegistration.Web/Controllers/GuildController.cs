@@ -12,7 +12,6 @@ using Pomelo.Wow.EventRegistration.Web.Models.ViewModels;
 
 namespace Pomelo.Wow.EventRegistration.Web.Controllers
 {
-    #region Common
     [Route("api/[controller]")]
     [ApiController]
     public class GuildController : ControllerBase
@@ -25,6 +24,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             _logger = logger;
         }
 
+        #region Common
         [HttpGet]
         public async ValueTask<PagedApiResult<Guild>> Get(
             [FromServices] WowContext db,
@@ -354,6 +354,46 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             await db.SaveChangesAsync(cancellationToken);
 
             return ApiResult(200, "已删除价目表");
+        }
+        #endregion
+
+        #region Variables
+        [HttpGet("{guildId}/var/{key}")]
+        public async ValueTask<ApiResult<GuildVariable>> GetVariable(
+            [FromServices] WowContext db,
+            [FromRoute] string guildId,
+            [FromRoute] string key,
+            CancellationToken cancellationToken = default)
+        {
+            var variable = await db.GuildVariables.SingleOrDefaultAsync(x => x.GuildId == guildId, cancellationToken);
+            if (variable == null)
+            {
+                return ApiResult<GuildVariable>(404, "没有找到变量");
+            }
+
+            return ApiResult(variable);
+        }
+
+        [HttpPut("{guildId}/var/{key}")]
+        public async ValueTask<ApiResult<GuildVariable>> PutVariable(
+            [FromServices] WowContext db,
+            [FromRoute] string guildId,
+            [FromRoute] string key,
+            [FromBody] GuildVariable variable,
+            CancellationToken cancellationToken = default)
+        {
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, false, cancellationToken))
+            {
+                return ApiResult<GuildVariable>(403, "您没有权限这样做");
+            }
+
+            variable.GuildId = guildId;
+            variable.Key = key;
+
+            db.GuildVariables.Add(variable);
+            await db.SaveChangesAsync(cancellationToken);
+
+            return ApiResult(variable);
         }
         #endregion
     }
