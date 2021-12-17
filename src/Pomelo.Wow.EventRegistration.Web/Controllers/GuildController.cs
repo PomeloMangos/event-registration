@@ -375,6 +375,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         }
 
         [HttpPut("{guildId}/var/{key}")]
+        [HttpPost("{guildId}/var/{key}")]
+        [HttpPatch("{guildId}/var/{key}")]
         public async ValueTask<ApiResult<GuildVariable>> PutVariable(
             [FromServices] WowContext db,
             [FromRoute] string guildId,
@@ -387,10 +389,20 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<GuildVariable>(403, "您没有权限这样做");
             }
 
-            variable.GuildId = guildId;
-            variable.Key = key;
 
-            db.GuildVariables.Add(variable);
+            var _variable = await db.GuildVariables.SingleOrDefaultAsync(x => x.GuildId == guildId, cancellationToken);
+            if (_variable == null)
+            {
+                variable.GuildId = guildId;
+                variable.Key = key;
+
+                db.GuildVariables.Add(variable);
+            }
+            else
+            {
+                _variable.Value = variable.Value;
+            }
+
             await db.SaveChangesAsync(cancellationToken);
 
             return ApiResult(variable);

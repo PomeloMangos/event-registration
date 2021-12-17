@@ -18,28 +18,29 @@
         <tr>
             <td style="vertical-align: top">参数设置</td>
             <td class="input-wrap">
-                <div class="task-item" v-if="taskIndex >= 0" v-for="(task, j) in tasks.groups[taskIndex].tasks">
-                    <img src="/assets/images/task.svg" />
-                    <span>{{ task.text }}</span>
-                    <div class="task-players">
-                        <template>
-                            <span v-for="reg in activity.registrations" v-on:click="$parent.$parent.activeTask = `${taskIndex},${j}`" v-if="task.players.some(x => x == reg.id)" v-bind:class="'class-' + reg.class" class="task-player">
-                                <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
-                                <i class="fa fa-shield" v-if="reg.role == 0"></i>
-                                <i class="fa fa-plus-circle" v-if="reg.role == 2"></i>
-                                <i class="fa fa-money" v-if="reg.role == 3"></i>
-                                <span v-if="reg.status == 4">{{ reg.name }}</span>
-                                <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
-                            </span>
-                            <a style="color: #3dd0d8" v-if="!task.players.length" v-on:click="$parent.$parent.activeTask = `${taskIndex},${j}`">未分配</a>
-                        </template>
+                <div class="wa-group-outer" v-for="(group, i) in groups" v-bind:data-wa-mark-group="i">
+                    <div class="wa-group-title">
+                        <input type="text" v-model="group.name" class="inline-textbox" />
+                        <a class="float-right" v-on:click="deleteGroup(i, group.name)"><i class="fa fa-trash"></i>删除</a>
                     </div>
-                    <div class="clear"></div>
+                    <div class="wa-group-inner">
+                        <div class="wa-marks-outer">
+                            <span>选择图标</span>
+                            <img v-for="mark in marks" v-on:click="toggleMark(group, mark)" v-bind:class="{ 'active': group.marks.some(x => x == mark) }" v-bind:src="'/assets/images/tar_' + mark + '.png'" />
+                        </div>
+                        <div class="wa-marks-names">
+                            <div><span>选择目标</span></div>
+                            <div class="wa-marks-name" v-on:click="toggleName(group, enemy)" v-for="enemy in enemies" v-bind:class="{ 'active': group.names.some(x => x == enemy) }">{{ enemy }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <input type="button" v-on:click="addGroup" value="添加分组" class="button" />
                 </div>
             </td>
         </tr>
         <tr>
-            <td></td>
+            <td>WA字符串</td>
             <td>
                 <input type="button" class="btn gradient mt30 color-white color-white plr50 ptb19" value="生成WA字符串" v-on:click="generate" />
             </td>

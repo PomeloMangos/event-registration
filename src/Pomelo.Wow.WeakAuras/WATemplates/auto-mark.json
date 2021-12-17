@@ -1,21 +1,21 @@
-{
+ï»¿{
   "Id": "auto-mark",
-  "Name": "¡¾Mirai¡¿×Ô¶¯±ê¼Ç",
+  "Name": "ã€Miraiã€‘è‡ªåŠ¨æ ‡è®°",
   "Arguments": [
     {
       "Key": "GROUP_COUNT",
       "Default": "0",
-      "Description": "±ê¼Ç·Ö×éÊıÁ¿"
+      "Description": "æ ‡è®°åˆ†ç»„æ•°é‡"
     },
     {
       "Key": "GROUP_DEF",
       "Default": "",
-      "Description": "±ê¼Ç·Ö×é¶¨Òå£¨´úÂë£©"
+      "Description": "æ ‡è®°åˆ†ç»„å®šä¹‰ï¼ˆä»£ç ï¼‰"
     },
     {
       "Key": "NAMES_DEF",
       "Default": "",
-      "Description": "¹ÖÎïÃû³Æ¶¨Òå£¨´úÂë£©"
+      "Description": "æ€ªç‰©åç§°å®šä¹‰ï¼ˆä»£ç ï¼‰"
     }
   ]
 }
