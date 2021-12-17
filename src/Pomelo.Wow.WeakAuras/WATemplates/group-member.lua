@@ -2,17 +2,26 @@
     ["c"] = {
         [1] = {
             ["iconSource"] = -1,
-            ["color"] = {
-                [1] = 1,
-                [2] = 1,
-                [3] = 1,
-                [4] = 1,
+            ["authorOptions"] = {
             },
             ["yOffset"] = 0,
             ["anchorPoint"] = "CENTER",
             ["cooldownSwipe"] = true,
             ["cooldownEdge"] = false,
-            ["icon"] = true,
+            ["actions"] = {
+                ["start"] = {
+                    ["do_custom"] = true,
+                    ["custom"] = "local button = CreateFrame(\"Button\", \"resetAutoMarkButton\", UIParent, \"UIPanelButtonTemplate\")\nbutton:SetPoint(\"BOTTOMLEFT\", nil, \"BOTTOMLEFT\", 100, 0)\nbutton:SetSize(100,30)\nbutton:RegisterForClicks(\"AnyUp\", false)\nbutton:SetScript(\"OnClick\", function(self)\n        print(_G[\"mirai_members\"])\n        local members = split(_G[\"mirai_members\"], \",\")\n        for i=1, #members do\n            local name = getCharacterName(members[i])\n            if not UnitInRaid(name) then\n                InviteUnit(name)\n            end\n        end\nend)\n\nlocal fo = button:CreateFontString()\nfo:SetFont(\"Fonts/ARHei.TTF\",12)\nfo:SetPoint(\"TOPLEFT\", button, \"TOPLEFT\", 100/6,-40/4)\nfo:SetText(\"一键邀请\")\nbutton:SetFontString(fo)\naura_env.invite_btn = button;",
+                },
+                ["init"] = {
+                    ["custom"] = "_G[\"mirai_members\"] = aura_env.config[\"members\"]\nprint(_G[\"mirai_members\"])\n\nfunction split(str,reps)\n    local resultStrList = {}\n    string.gsub(str,'[^'..reps..']+',function (w)\n            table.insert(resultStrList,w)\n    end)\n    return resultStrList\nend\n\nfunction string.indexOf(s, pattern, startIndex)\n    startIndex = startIndex or 0\n    local idx = string.find(s, pattern, startIndex, true)\n    return idx or -1\nend\n\nfunction getCharacterName(text)\n    local idx = string.indexOf(text, \"(\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction shortPlayerName(text)\n    local idx = string.indexOf(text, \"-\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction getClassName(text)\n    local idx = string.indexOf(text, \"(\")\n    local rightIdx = string.indexOf(text, \")\")\n    if idx == -1 or rightIdx == -1 then\n        return \"\"\n    end\n    \n    local ret = string.sub(text, idx + 1, rightIdx - 1)\n    return ret\nend\n\nfunction isCharacterInRegistrationList(character)\n    character = shortPlayerName(character)\n    local members = split(aura_env.config[\"members\"], \",\")\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if character == name then\n            return true\n        end\n    end\n    \n    return false\nend\n\nfunction getColorizedCharacterName(name, class)\n    if class == \"战士\" then\n        return \"|cFFC79C6E\"..name..\"|r\"\n    elseif class == \"圣骑士\" then\n        return \"|cFFF58CBA\"..name..\"|r\"\n    elseif class == \"猎人\" then\n        return \"|cFFABD473\"..name..\"|r\"\n    elseif class == \"萨满祭司\" then\n        return \"|cFF0070DE\"..name..\"|r\"\n    elseif class == \"德鲁伊\" then\n        return \"|cFFFF7D0A\"..name..\"|r\"\n    elseif class == \"潜行者\" then\n        return \"|cFFFFF569\"..name..\"|r\"\n    elseif class == \"法师\" then\n        return \"|cFF69CCF0\"..name..\"|r\"\n    elseif class == \"牧师\" then\n        return \"|cFFFFFFFF\"..name..\"|r\"\n    elseif class == \"术士\" then\n        return \"|cFF9482C9\"..name..\"|r\"\n    else\n        local ret = WA_ClassColorName(name)\n        if string.len(ret) ~= 0 then\n            return ret\n        else\n            return name\n        end\n    end\nend",
+                    ["do_custom"] = true,
+                },
+                ["finish"] = {
+                    ["do_custom"] = true,
+                    ["custom"] = "local button = aura_env.invite_btn\naura_env.invite_btn = nil\nbutton:Hide()\nbutton:SetParent(nil)\nbutton:ClearAllPoints()\nbutton = nil",
+                },
+            },
             ["triggers"] = {
                 [1] = {
                     ["trigger"] = {
@@ -93,7 +102,7 @@
                 [2] = {
                     ["glowFrequency"] = 0.25,
                     ["type"] = "subglow",
-                    ["useGlowColor"] = false,
+                    ["glowXOffset"] = 0,
                     ["glowType"] = "buttonOverlay",
                     ["glowLength"] = 10,
                     ["glowYOffset"] = 0,
@@ -103,7 +112,7 @@
                         [3] = 1,
                         [4] = 1,
                     },
-                    ["glowXOffset"] = 0,
+                    ["useGlowColor"] = false,
                     ["glow"] = false,
                     ["glowScale"] = 1,
                     ["glowThickness"] = 1,
@@ -131,35 +140,28 @@
                 },
             },
             ["regionType"] = "icon",
-            ["authorOptions"] = {
-            },
+            ["icon"] = true,
             ["cooldown"] = false,
             ["displayIcon"] = 135978,
-            ["alpha"] = 1,
             ["zoom"] = 0,
-            ["anchorFrameType"] = "SCREEN",
+            ["cooldownTextDisabled"] = false,
+            ["alpha"] = 1,
             ["tocversion"] = 20502,
             ["id"] = "一键邀请",
-            ["actions"] = {
-                ["start"] = {
-                    ["do_custom"] = true,
-                    ["custom"] = "local button = CreateFrame(\"Button\", \"resetAutoMarkButton\", UIParent, \"UIPanelButtonTemplate\")\nbutton:SetPoint(\"BOTTOMLEFT\", nil, \"BOTTOMLEFT\", 100, 0)\nbutton:SetSize(100,30)\nbutton:RegisterForClicks(\"AnyUp\", false)\nbutton:SetScript(\"OnClick\", function(self)\n        local members = split(aura_env.config[\"members\"], \",\")\n        for i=1, #members do\n            local name = getCharacterName(members[i])\n            if not UnitInRaid(name) then\n                InviteUnit(name)\n            end\n        end\nend)\n\nlocal fo = button:CreateFontString()\nfo:SetFont(\"Fonts/ARHei.TTF\",12)\nfo:SetPoint(\"TOPLEFT\", button, \"TOPLEFT\", 100/6,-40/4)\nfo:SetText(\"一键邀请\")\nbutton:SetFontString(fo)\naura_env.invite_btn = button;",
-                },
-                ["init"] = {
-                },
-                ["finish"] = {
-                    ["do_custom"] = true,
-                    ["custom"] = "local button = aura_env.invite_btn\naura_env.invite_btn = nil\nbutton:Hide()\nbutton:SetParent(nil)\nbutton:ClearAllPoints()\nbutton = nil",
-                },
+            ["color"] = {
+                [1] = 1,
+                [2] = 1,
+                [3] = 1,
+                [4] = 1,
             },
             ["frameStrata"] = 1,
-            ["width"] = 1,
+            ["anchorFrameType"] = "SCREEN",
             ["xOffset"] = -1980,
             ["uid"] = "zd5(q(aOTi0",
             ["inverse"] = false,
             ["config"] = {
             },
-            ["cooldownTextDisabled"] = false,
+            ["width"] = 1,
             ["conditions"] = {
             },
             ["information"] = {
@@ -168,17 +170,44 @@
         },
         [2] = {
             ["iconSource"] = 0,
-            ["color"] = {
-                [1] = 1,
-                [2] = 1,
-                [3] = 1,
-                [4] = 1,
+            ["authorOptions"] = {
+                [1] = {
+                    ["type"] = "input",
+                    ["useDesc"] = false,
+                    ["width"] = 2,
+                    ["default"] = "",
+                    ["key"] = "members",
+                    ["name"] = "报名人员，用逗号分割",
+                    ["length"] = 10,
+                    ["multiline"] = true,
+                    ["useLength"] = false,
+                },
+                [2] = {
+                    ["type"] = "input",
+                    ["useDesc"] = false,
+                    ["width"] = 2,
+                    ["default"] = "",
+                    ["key"] = "whisperMessage",
+                    ["name"] = "密语进组内容",
+                    ["length"] = 10,
+                    ["multiline"] = false,
+                    ["useLength"] = false,
+                },
             },
             ["yOffset"] = 0,
             ["anchorPoint"] = "CENTER",
             ["cooldownSwipe"] = true,
             ["cooldownEdge"] = false,
-            ["icon"] = true,
+            ["actions"] = {
+                ["start"] = {
+                },
+                ["init"] = {
+                    ["do_custom"] = true,
+                    ["custom"] = "_G[\"mirai_members\"] = aura_env.config[\"members\"]\nprint(_G[\"mirai_members\"])\n\nfunction split(str,reps)\n    local resultStrList = {}\n    string.gsub(str,'[^'..reps..']+',function (w)\n            table.insert(resultStrList,w)\n    end)\n    return resultStrList\nend\n\nfunction string.indexOf(s, pattern, startIndex)\n    startIndex = startIndex or 0\n    local idx = string.find(s, pattern, startIndex, true)\n    return idx or -1\nend\n\nfunction getCharacterName(text)\n    local idx = string.indexOf(text, \"(\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction shortPlayerName(text)\n    local idx = string.indexOf(text, \"-\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction getClassName(text)\n    local idx = string.indexOf(text, \"(\")\n    local rightIdx = string.indexOf(text, \")\")\n    if idx == -1 or rightIdx == -1 then\n        return \"\"\n    end\n    \n    local ret = string.sub(text, idx + 1, rightIdx - 1)\n    return ret\nend\n\nfunction isCharacterInRegistrationList(character)\n    character = shortPlayerName(character)\n    local members = split(aura_env.config[\"members\"], \",\")\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if character == name then\n            return true\n        end\n    end\n    \n    return false\nend\n\nfunction getColorizedCharacterName(name, class)\n    if class == \"战士\" then\n        return \"|cFFC79C6E\"..name..\"|r\"\n    elseif class == \"圣骑士\" then\n        return \"|cFFF58CBA\"..name..\"|r\"\n    elseif class == \"猎人\" then\n        return \"|cFFABD473\"..name..\"|r\"\n    elseif class == \"萨满祭司\" then\n        return \"|cFF0070DE\"..name..\"|r\"\n    elseif class == \"德鲁伊\" then\n        return \"|cFFFF7D0A\"..name..\"|r\"\n    elseif class == \"潜行者\" then\n        return \"|cFFFFF569\"..name..\"|r\"\n    elseif class == \"法师\" then\n        return \"|cFF69CCF0\"..name..\"|r\"\n    elseif class == \"牧师\" then\n        return \"|cFFFFFFFF\"..name..\"|r\"\n    elseif class == \"术士\" then\n        return \"|cFF9482C9\"..name..\"|r\"\n    else\n        local ret = WA_ClassColorName(name)\n        if string.len(ret) ~= 0 then\n            return ret\n        else\n            return name\n        end\n    end\nend",
+                },
+                ["finish"] = {
+                },
+            },
             ["triggers"] = {
                 [1] = {
                     ["trigger"] = {
@@ -187,8 +216,8 @@
                         ["event"] = "Health",
                         ["subeventPrefix"] = "SPELL",
                         ["custom_hide"] = "timed",
-                        ["custom"] = "function(event, text, playerName)\n    if event == \"CHAT_MSG_WHISPER\" then\n        if text ~= aura_env.config[\"whisperMessage\"] then\n            return\n        end\n        \n        if not isCharacterInRegistrationList(playerName) then\n            SendChatMessage(\"您没有报名本次活动，无法自动邀请您进入团队\", \"WHISPER\", \"Common\", playerName);\n            return\n        end\n        \n        InviteUnit(playerName)\n    end\nend",
                         ["events"] = "CHAT_MSG_WHISPER",
+                        ["custom"] = "function(event, text, playerName)\n    if event == \"CHAT_MSG_WHISPER\" then\n        if text ~= aura_env.config[\"whisperMessage\"] then\n            return\n        end\n        \n        if not isCharacterInRegistrationList(playerName) then\n            SendChatMessage(\"您没有报名本次活动，无法自动邀请您进入团队\", \"WHISPER\", \"Common\", playerName);\n            return\n        end\n        \n        InviteUnit(playerName)\n    end\nend",
                         ["spellIds"] = {
                         },
                         ["custom_type"] = "event",
@@ -261,7 +290,7 @@
                 [2] = {
                     ["glowFrequency"] = 0.25,
                     ["type"] = "subglow",
-                    ["useGlowColor"] = false,
+                    ["glowXOffset"] = 0,
                     ["glowType"] = "buttonOverlay",
                     ["glowLength"] = 10,
                     ["glowYOffset"] = 0,
@@ -271,7 +300,7 @@
                         [3] = 1,
                         [4] = 1,
                     },
-                    ["glowXOffset"] = 0,
+                    ["useGlowColor"] = false,
                     ["glow"] = false,
                     ["glowScale"] = 1,
                     ["glowThickness"] = 1,
@@ -299,49 +328,22 @@
                 },
             },
             ["regionType"] = "icon",
-            ["authorOptions"] = {
-                [1] = {
-                    ["type"] = "input",
-                    ["useDesc"] = false,
-                    ["width"] = 2,
-                    ["default"] = "",
-                    ["key"] = "members",
-                    ["multiline"] = true,
-                    ["length"] = 10,
-                    ["name"] = "报名人员，用逗号分割",
-                    ["useLength"] = false,
-                },
-                [2] = {
-                    ["type"] = "input",
-                    ["useDesc"] = false,
-                    ["width"] = 2,
-                    ["default"] = "",
-                    ["key"] = "whisperMessage",
-                    ["multiline"] = false,
-                    ["length"] = 10,
-                    ["name"] = "密语进组内容",
-                    ["useLength"] = false,
-                },
-            },
+            ["icon"] = true,
             ["cooldown"] = false,
             ["displayIcon"] = 136058,
-            ["alpha"] = 1,
             ["zoom"] = 0,
-            ["anchorFrameType"] = "SCREEN",
+            ["cooldownTextDisabled"] = false,
+            ["alpha"] = 1,
             ["tocversion"] = 20502,
             ["id"] = "密语自动邀请",
-            ["actions"] = {
-                ["start"] = {
-                },
-                ["init"] = {
-                    ["do_custom"] = true,
-                    ["custom"] = "function split(str,reps)\n    local resultStrList = {}\n    string.gsub(str,'[^'..reps..']+',function (w)\n            table.insert(resultStrList,w)\n    end)\n    return resultStrList\nend\n\nfunction string.indexOf(s, pattern, startIndex)\n    startIndex = startIndex or 0\n    local idx = string.find(s, pattern, startIndex, true)\n    return idx or -1\nend\n\nfunction getCharacterName(text)\n    local idx = string.indexOf(text, \"(\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction shortPlayerName(text)\n    local idx = string.indexOf(text, \"-\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction getClassName(text)\n    local idx = string.indexOf(text, \"(\")\n    local rightIdx = string.indexOf(text, \")\")\n    if idx == -1 or rightIdx == -1 then\n        return \"\"\n    end\n    \n    local ret = string.sub(text, idx + 1, rightIdx - 1)\n    return ret\nend\n\nfunction isCharacterInRegistrationList(character)\n    character = shortPlayerName(character)\n    local members = split(aura_env.config[\"members\"], \",\")\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if character == name then\n            return true\n        end\n    end\n    \n    return false\nend\n\nfunction getColorizedCharacterName(name, class)\n    if class == \"战士\" then\n        return \"|cFFC79C6E\"..name..\"|r\"\n    elseif class == \"圣骑士\" then\n        return \"|cFFF58CBA\"..name..\"|r\"\n    elseif class == \"猎人\" then\n        return \"|cFFABD473\"..name..\"|r\"\n    elseif class == \"萨满祭司\" then\n        return \"|cFF0070DE\"..name..\"|r\"\n    elseif class == \"德鲁伊\" then\n        return \"|cFFFF7D0A\"..name..\"|r\"\n    elseif class == \"潜行者\" then\n        return \"|cFFFFF569\"..name..\"|r\"\n    elseif class == \"法师\" then\n        return \"|cFF69CCF0\"..name..\"|r\"\n    elseif class == \"牧师\" then\n        return \"|cFFFFFFFF\"..name..\"|r\"\n    elseif class == \"术士\" then\n        return \"|cFF9482C9\"..name..\"|r\"\n    else\n        local ret = WA_ClassColorName(name)\n        if string.len(ret) ~= 0 then\n            return ret\n        else\n            return name\n        end\n    end\nend",
-                },
-                ["finish"] = {
-                },
+            ["color"] = {
+                [1] = 1,
+                [2] = 1,
+                [3] = 1,
+                [4] = 1,
             },
             ["frameStrata"] = 1,
-            ["width"] = 64,
+            ["anchorFrameType"] = "SCREEN",
             ["xOffset"] = 0,
             ["uid"] = "TTDwQrKX9pA",
             ["inverse"] = false,
@@ -349,7 +351,7 @@
                 ["whisperMessage"] = "<WHISPER_MSG>",
                 ["members"] = "<MEMBER_LIST>",
             },
-            ["cooldownTextDisabled"] = false,
+            ["width"] = 64,
             ["conditions"] = {
             },
             ["information"] = {
@@ -359,9 +361,9 @@
         [3] = {
             ["outline"] = "OUTLINE",
             ["xOffset"] = 0,
-            ["displayText"] = "%c",
-            ["customText"] = "function()\n    local members = split(aura_env.config[\"members\"], \",\")\n    if #members == 0 then\n        return \"\"\n    end\n\n    local ret = \"|cffff0000未进组人员：|r\\r\\n\"\n\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if not UnitInRaid(name) then\n            ret = ret..getColorizedCharacterName(getCharacterName(members[i]), getClassName(members[i]))..\" \\r\\n\"\n        end\n    end\n\n    return ret\nend",
-            ["shadowYOffset"] = -1,
+            ["displayText_format_p_time_dynamic_threshold"] = 60,
+            ["customText"] = "function()\n    local members = split(aura_env.config[\"members\"], \",\")\n    if #members == 0 then\n        return \"\"\n    end\n\n    local ret = \"|cffff0000未进组人员：|r\r\n\"\n\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if not UnitInRaid(name) then\n            ret = ret..getColorizedCharacterName(getCharacterName(members[i]), getClassName(members[i]))..\" \r\n\"\n        end\n    end\n\n    return ret\nend",
+            ["yOffset"] = 0,
             ["anchorPoint"] = "CENTER",
             ["displayText_format_p_time_format"] = 0,
             ["customTextUpdate"] = "update",
@@ -371,7 +373,7 @@
                 },
                 ["init"] = {
                     ["do_custom"] = true,
-                    ["custom"] = "function split(str,reps)\n    local resultStrList = {}\n    string.gsub(str,'[^'..reps..']+',function (w)\n            table.insert(resultStrList,w)\n    end)\n    return resultStrList\nend\n\nfunction string.indexOf(s, pattern, startIndex)\n    startIndex = startIndex or 0\n    local idx = string.find(s, pattern, startIndex, true)\n    return idx or -1\nend\n\nfunction getCharacterName(text)\n    local idx = string.indexOf(text, \"(\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction shortPlayerName(text)\n    local idx = string.indexOf(text, \"-\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction getClassName(text)\n    local idx = string.indexOf(text, \"(\")\n    local rightIdx = string.indexOf(text, \")\")\n    if idx == -1 or rightIdx == -1 then\n        return \"\"\n    end\n    \n    local ret = string.sub(text, idx + 1, rightIdx - 1)\n    return ret\nend\n\nfunction isCharacterInRegistrationList(character)\n    character = shortPlayerName(character)\n    local members = split(aura_env.config[\"members\"], \",\")\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if character == name then\n            return true\n        end\n    end\n    \n    return false\nend\n\nfunction getColorizedCharacterName(name, class)\n    if class == \"战士\" then\n        return \"|cFFC79C6E\"..name..\"|r\"\n    elseif class == \"圣骑士\" then\n        return \"|cFFF58CBA\"..name..\"|r\"\n    elseif class == \"猎人\" then\n        return \"|cFFABD473\"..name..\"|r\"\n    elseif class == \"萨满祭司\" then\n        return \"|cFF0070DE\"..name..\"|r\"\n    elseif class == \"德鲁伊\" then\n        return \"|cFFFF7D0A\"..name..\"|r\"\n    elseif class == \"潜行者\" then\n        return \"|cFFFFF569\"..name..\"|r\"\n    elseif class == \"法师\" then\n        return \"|cFF69CCF0\"..name..\"|r\"\n    elseif class == \"牧师\" then\n        return \"|cFFFFFFFF\"..name..\"|r\"\n    elseif class == \"术士\" then\n        return \"|cFF9482C9\"..name..\"|r\"\n    else\n        local ret = WA_ClassColorName(name)\n        if string.len(ret) ~= 0 then\n            return ret\n        else\n            return name\n        end\n    end\nend",
+                    ["custom"] = "_G[\"mirai_members\"] = aura_env.config[\"members\"]\nprint(_G[\"mirai_members\"])\n\nfunction split(str,reps)\n    local resultStrList = {}\n    string.gsub(str,'[^'..reps..']+',function (w)\n            table.insert(resultStrList,w)\n    end)\n    return resultStrList\nend\n\nfunction string.indexOf(s, pattern, startIndex)\n    startIndex = startIndex or 0\n    local idx = string.find(s, pattern, startIndex, true)\n    return idx or -1\nend\n\nfunction getCharacterName(text)\n    local idx = string.indexOf(text, \"(\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction shortPlayerName(text)\n    local idx = string.indexOf(text, \"-\")\n    if idx == -1 then\n        return text\n    end\n    \n    return string.sub(text, 0, idx - 1)\nend\n\nfunction getClassName(text)\n    local idx = string.indexOf(text, \"(\")\n    local rightIdx = string.indexOf(text, \")\")\n    if idx == -1 or rightIdx == -1 then\n        return \"\"\n    end\n    \n    local ret = string.sub(text, idx + 1, rightIdx - 1)\n    return ret\nend\n\nfunction isCharacterInRegistrationList(character)\n    character = shortPlayerName(character)\n    local members = split(aura_env.config[\"members\"], \",\")\n    for i=1, #members do\n        local name = getCharacterName(members[i])\n        if character == name then\n            return true\n        end\n    end\n    \n    return false\nend\n\nfunction getColorizedCharacterName(name, class)\n    if class == \"战士\" then\n        return \"|cFFC79C6E\"..name..\"|r\"\n    elseif class == \"圣骑士\" then\n        return \"|cFFF58CBA\"..name..\"|r\"\n    elseif class == \"猎人\" then\n        return \"|cFFABD473\"..name..\"|r\"\n    elseif class == \"萨满祭司\" then\n        return \"|cFF0070DE\"..name..\"|r\"\n    elseif class == \"德鲁伊\" then\n        return \"|cFFFF7D0A\"..name..\"|r\"\n    elseif class == \"潜行者\" then\n        return \"|cFFFFF569\"..name..\"|r\"\n    elseif class == \"法师\" then\n        return \"|cFF69CCF0\"..name..\"|r\"\n    elseif class == \"牧师\" then\n        return \"|cFFFFFFFF\"..name..\"|r\"\n    elseif class == \"术士\" then\n        return \"|cFF9482C9\"..name..\"|r\"\n    else\n        local ret = WA_ClassColorName(name)\n        if string.len(ret) ~= 0 then\n            return ret\n        else\n            return name\n        end\n    end\nend",
                 },
                 ["finish"] = {
                 },
@@ -379,22 +381,22 @@
             ["triggers"] = {
                 [1] = {
                     ["trigger"] = {
-                        ["type"] = "custom",
-                        ["custom_hide"] = "custom",
-                        ["subeventSuffix"] = "_CAST_START",
                         ["ingroup"] = {
                             ["multi"] = {
                                 ["raid"] = true,
                             },
                         },
-                        ["events"] = "GROUP_ROSTER_UPDATE,PLAYER_TARGET_CHANGED",
+                        ["custom_hide"] = "custom",
+                        ["subeventSuffix"] = "_CAST_START",
+                        ["type"] = "custom",
+                        ["custom"] = "function(event)\n    return true\nend",
                         ["event"] = "Conditions",
                         ["names"] = {
                         },
+                        ["events"] = "GROUP_ROSTER_UPDATE,PLAYER_TARGET_CHANGED",
+                        ["use_ingroup"] = false,
                         ["spellIds"] = {
                         },
-                        ["use_ingroup"] = false,
-                        ["custom"] = "function(event)\n    return true\nend",
                         ["custom_type"] = "event",
                         ["use_unit"] = true,
                         ["subeventPrefix"] = "SPELL",
@@ -416,14 +418,15 @@
             ["subRegions"] = {
             },
             ["load"] = {
+                ["use_ingroup"] = true,
                 ["ingroup"] = {
                     ["single"] = "raid",
                 },
-                ["use_ingroup"] = true,
                 ["talent"] = {
                     ["multi"] = {
                     },
                 },
+                ["use_combat"] = false,
                 ["class"] = {
                     ["multi"] = {
                     },
@@ -432,7 +435,6 @@
                     ["multi"] = {
                     },
                 },
-                ["use_combat"] = false,
                 ["size"] = {
                     ["multi"] = {
                     },
@@ -442,24 +444,7 @@
             ["shadowXOffset"] = 1,
             ["regionType"] = "text",
             ["displayText_format_p_time_precision"] = 1,
-            ["authorOptions"] = {
-                [1] = {
-                    ["type"] = "input",
-                    ["useDesc"] = false,
-                    ["width"] = 2,
-                    ["default"] = "",
-                    ["key"] = "members",
-                    ["multiline"] = true,
-                    ["length"] = 10,
-                    ["name"] = "报名人员，用逗号分割",
-                    ["useLength"] = false,
-                },
-            },
-            ["displayText_format_p_time_dynamic_threshold"] = 60,
-            ["fixedWidth"] = 200,
-            ["justify"] = "LEFT",
-            ["tocversion"] = 20502,
-            ["id"] = "未进组报名人员名单",
+            ["displayText"] = "%c",
             ["animation"] = {
                 ["start"] = {
                     ["type"] = "none",
@@ -480,18 +465,35 @@
                     ["easeType"] = "none",
                 },
             },
-            ["frameStrata"] = 1,
-            ["anchorFrameType"] = "SCREEN",
+            ["fixedWidth"] = 200,
+            ["justify"] = "LEFT",
+            ["tocversion"] = 20502,
+            ["id"] = "未进组报名人员名单",
             ["color"] = {
                 [1] = 1,
                 [2] = 1,
                 [3] = 1,
                 [4] = 1,
             },
+            ["frameStrata"] = 1,
+            ["anchorFrameType"] = "SCREEN",
+            ["shadowYOffset"] = -1,
             ["config"] = {
-                ["members"] = "<MEMBER_LIST>",
+                ["members"] = "萌小鼬(战士),嫩丶浩哥(战士),文三七(战士),花开花落为谁(圣骑士),也无眠(圣骑士),霸气猪(圣骑士),峡谷小恶魔(猎人),我们没有明天(猎人),牛牛是牛(猎人),博洛尼(萨满祭司),元素电电(萨满祭司),卝尨丷爺卝(萨满祭司),Deaf(潜行者),懒懒牛(德鲁伊),殺人放火(术士),鲜鲜(术士),兰溪佬(术士),落花尘(术士),丹丘生(法师),五言律诗(法师),guinsoo(法师),小西游(法师),拿破棍(牧师),一濑黛姬(牧师)",
             },
-            ["selfPoint"] = "BOTTOM",
+            ["authorOptions"] = {
+                [1] = {
+                    ["type"] = "input",
+                    ["useDesc"] = false,
+                    ["width"] = 2,
+                    ["default"] = "",
+                    ["key"] = "members",
+                    ["name"] = "报名人员，用逗号分割",
+                    ["length"] = 10,
+                    ["multiline"] = true,
+                    ["useLength"] = false,
+                },
+            },
             ["uid"] = "ko6S9l80dbi",
             ["shadowColor"] = {
                 [1] = 0,
@@ -503,7 +505,7 @@
             },
             ["information"] = {
             },
-            ["yOffset"] = 0,
+            ["selfPoint"] = "BOTTOM",
         },
     },
     ["m"] = "d",
@@ -515,41 +517,24 @@
             [4] = 0.5,
         },
         ["borderBackdrop"] = "Blizzard Tooltip",
-        ["config"] = {
+        ["authorOptions"] = {
         },
-        ["xOffset"] = 230.07470703125,
-        ["load"] = {
-            ["size"] = {
-                ["multi"] = {
-                },
-            },
-            ["spec"] = {
-                ["multi"] = {
-                },
-            },
-            ["class"] = {
-                ["multi"] = {
-                },
-            },
-            ["talent"] = {
-                ["multi"] = {
-                },
-            },
+        ["scale"] = 1,
+        ["information"] = {
         },
         ["border"] = false,
         ["yOffset"] = -19.301147460938,
         ["anchorPoint"] = "CENTER",
         ["borderSize"] = 2,
-        ["authorOptions"] = {
-        },
+        ["xOffset"] = 230.07470703125,
         ["borderColor"] = {
             [1] = 0,
             [2] = 0,
             [3] = 0,
             [4] = 1,
         },
-        ["borderInset"] = 1,
-        ["borderEdge"] = "Square Full White",
+        ["uid"] = "sbMLU6UYBts",
+        ["groupIcon"] = 132161,
         ["actions"] = {
             ["start"] = {
             },
@@ -561,14 +546,14 @@
         ["triggers"] = {
             [1] = {
                 ["trigger"] = {
-                    ["subeventPrefix"] = "SPELL",
+                    ["names"] = {
+                    },
                     ["type"] = "aura2",
                     ["spellIds"] = {
                     },
                     ["subeventSuffix"] = "_CAST_START",
                     ["unit"] = "player",
-                    ["names"] = {
-                    },
+                    ["subeventPrefix"] = "SPELL",
                     ["event"] = "Health",
                     ["debuffType"] = "HELPFUL",
                 },
@@ -576,6 +561,9 @@
                 },
             },
         },
+        ["borderInset"] = 1,
+        ["internalVersion"] = 45,
+        ["tocversion"] = 20502,
         ["animation"] = {
             ["start"] = {
                 ["type"] = "none",
@@ -596,24 +584,38 @@
                 ["easeType"] = "none",
             },
         },
-        ["internalVersion"] = 45,
-        ["borderOffset"] = 4,
-        ["tocversion"] = 20502,
         ["id"] = "【Mirai】团队成员助手",
-        ["groupIcon"] = 132161,
-        ["frameStrata"] = 1,
-        ["anchorFrameType"] = "SCREEN",
-        ["desc"] = "未进组成员列表、密语自动进组",
-        ["uid"] = "sbMLU6UYBts",
         ["selfPoint"] = "CENTER",
+        ["frameStrata"] = 1,
+        ["desc"] = "未进组成员列表、密语自动进组",
+        ["anchorFrameType"] = "SCREEN",
+        ["config"] = {
+        },
+        ["borderOffset"] = 4,
         ["subRegions"] = {
         },
-        ["scale"] = 1,
+        ["regionType"] = "group",
         ["conditions"] = {
         },
-        ["information"] = {
+        ["load"] = {
+            ["size"] = {
+                ["multi"] = {
+                },
+            },
+            ["spec"] = {
+                ["multi"] = {
+                },
+            },
+            ["class"] = {
+                ["multi"] = {
+                },
+            },
+            ["talent"] = {
+                ["multi"] = {
+                },
+            },
         },
-        ["regionType"] = "group",
+        ["borderEdge"] = "Square Full White",
     },
     ["s"] = "3.7.1-4-g99f584c",
     ["v"] = 1421,

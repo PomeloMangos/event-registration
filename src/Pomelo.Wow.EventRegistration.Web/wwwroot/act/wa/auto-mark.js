@@ -27,15 +27,15 @@ component.created = async function () {
             this.enemies.push(enemies[j]);
         }
     }
+};
 
+component.mounted = async function () {
     try {
         var groups = (await qv.get(`/api/guild/${this.activity.guildId}/var/auto_mark_${this.safeRaids(this.activity.raids)}`)).data;
         this.groups = JSON.parse(groups.value);
         this.$forceUpdate();
     } catch (e) { }
-};
 
-component.mounted = function () {
     if (!this.groups.length) {
         this.addGroup();
     }
