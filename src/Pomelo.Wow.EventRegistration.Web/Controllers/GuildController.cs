@@ -389,13 +389,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<GuildVariable>(403, "您没有权限这样做");
             }
 
+            variable.GuildId = guildId;
+            variable.Key = key;
 
-            var _variable = await db.GuildVariables.SingleOrDefaultAsync(x => x.GuildId == guildId, cancellationToken);
+            var _variable = await db.GuildVariables.SingleOrDefaultAsync(x => x.GuildId == guildId && x.Key == key, cancellationToken);
             if (_variable == null)
             {
-                variable.GuildId = guildId;
-                variable.Key = key;
-
                 db.GuildVariables.Add(variable);
             }
             else
