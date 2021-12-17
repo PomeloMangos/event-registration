@@ -30,7 +30,7 @@ component.created = async function () {
 
     try {
         var groups = (await qv.get(`/api/guild/${this.activity.guildId}/var/auto_mark_${this.safeRaids(this.activity.raids)}`)).data;
-        this.groups = groups;
+        this.groups = JSON.parse(groups.value);
         this.$forceUpdate();
     } catch (e) { }
 };
@@ -71,11 +71,30 @@ component.methods = {
         this.waString = '正在生成...';
 
         // Prepare template models
+        this.arguments[0].Value = this.groups.length.toString();
+        this.arguments[1].Value = this.generateGroupDefinition();
+        this.arguments[2].Value = this.generateNameDefinition();
 
         this.waString = await qv.post('//wa.mwow.org/api/wa/templates/auto-mark',
             {
                 arguments: this.arguments
             }, 'text');
+    },
+    generateGroupDefinition: function () {
+        var ret = '';
+        for (var i = 0; i < this.groups.length; ++i) {
+            var index = i + 1;
+            ret += `[\\"${index}\\"] = { ${this.groups[i].marks.toString()} }, `;
+        }
+        return ret;
+    },
+    generateNameDefinition: function () {
+        var ret = '';
+        for (var i = 0; i < this.groups.length; ++i) {
+            var index = i + 1;
+            ret += `[\\"${index}\\"] = { ${this.groups[i].names.map(x => `\\"${x}\\"`).toString()} }, `;
+        }
+        return ret;
     },
     deleteGroup: function (i, name) {
         if (confirm(`你确定要删除${name}标记组吗？`)) {
