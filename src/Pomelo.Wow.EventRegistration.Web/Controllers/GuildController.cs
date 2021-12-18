@@ -365,7 +365,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromRoute] string key,
             CancellationToken cancellationToken = default)
         {
-            var variable = await db.GuildVariables.SingleOrDefaultAsync(x => x.GuildId == guildId, cancellationToken);
+            var variable = await db.GuildVariables.SingleOrDefaultAsync(x => x.GuildId == guildId && x.Key == key, cancellationToken);
             if (variable == null)
             {
                 return ApiResult<GuildVariable>(404, "没有找到变量");
