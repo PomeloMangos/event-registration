@@ -42,5 +42,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public long ActivityId { get; set; }
 
         public virtual Activity Activity { get; set; }
+
+        public int Evaluation { get; set; }
     }
 }

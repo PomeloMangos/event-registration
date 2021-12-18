@@ -23,6 +23,7 @@
                         ["auranames"] = {
                             [1] = "进食充分",
                             [2] = "启迪",
+                            [3] = "启发",
                         },
                         ["combinePerUnit"] = true,
                         ["useClass"] = false,
