@@ -43,14 +43,18 @@
 
 component.created = async function () {
     app.active = 'activity';
-    this.myCharactors = JSON.parse(window.localStorage.getItem('my_charactors') || '[]');
+    try {
+        this.myCharactors = JSON.parse(window.localStorage.getItem('my_charactors') || '[]');
+    } catch (e) {
+        this.myCharactors = [];
+    }
     for (var i = 0; i < this.myCharactors.length; ++i) {
-        if (this.myCharactors.role == 0 && !this.canTank(this.myCharactors.class)) {
-            this.myCharactors.role = 1;
+        if (this.myCharactors[i].role == 0 && !this.canTank(this.myCharactors[i].class)) {
+            this.myCharactors[i].role = 1;
         }
 
-        if (this.myCharactors.role == 2 && !this.canHeal(this.myCharactors.class)) {
-            this.myCharactors.role = 1;
+        if (this.myCharactors[i].role == 2 && !this.canHeal(this.myCharactors[i].class)) {
+            this.myCharactors[i].role = 1;
         }
     }
     await this.loadItemSets();
