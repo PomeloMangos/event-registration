@@ -226,6 +226,15 @@ component.methods = {
         if (!this.form.newCharactor.name) {
             alert('请输入角色名！');
         }
+
+        if (this.form.newCharactor.role == 0 && !this.canTank(this.form.newCharactor.class)) {
+            this.form.newCharactor.role = 1;
+        }
+
+        if (this.form.newCharactor.role == 2 && !this.canHeal(this.form.newCharactor.class)) {
+            this.form.newCharactor.role = 1;
+        }
+
         this.myCharactors.push(JSON.parse(JSON.stringify(this.form.newCharactor)));
         window.localStorage.setItem('my_charactors', JSON.stringify(this.myCharactors));
         this.form.newCharactor = {
