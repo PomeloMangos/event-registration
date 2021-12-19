@@ -3606,3 +3606,19 @@ a {
     width: calc(100% - 50px);
     border-radius: 0;
 }
+
+.import-table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.import-table td {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px;
+    line-height: 20px;
+}
+
+    .import-table tr:hover {
+        background: #292845
+    }

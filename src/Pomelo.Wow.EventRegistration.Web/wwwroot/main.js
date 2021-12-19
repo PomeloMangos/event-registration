@@ -162,6 +162,28 @@ var app = new Vue({
             } else {
                 return '未知';
             }
+        },
+        getClassIndex: function (name) {
+            if (name == '战士')
+                return 1;
+            else if (name == '圣骑士')
+                return 2;
+            else if (name == '猎人')
+                return 4;
+            else if (name == '萨满祭司')
+                return 8;
+            else if (name == '潜行者')
+                return 16;
+            else if (name == '德鲁伊')
+                return 32;
+            else if (name == '术士')
+                return 64;
+            else if (name == '法师')
+                return 128;
+            else if (name == '牧师')
+                return 256;
+            else
+                return 0;
         }
     },
     watch: {

@@ -1,7 +1,9 @@
 ﻿component.data = function () {
     return {
         active: null,
-        activity: null
+        activity: null,
+        grids: { data: [] },
+        tasks: { groups: [] }
     };
 };
 
@@ -14,6 +16,6 @@ component.mounted = function () {
 component.methods = {
     open: function (view) {
         this.active = view;
-        this.$container.open('/act/manage/' + view, { activity: this.activity });
+        this.$container.open('/act/manage/' + view, { activity: this.activity, tasks: this.tasks, grids: this.grids });
     }
 };

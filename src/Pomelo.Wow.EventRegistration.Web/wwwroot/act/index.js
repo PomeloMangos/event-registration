@@ -62,7 +62,7 @@ component.mounted = async function () {
 
     this.$container = new PomeloComponentContainer('#act-manage-container', app, this, function (view) {
     }, function () { });
-    this.$container.open(`/act/manage`, { activity: this.activity });
+    this.$container.open(`/act/manage`, { activity: this.activity, tasks: this.tasks, grids: this.grids });
 
     this.$container2 = new PomeloComponentContainer('#act-wa-container', app, this, function (view) {
     }, function () { });

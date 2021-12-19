@@ -14,6 +14,12 @@
                                 <span>基本设置</span>
                             </a>
                         </li>
+                        <li class="color1" v-bind:class="{ 'active': active == 'import' }">
+                            <a v-on:click="open('import')">
+                                <i class="fa fa-fw fa-sign-in"></i>
+                                <span>导入玩家</span>
+                            </a>
+                        </li>
                         <li class="color1" v-bind:class="{ 'active': active == 'wcl' }">
                             <a v-on:click="open('wcl')">
                                 <i class="fa fa-fw fa-globe"></i>
