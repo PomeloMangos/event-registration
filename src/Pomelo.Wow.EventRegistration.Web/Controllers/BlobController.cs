@@ -3,7 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pomelo.Wow.EventRegistration.Web.Models.ViewModels;
 using Pomelo.Wow.EventRegistration.Web.Blob;
@@ -33,6 +35,20 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
 
             return File(blob.Stream, blob.ContentType, blob.FileName, true);
+        }
+
+        [HttpGet("{id}")]
+        public async ValueTask<IActionResult> GetStatic(
+            [FromRoute] string id)
+        {
+            var env = HttpContext.RequestServices.GetRequiredService<IWebHostEnvironment>();
+            var path = Path.Combine(env.WebRootPath, "downloads", id);
+            if (!System.IO.File.Exists(path))
+            {
+                return NotFound();
+            }
+
+            return File(new FileStream(path, FileMode.Open, FileAccess.Read), "application/octet-stream", id, true);
         }
 
         [HttpPost("multi-part")]
