@@ -149,7 +149,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
 
             activity.Registrations = activity.Registrations
-                .OrderByDescending(x => x.Status)
+                .OrderByDescending(x => x.Status == RegistrationStatus.Accepted)
+                .ThenByDescending(x => x.Status)
                 .ThenBy(x => x.Class)
                 .ToList();
 
