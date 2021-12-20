@@ -27,6 +27,7 @@
         active: 'registration',
         grids: { data: [] },
         tasks: { groups: [] },
+        ledger: {},
         activeTask: null,
         taskString: '',
         activeTaskUI: 'normal',
@@ -165,6 +166,8 @@ component.methods = {
         if (!this.tasks.groups) {
             this.tasks.groups = [];
         }
+
+        this.ledger = JSON.parse(this.activity.extension3);
     },
     loadItemFor: async function (items, itemId) {
         items.push((await qv.get('/api/item/' + itemId)).data);

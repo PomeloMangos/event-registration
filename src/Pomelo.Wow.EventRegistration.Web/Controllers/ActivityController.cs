@@ -253,7 +253,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 CreatedAt = DateTime.UtcNow,
                 Extension1 = original.Extension1,
                 Extension2 = original.Extension2,
-                Extension3 = original.Extension3
+                //Extension3 = original.Extension3
             };
 
             // 2. Clone registrations
@@ -291,7 +291,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
                 activity.Extension1 = activity.Extension1.Replace(originalReg.Id.ToString(), x.Id.ToString());
                 activity.Extension2 = activity.Extension2.Replace(originalReg.Id.ToString(), x.Id.ToString());
-                activity.Extension3 = activity.Extension3.Replace(originalReg.Id.ToString(), x.Id.ToString());
+                //activity.Extension3 = activity.Extension3.Replace(originalReg.Id.ToString(), x.Id.ToString());
             }
             await db.SaveChangesAsync(cancellationToken);
 
