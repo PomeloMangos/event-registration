@@ -51,6 +51,12 @@ namespace Pomelo.Wow.EventRegistration.Web
                 .AddPersonalAccessToken();
 
             services.AddDiskBlobStorage();
+
+            services.AddCors(c => c.AddPolicy("Pomelo", x =>
+                x.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+            ));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,6 +66,7 @@ namespace Pomelo.Wow.EventRegistration.Web
                 scope.ServiceProvider.GetRequiredService<WowContext>().InitAsync().GetAwaiter().GetResult();
             }
 
+            app.UseCors("Pomelo");
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
             app.UseAuthentication();
