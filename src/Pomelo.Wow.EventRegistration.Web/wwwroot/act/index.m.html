@@ -233,7 +233,7 @@
             <div class="section-title">
                 <span>装备收入</span>
             </div>
-            <table class="form-table" style="margin-bottom: 30px;">
+            <table class="form-table" style="margin-bottom: 30px; font-size: 12px; font-weight: bold;">
                 <colgroup>
                     <col style="width: 45%" />
                     <col style="width: 35%" />
@@ -256,7 +256,7 @@
             <div class="section-title">
                 <span>其他收入</span>
             </div>
-            <table class="form-table" style="margin-bottom: 30px">
+            <table class="form-table" style="margin-bottom: 30px; font-size: 12px; font-weight: bold;">
                 <colgroup>
                     <col style="width: 45%" />
                     <col style="width: 35%" />
@@ -278,14 +278,14 @@
             <div class="section-title">
                 <span>支出</span>
             </div>
-            <table class="form-table" style="margin-bottom: 30px">
+            <table class="form-table" style="margin-bottom: 30px; font-size: 12px; font-weight: bold;">
                 <colgroup>
                     <col style="width: 45%" />
                     <col style="width: 35%" />
                 </colgroup>
                 <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
                     <tr v-for="x in ledger.expense">
-                        <td colspan="2">{{ x.name }}</td>
+                        <td>{{ x.name }}</td>
                         <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
                             <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
                             {{ x.player }}
