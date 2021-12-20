@@ -87,6 +87,7 @@ component.methods = {
             }
 
             await this.saveLedger();
+            this.busy = false;
         } catch (e) {
             console.error(e);
             this.busy = false;
