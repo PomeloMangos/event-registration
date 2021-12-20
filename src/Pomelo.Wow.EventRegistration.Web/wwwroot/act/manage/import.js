@@ -91,6 +91,7 @@ component.methods = {
                     class: ch.class,
                     hint: '临时补位'
                 }).then(data => {
+                    console.warn(data);
                     return self.setStatus(data.data.id, 4, role, '临时补位');
                 });
                 promises.push(p);
@@ -106,13 +107,16 @@ component.methods = {
             var p = this.setStatus(this.activity.registrations[i].id, 5, 0, '缺席');
             promises.push(p);
         }
+
+
+        await Promise.all(promises);
+        await self.$parent.$parent.loadActivity();
+        self.activity = self.$parent.$parent.activity;
+        await self.createGrid();
+        self.importing = false;
+        alert('导入完成');
+
         try {
-            await Promise.all(promises);
-            await self.$parent.$parent.loadActivity();
-            self.activity = self.$parent.$parent.activity;
-            await self.createGrid();
-            self.importing = false;
-            alert('导入完成');
         } catch (e) {
             console.error(e);
             self.importing = false;
@@ -137,15 +141,12 @@ component.methods = {
         };
     },
     register: async function (ch) {
-        this.inProgress = true;
-        await qv.post(`/api/activity/${this.activity.id}/registrations`, {
+        return await qv.post(`/api/activity/${this.activity.id}/registrations`, {
             name: ch.name,
             role: ch.role,
             hint: ch.hint,
             class: ch.class
         });
-        this.inProgress = false;
-        window.localStorage.setItem('my_charactors', JSON.stringify(this.myCharactors));
     },
     setStatus: async function (id, status, role, hint) {
         await qv.patch('/api/activity/' + this.activity.id + '/registrations/' + id, { status: status, role: role, hint: hint });
