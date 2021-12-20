@@ -38,6 +38,10 @@ component.methods = {
                     continue;
                 }
 
+                if (cols[3] == '你') {
+                    cols[3] = '-';
+                }
+
                 if (cols[1].indexOf('ItemId:') > 0) {
                     var itemId = cols[1].substr(cols[1].indexOf('ItemId:') + 'ItemId:'.length);
                     itemId = itemId.substr(0, itemId.length - 1);
