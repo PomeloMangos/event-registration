@@ -235,15 +235,13 @@
             </div>
             <table class="form-table" style="margin-bottom: 30px;">
                 <colgroup>
-                    <col style="width: 36%" />
-                    <col style="width: 14%" />
+                    <col style="width: 50%" />
                     <col style="width: 30%" />
                 </colgroup>
                 <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
                     <tr v-for="x in ledger.income">
-                        <td v-if="x.item" v-on:click="openItem(x.item.id)" v-bind:class="{ gray: x.item.quality == 0, white: x.item.quality == 1, green: x.item.quality == 2, blue: x.item.quality == 3, purple: x.item.quality == 4, orange: x.item.quality == 5 }"><img class="class-img" v-bind:src="x.item.imageUrl" /> {{ x.item.name }}</td>
-                        <td v-else>{{ x.name }}</td>
-                        <td>{{ x.amount }}件</td>
+                        <td v-if="x.item" v-on:click="openItem(x.item.id)" v-bind:class="{ gray: x.item.quality == 0, white: x.item.quality == 1, green: x.item.quality == 2, blue: x.item.quality == 3, purple: x.item.quality == 4, orange: x.item.quality == 5 }"><img class="class-img" v-bind:src="x.item.imageUrl" /> {{ x.item.name }}<span v-if="x.amount > 1">x{{x.amount}}</span></td>
+                        <td v-else>{{ x.name }}<span v-if="x.amount > 1">x{{x.amount}}</span></td>
                         <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
                             <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
                             {{ x.player }}
@@ -260,13 +258,12 @@
             </div>
             <table class="form-table" style="margin-bottom: 30px">
                 <colgroup>
-                    <col style="width: 36%" />
-                    <col style="width: 14%" />
+                    <col style="width: 50%" />
                     <col style="width: 30%" />
                 </colgroup>
                 <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
                     <tr v-for="x in ledger.other">
-                        <td colspan="2">{{ x.name }}</td>
+                        <td>{{ x.name }}</td>
                         <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
                             <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
                             {{ x.player }}
@@ -283,8 +280,7 @@
             </div>
             <table class="form-table" style="margin-bottom: 30px">
                 <colgroup>
-                    <col style="width: 36%" />
-                    <col style="width: 14%" />
+                    <col style="width: 50%" />
                     <col style="width: 30%" />
                 </colgroup>
                 <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
