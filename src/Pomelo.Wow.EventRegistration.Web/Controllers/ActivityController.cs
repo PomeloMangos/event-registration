@@ -425,6 +425,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(registration);
         }
 
+        [HttpPut("{activityId:long}/registrations/{id:Guid}")]
         [HttpPatch("{activityId:long}/registrations/{id:Guid}")]
         public async ValueTask<ApiResult<Registration>> Patch(
             [FromServices] WowContext db,
