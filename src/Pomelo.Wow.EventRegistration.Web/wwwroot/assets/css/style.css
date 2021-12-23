@@ -3650,3 +3650,7 @@ a {
         object-fit: cover;
         object-position: center;
     }
+
+.class-img.avatar {
+    border-radius: 5px;
+}

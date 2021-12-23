@@ -77,5 +77,18 @@ namespace Pomelo.Wow.MiniProgram
                 return await response.Content.ReadAsByteArrayAsync(cancellationToken);
             }
         }
+
+        public async ValueTask<WxLoginResponse> GetLoginSessionAsync(string jscode, CancellationToken cancellationToken)
+        {
+            using (var response = await client.GetAsync($"/sns/jscode2session?appid={_appId}&secret={_appIdSecret}&js_code={jscode}&grant_type=authorization_code"))
+            {
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new InvalidOperationException("Invalid js code");
+                }
+
+                return JsonConvert.DeserializeObject<WxLoginResponse>(await response.Content.ReadAsStringAsync(cancellationToken));
+            }
+        }
     }
 }

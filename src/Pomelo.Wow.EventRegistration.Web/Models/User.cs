@@ -28,5 +28,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public byte[] Salt { get; set; }
 
         public UserRole Role { get; set; }
+
+        [MaxLength(64)]
+        public string WxOpenId { get; set; }
     }
 }

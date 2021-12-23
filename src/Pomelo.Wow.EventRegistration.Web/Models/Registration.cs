@@ -29,6 +29,10 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public string Hint { get; set; }
 
+        public string WeChat { get; set; }
+
+        public string AvatarUrl { get; set; }
+
         public bool Microphone { get; set; } = true;
 
         public Class Class { get; set; }

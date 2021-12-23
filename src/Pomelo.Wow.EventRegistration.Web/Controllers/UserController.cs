@@ -66,6 +66,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<User>(400, "用户名长度必须大于3");
             }
 
+            if (request.Username.StartsWith("wx_"))
+            {
+                return ApiResult<User>(400, $"用户名不能以'wx_'开头");
+            }
+
             if (await db.Users.AnyAsync(x => x.Username == request.Username, cancellationToken))
             {
                 return ApiResult<User>(400, $"用户名{request.Username}已经存在");

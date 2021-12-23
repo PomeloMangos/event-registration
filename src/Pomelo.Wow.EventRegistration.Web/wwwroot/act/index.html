@@ -48,6 +48,7 @@
                                             <th>装等</th>
                                             <th>WCL %</th>
                                             <th>经验</th>
+                                            <th>微信</th>
                                             <th>备注</th>
                                         </tr>
                                     </thead>
@@ -71,6 +72,8 @@
                                                 <td v-if="!reg.wcl">-</td>
                                                 <td v-else v-bind:class="{ gray: reg.wcl <= 25, green: reg.wcl > 25 && reg.wcl <= 50, blue: reg.wcl > 50 && reg.wcl <= 75, purple: reg.wcl > 75 && reg.wcl < 95, orange: reg.wcl >= 95 }">{{ parseInt(reg.wcl) }}</td>
                                                 <td v-bind:class="{ purple: reg.bossPassed == bosses.length, gray: !!!reg.bossPassed, green: (reg.bossPassed || 0) < bosses.length / 2, blue: (reg.bossPassed || 0) >= bosses.length / 2 && (reg.bossPassed || 0) != bosses.length  }">{{ reg.bossPassed || 0 }} / {{ bosses.length }}</td>
+                                                <td v-if="reg.weChat"><img v-bind:src="reg.avatarUrl" class="class-img avatar" /> {{ reg.weChat }}</td>
+                                                <td v-else></td>
                                                 <td>{{ reg.hint }}</td>
                                             </tr>
                                             <tr v-show="reg.toggle">
