@@ -55,6 +55,26 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 cancellationToken);
         }
 
+        [HttpGet("my")]
+        public async ValueTask<ApiResult<List<Guild>>> GetMy(
+            [FromServices] WowContext db,
+            CancellationToken cancellationToken = default)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return ApiResult<List<Guild>>(401, "Unauthorized");
+            }
+
+            var uid = Convert.ToInt32(User.Identity.Name);
+            var guilds = await db.GuildManagers
+                .Include(x => x.Guild)
+                .Where(x => x.UserId == uid)
+                .Select(x => x.Guild)
+                .ToListAsync(cancellationToken);
+
+            return ApiResult(guilds);
+        }
+
         [HttpGet("{id}")]
         public async ValueTask<ApiResult<Guild>> Get(
             [FromServices] WowContext db,
