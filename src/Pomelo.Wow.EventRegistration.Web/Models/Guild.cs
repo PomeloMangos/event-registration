@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -33,6 +34,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         [MaxLength(256)]
         public string GuildListImageUrl { get; set; }
+
+        public Guid? GuildMiniProgramImageId { get; set; }
 
         public virtual User User { get; set; }
 

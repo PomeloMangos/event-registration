@@ -83,6 +83,11 @@
                             </div>
                         </div>
                     </div>
+                    <div v-if="$root.guild && $root.guild.name">
+                        <div><img v-bind:src="'/api/guild/' + $root.guildId + '/miniprogram-qrcode.png'" style="background:#fff; width: 100%; border-radius: 15px" /></div>
+                        <div class="mp-guild-icon"><img v-bind:src="$root.guild.guildListImageUrl" /></div>
+                        <div style="margin-top: 15px; text-align: center; color: #3dd0d8">微信扫描收藏{{ $root.guild.name }}微信小程序</div>
+                    </div>
                 </div>
             </div>
         </div>

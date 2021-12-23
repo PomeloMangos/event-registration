@@ -4,9 +4,12 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Pomelo.Wow.MiniProgram;
+using Pomelo.Wow.EventRegistration.Web.Blob;
 using Pomelo.Wow.EventRegistration.Web.Models;
 using Pomelo.Wow.EventRegistration.Web.Models.ViewModels;
 
@@ -405,6 +408,37 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             await db.SaveChangesAsync(cancellationToken);
 
             return ApiResult(variable);
+        }
+        #endregion
+
+        #region Mini Program
+        [HttpGet("{guildId}/miniprogram-qrcode.png")]
+        public async ValueTask<IActionResult> GetMiniProgramQrCode(
+            [FromServices] WowContext db,
+            [FromServices] IBlobStorage bs,
+            [FromServices] MpApi mp,
+            [FromRoute] string guildId,
+            CancellationToken cancellationToken = default)
+        {
+            var guild = await db.Guilds.SingleOrDefaultAsync(x => x.Id == guildId, cancellationToken);
+            if (guild == null)
+            {
+                return NotFound();
+            }
+
+            if (guild.GuildMiniProgramImageId == null) 
+            {
+                var bytes = await mp.GenerateMiniProgramQrCodeAsync("pages/guild", guild.Id, cancellationToken);
+                using (var ms = new MemoryStream(bytes))
+                {
+                    var blob = await bs.SaveBlobAsync($"{guild.Id}-mp.png", "image/png", ms, cancellationToken);
+                    guild.GuildMiniProgramImageId = blob.Id;
+                    await db.SaveChangesAsync(cancellationToken);
+                }
+            }
+
+            var ret = await bs.GetBlobAsync(guild.GuildMiniProgramImageId.Value, cancellationToken);
+            return File(ret.Stream, "image/png", true);
         }
         #endregion
     }

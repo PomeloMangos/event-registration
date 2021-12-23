@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Wow.EventRegistratio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Wow.EventRegistration.Web", "src\Pomelo.Wow.EventRegistration.Web\Pomelo.Wow.EventRegistration.Web.csproj", "{B19F1F90-807A-47D9-A925-BEDFAE45C426}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomelo.Wow.WeakAuras", "src\Pomelo.Wow.WeakAuras\Pomelo.Wow.WeakAuras.csproj", "{0950394A-EE07-47F5-AFC6-8CDD6C50CD28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pomelo.Wow.WeakAuras", "src\Pomelo.Wow.WeakAuras\Pomelo.Wow.WeakAuras.csproj", "{0950394A-EE07-47F5-AFC6-8CDD6C50CD28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pomelo.Wow.MiniProgram", "src\Pomelo.Wow.MiniProgram\Pomelo.Wow.MiniProgram.csproj", "{5F58A350-8FCC-46CC-AF2A-47B8571BFD88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{0950394A-EE07-47F5-AFC6-8CDD6C50CD28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0950394A-EE07-47F5-AFC6-8CDD6C50CD28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0950394A-EE07-47F5-AFC6-8CDD6C50CD28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F58A350-8FCC-46CC-AF2A-47B8571BFD88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F58A350-8FCC-46CC-AF2A-47B8571BFD88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F58A350-8FCC-46CC-AF2A-47B8571BFD88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F58A350-8FCC-46CC-AF2A-47B8571BFD88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{27D284EE-1468-4D35-8BDE-759B22635274} = {D9CE928F-60E9-41F5-891A-E1492AE2976A}
 		{B19F1F90-807A-47D9-A925-BEDFAE45C426} = {11950D38-7073-4F34-AFFC-3CFF99746D5A}
 		{0950394A-EE07-47F5-AFC6-8CDD6C50CD28} = {11950D38-7073-4F34-AFFC-3CFF99746D5A}
+		{5F58A350-8FCC-46CC-AF2A-47B8571BFD88} = {11950D38-7073-4F34-AFFC-3CFF99746D5A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7ECD0A92-F08D-4378-92EA-C98994C621F0}

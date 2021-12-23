@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pomelo.Wow.EventRegistration.WCL\Pomelo.Wow.EventRegistration.WCL.csproj" />
+    <ProjectReference Include="..\Pomelo.Wow.MiniProgram\Pomelo.Wow.MiniProgram.csproj" />
   </ItemGroup>
 
 </Project>

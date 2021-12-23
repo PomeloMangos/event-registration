@@ -8,6 +8,7 @@ using Pomelo.Wow.EventRegistration.Web.Models;
 using Pomelo.Wow.EventRegistration.Web.Vue;
 using Pomelo.Wow.EventRegistration.Authentication;
 using Pomelo.Wow.EventRegistration.Web.Blob;
+using Pomelo.Wow.MiniProgram;
 
 namespace Pomelo.Wow.EventRegistration.Web
 {
@@ -51,6 +52,7 @@ namespace Pomelo.Wow.EventRegistration.Web
                 .AddPersonalAccessToken();
 
             services.AddDiskBlobStorage();
+            services.AddSingleton(new MpApi(Configuration["MiniProgram:AppId"], Configuration["MiniProgram:AppSecret"]));
 
             services.AddCors(c => c.AddPolicy("Pomelo", x =>
                 x.AllowAnyOrigin()
