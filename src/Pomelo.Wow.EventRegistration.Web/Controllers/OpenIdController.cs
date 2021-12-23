@@ -48,9 +48,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             var user = await db.Users.FirstOrDefaultAsync(x => x.WxOpenId == session.openid, cancellationToken);
             if (user == null)
             {
+                var username = "wx_" + Guid.NewGuid().ToString().Replace("-", "");
+                username = username.Substring(0, 32);
                 user = new User 
                 {
-                    Username = "wx_" + Guid.NewGuid().ToString().Replace("-", ""),
+                    Username = username,
                     DisplayName = request.DisplayName,
                     Email = null,
                     Role = UserRole.User,
