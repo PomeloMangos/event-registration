@@ -210,5 +210,34 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             await db.SaveChangesAsync();
             return ApiResult(200, "密码修改成功");
         }
+
+        [HttpPost("{username}/displayName")]
+        public async ValueTask<ApiResult> Post(
+            [FromServices] WowContext db,
+            [FromRoute] string username,
+            [FromBody] ModifyDisplayNameRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return ApiResult(403, "请登录");
+            }
+
+            var user = await db.Users.SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
+            if (user == null)
+            {
+                return ApiResult(404, "未找到用户");
+            }
+
+            if (user.Id != Convert.ToInt32(User.Identity.Name))
+            {
+                return ApiResult(403, "您无权修改这个用户的昵称");
+            }
+
+            user.DisplayName = request.DisplayName;
+            await db.SaveChangesAsync(cancellationToken);
+
+            return ApiResult(200, "昵称修改成功");
+        }
     }
 }
