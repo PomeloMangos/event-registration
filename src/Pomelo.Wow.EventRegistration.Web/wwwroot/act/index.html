@@ -77,7 +77,7 @@
                                                 <td>{{ reg.hint }}</td>
                                             </tr>
                                             <tr v-show="reg.toggle">
-                                                <td colspan="6">
+                                                <td colspan="7">
                                                     <div class="ch-detail">
                                                         <div v-if="reg.charactor">
                                                             <div class="ch-tab">
@@ -148,7 +148,7 @@
                                             </tr>
                                         </template>
                                         <tr v-if="activity.registrations.filter(x => x.role == group.id).length == 0">
-                                            <td colspan="6">暂无报名</td>
+                                            <td colspan="7">暂无报名</td>
                                         </tr>
                                     </tbody>
                                 </table>
