@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Pomelo.Wow.EventRegistration.Web.Models
 {
@@ -22,14 +23,17 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public string Email { get; set; }
 
         [MaxLength(32)]
+        [JsonIgnore]
         public byte[] PasswordHash { get; set; } // SHA256
 
         [MaxLength(32)]
+        [JsonIgnore]
         public byte[] Salt { get; set; }
 
         public UserRole Role { get; set; }
 
         [MaxLength(64)]
+        [JsonIgnore]
         public string WxOpenId { get; set; }
     }
 }
