@@ -80,7 +80,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             db.UserSessions.Add(us);
             await db.SaveChangesAsync(cancellationToken);
 
-            return ApiResult(new LoginResponse { Token = us.Id, Role = user.Role.ToString() });
+            return ApiResult(new LoginResponse { Username = user.Username, UserId = user.Id, Token = us.Id, Role = user.Role.ToString() });
         }
 
         private string GenerateTokenId()
