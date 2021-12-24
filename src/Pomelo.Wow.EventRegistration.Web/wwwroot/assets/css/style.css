@@ -3654,3 +3654,9 @@ a {
 .class-img.avatar {
     border-radius: 5px;
 }
+
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
