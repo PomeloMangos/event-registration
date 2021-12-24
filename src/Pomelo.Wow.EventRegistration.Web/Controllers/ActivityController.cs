@@ -183,6 +183,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Activity>(400, "你没有权限在这个公会中创建活动");
             }
 
+            activity.Realm = Guild.Realm;
             activity.GuildId = GuildId; 
             activity.UserId = Convert.ToInt32(User.Identity.Name);
             activity.Extension1 = "{}";
