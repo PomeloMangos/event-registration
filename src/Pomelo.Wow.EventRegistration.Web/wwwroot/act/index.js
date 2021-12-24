@@ -530,8 +530,13 @@ component.methods = {
         }
     },
     generateTopConsumers: function (ledger) {
+        if (!ledger.income) {
+            return null;
+        }
+
         var ret = [];
         var tmp = {};
+
         for (var i = 0; i < ledger.income.length; ++i) {
             if (!ledger.income[i].player || ledger.income[i].player == '-') {
                 continue;
@@ -554,6 +559,10 @@ component.methods = {
         return ret;
     },
     generateLedgerSumamry: function (ledger) {
+        if (!ledger.income) {
+            return null;
+        }
+
         var ret = {
             total: 0,
             expense: 0,

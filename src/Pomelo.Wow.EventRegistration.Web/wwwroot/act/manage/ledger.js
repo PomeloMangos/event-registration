@@ -28,7 +28,7 @@ component.methods = {
             income: [],
             expense: [],
             other: [],
-            statistics = {}
+            statistics: {}
         };
 
         try {
