@@ -177,6 +177,15 @@ component.methods = {
         }
         this.ledger.statistics.topConsumers = this.generateTopConsumers(this.ledger);
         this.ledger.statistics.summary = this.generateLedgerSumamry(this.ledger);
+        if (this.ledger.income) {
+            this.ledger.income.sort((a, b) => b.price - a.price);
+        }
+        if (this.ledger.other) {
+            this.ledger.other.sort((a, b) => b.price - a.price);
+        }
+        if (this.ledger.expense) {
+            this.ledger.expense.sort((a, b) => b.price - a.price);
+        }
     },
     loadItemFor: async function (items, itemId) {
         items.push((await qv.get('/api/item/' + itemId)).data);
