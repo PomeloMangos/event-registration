@@ -51,7 +51,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         }
 
         [HttpPost("batch")]
-        public async ValueTask<ApiResult<dynamic>> Post(
+        public async ValueTask<ApiResult<dynamic>> PostBatchIds(
             [FromServices] WowContext db,
             [FromBody] BatchItemRequest request,
             CancellationToken cancellationToken = default)
@@ -98,6 +98,27 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 Group = x.Group,
                 Items = x.Ids.Where(y => items.ContainsKey(y)).Select(y => items[y]),
                 Failed = failed
+            });
+            return ApiResult<dynamic>(ret);
+        }
+
+        [HttpPost("batch/name")]
+        public async ValueTask<ApiResult<dynamic>> PostBatchNames(
+            [FromServices] WowContext db,
+            [FromBody] BatchItemRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var names = request.Queries.SelectMany(x => x.Names).ToList();
+
+            var items = (await db.Items
+                .Where(x => names.Contains(x.Name))
+                .ToListAsync(cancellationToken))
+                .GroupBy(x => x.Name)
+                .ToDictionary(x => x.Key, x => x.First());
+            var ret = request.Queries.Select(x => new
+            {
+                Group = x.Group,
+                Items = items
             });
             return ApiResult<dynamic>(ret);
         }

@@ -322,6 +322,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(200, "活动已删除");
         }
 
+        [HttpPut("{id:long}")]
         [HttpPatch("{id:long}")]
         public async ValueTask<ApiResult<Activity>> Patch(
             [FromServices] WowContext db,

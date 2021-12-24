@@ -27,18 +27,35 @@ component.methods = {
         this.ledger = {
             income: [],
             expense: [],
-            other: []
+            other: [],
+            statistics = {}
         };
 
         try {
             var rows = this.ledgerString.split('\n').map(x => x.trim());
+            var itemNames = rows.filter(x => x && x.indexOf('(ItemId:') < 0)
+                .map(x => x.split(','))
+                .filter(x => x.length >= 5)
+                .map(x => x[1]);
+
+            var itemsByName = (await qv.post('/api/item/batch/name', {
+                queries: [{
+                    group: '1',
+                    names: itemNames
+                }]
+            })).data[0].items;
+
             for (var i = 0; i < rows.length; ++i) {
                 var cols = rows[i].split(',');
                 if (cols.length < 5) {
+                    if (cols[0] == 'Split') {
+                        this.ledger.statistics.split = parseInt(cols[1]);
+                    }
                     continue;
                 }
 
-                if (cols[3] == '你') {
+                console.log(cols[3]);
+                if (cols[3] == '你' || !cols[3]) {
                     cols[3] = '-';
                 }
 
@@ -52,6 +69,16 @@ component.methods = {
                         player: cols[3],
                         price: parseInt(cols[4]),
                         item: null
+                    });
+                } else if (itemsByName[cols[1]]) {
+                    var itemResult = itemsByName[cols[1]];
+                    this.ledger.income.push({
+                        name: cols[1].substr(0, cols[1].indexOf('(')),
+                        itemId: parseInt(itemResult.id),
+                        amount: parseInt(cols[2]),
+                        player: cols[3],
+                        price: parseInt(cols[4]),
+                        item: itemResult
                     });
                 } else if (cols[0] == '收入') {
                     this.ledger.other.push({
@@ -73,7 +100,7 @@ component.methods = {
             var items = (await qv.post('/api/item/batch', {
                 queries: [{
                     group: '1',
-                    ids: this.ledger.income.map(x => x.itemId)
+                    ids: this.ledger.income.filter(x => !x.item).map(x => x.itemId)
                 }]
             })).data[0].items;
 

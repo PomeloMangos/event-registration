@@ -122,6 +122,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(guild);
         }
 
+        [HttpPut("{guildId}")]
         [HttpPatch("{guildId}")]
         public async ValueTask<ApiResult<Guild>> Patch(
             [FromServices] WowContext db,
@@ -322,6 +323,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(price);
         }
 
+        [HttpPut("{guildId}/price/{id:Guid}")]
         [HttpPatch("{guildId}/price/{id:Guid}")]
         public async ValueTask<ApiResult<Price>> PatchPrice(
             [FromServices] WowContext db,

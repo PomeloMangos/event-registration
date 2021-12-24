@@ -12,5 +12,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Models.ViewModels
         public string Group { get; set; }
 
         public IEnumerable<int> Ids { get; set; }
+
+        public IEnumerable<string> Names { get; set; }
     }
 }
