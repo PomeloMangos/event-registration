@@ -25,6 +25,7 @@
         bosses: [],
         inProgress: false,
         active: 'registration',
+        activeLedger: 'summary',
         grids: { data: [] },
         tasks: { groups: [] },
         ledger: {},
@@ -168,6 +169,14 @@ component.methods = {
         }
 
         this.ledger = JSON.parse(this.activity.extension3);
+        if (!this.ledger) {
+            this.ledger = {};
+        }
+        if (!this.ledger.statistics) {
+            this.ledger.statistics = {};
+        }
+        this.ledger.statistics.topConsumers = this.generateTopConsumers(this.ledger);
+        this.ledger.statistics.summary = this.generateLedgerSumamry(this.ledger);
     },
     loadItemFor: async function (items, itemId) {
         items.push((await qv.get('/api/item/' + itemId)).data);
@@ -519,6 +528,60 @@ component.methods = {
         } else {
             app.open('/guild');
         }
+    },
+    generateTopConsumers: function (ledger) {
+        var ret = [];
+        var tmp = {};
+        for (var i = 0; i < ledger.income.length; ++i) {
+            if (!ledger.income[i].player || ledger.income[i].player == '-') {
+                continue;
+            }
+
+            var player = ledger.income[i].player;
+            if (!tmp[player]) {
+                tmp[player] = 0;
+            }
+
+            tmp[player] += ledger.income[i].price;
+        }
+
+        var keys = Object.getOwnPropertyNames(tmp);
+        for (var i = 0; i < keys.length; ++i) {
+            ret.push({ player: keys[i], price: tmp[keys[i]] });
+        }
+
+        ret.sort((a, b) => b.price - a.price);
+        return ret;
+    },
+    generateLedgerSumamry: function (ledger) {
+        var ret = {
+            total: 0,
+            expense: 0,
+            profit: 0,
+            split: 0,
+            per: 0
+        };
+
+        for (var i = 0; i < ledger.income.length; ++i) {
+            ret.total += ledger.income[i].price;
+        }
+
+        for (var i = 0; i < ledger.other.length; ++i) {
+            ret.total += ledger.other[i].price;
+        }
+
+        for (var i = 0; i < ledger.expense.length; ++i) {
+            ret.expense += ledger.expense[i].price;
+        }
+
+        ret.profit = ret.total - ret.expense;
+
+        if (ledger.statistics && ledger.statistics.split) {
+            ret.split = ledger.statistics.split;
+            ret.per = parseInt(ret.profit / ret.split);
+        }
+
+        return ret;
     }
 };
 

@@ -351,87 +351,175 @@
                             </div>
                         </div>
                         <div v-if="active == 'ledger'">
-                            <div class="class-group">
-                                <img src="/assets/images/consumer.jpg" style="margin-right: 10px;" />
-                                <strong>装备收入</strong>
+                            <div class="row">
+                                <div class="col-sm-7 col-md-8 col-lg-8 col-sm-push-5 col-md-push-4 col-lg-push-4">
+                                    <div v-if="activeLedger == 'detail'">
+                                        <div class="class-group">
+                                            <img src="/assets/images/consumer.jpg" style="margin-right: 10px;" />
+                                            <strong>装备收入</strong>
+                                        </div>
+                                        <table class="reg-table" style="margin-bottom: 30px">
+                                            <thead>
+                                                <tr>
+                                                    <th>物品</th>
+                                                    <th>数量</th>
+                                                    <th>玩家</th>
+                                                    <th>金额</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
+                                                <tr v-for="x in ledger.income">
+                                                    <td v-if="x.item" v-on:click="openItem(x.item.id)" v-bind:class="{ gray: x.item.quality == 0, white: x.item.quality == 1, green: x.item.quality == 2, blue: x.item.quality == 3, purple: x.item.quality == 4, orange: x.item.quality == 5 }"><img class="class-img" v-bind:src="x.item.imageUrl" /> {{ x.item.name }}</td>
+                                                    <td v-else>{{ x.name }}</td>
+                                                    <td>{{ x.amount }}</td>
+                                                    <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
+                                                        <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td v-else>
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td>{{ x.price }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="class-group">
+                                            <img src="/assets/images/consumer.jpg" style="margin-right: 10px;" />
+                                            <strong>其他收入</strong>
+                                        </div>
+                                        <table class="reg-table" style="margin-bottom: 30px">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">款项</th>
+                                                    <th>玩家</th>
+                                                    <th>金额</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
+                                                <tr v-for="x in ledger.other">
+                                                    <td colspan="2">{{ x.name }}</td>
+                                                    <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
+                                                        <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td v-else>
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td>{{ x.price }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="class-group">
+                                            <img src="/assets/images/consumer.jpg" style="margin-right: 10px;" />
+                                            <strong>支出</strong>
+                                        </div>
+                                        <table class="reg-table" style="margin-bottom: 30px">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">款项</th>
+                                                    <th>玩家</th>
+                                                    <th>金额</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
+                                                <tr v-for="x in ledger.expense">
+                                                    <td colspan="2">{{ x.name }}</td>
+                                                    <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
+                                                        <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td v-else>
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td>{{ x.price }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div v-if="activeLedger == 'top'">
+                                        <table class="reg-table" style="margin-bottom: 30px">
+                                            <thead>
+                                                <tr>
+                                                    <th>排行</th>
+                                                    <th>玩家</th>
+                                                    <th>金额</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody v-if="ledger && ledger.statistics">
+                                                <tr v-for="(x, i) in ledger.statistics.topConsumers">
+                                                    <td>{{ i + 1 }}</td>
+                                                    <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
+                                                        <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td v-else>
+                                                        {{ x.player }}
+                                                    </td>
+                                                    <td>{{ x.price }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div v-if="activeLedger == 'summary'">
+                                        <table class="reg-table" style="margin-bottom: 30px" v-if="ledger && ledger.statistics">
+                                            <tbody>
+                                                <tr>
+                                                    <td>总收入</td>
+                                                    <td>{{ ledger.statistics.summary.total }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>总支出</td>
+                                                    <td>{{ ledger.statistics.summary.expense }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>净利润</td>
+                                                    <td>{{ ledger.statistics.summary.profit }}</td>
+                                                </tr>
+                                                <template v-if="ledger.statistics.summary.split">
+                                                    <tr>
+                                                        <td>打工人数</td>
+                                                        <td>{{ ledger.statistics.summary.split }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>人均收入</td>
+                                                        <td>{{ ledger.statistics.summary.per }}</td>
+                                                    </tr>
+                                                </template>
+                                                <tr v-else>
+                                                    <td style="color: rgb(255,128,128);" colspan="2">[插件过时] 人均收入信息需使用最新版金团助手导入</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="sidebar col-sm-5 col-md-4 col-lg-4 col-sm-pull-7 col-md-pull-8 col-lg-pull-8">
+                                    <div class="widget-bl categories-widget">
+                                        <h5 class="fsize-20">活动账本</h5>
+                                        <div class="widget-wrapper">
+                                            <ul class="list-1 menu-list">
+                                                <li class="color1" v-bind:class="{ 'active': activeLedger == 'summary' }">
+                                                    <a v-on:click="activeLedger = 'summary'">
+                                                        <i class="fa fa-fw fa-money"></i>
+                                                        <span>概览</span>
+                                                    </a>
+                                                </li>
+                                                <li class="color1" v-bind:class="{ 'active': activeLedger == 'detail' }">
+                                                    <a v-on:click="activeLedger = 'detail'">
+                                                        <i class="fa fa-fw fa-money"></i>
+                                                        <span>收支详情</span>
+                                                    </a>
+                                                </li>
+                                                <li class="color1" v-bind:class="{ 'active': activeLedger == 'top' }">
+                                                    <a v-on:click="activeLedger = 'top'">
+                                                        <i class="fa fa-fw fa-money"></i>
+                                                        <span>消费榜</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <table class="reg-table" style="margin-bottom: 30px">
-                                <thead>
-                                    <tr>
-                                        <th>物品</th>
-                                        <th>数量</th>
-                                        <th>玩家</th>
-                                        <th>金额</th>
-                                    </tr>
-                                </thead>
-                                <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
-                                    <tr v-for="x in ledger.income">
-                                        <td v-if="x.item" v-on:click="openItem(x.item.id)" v-bind:class="{ gray: x.item.quality == 0, white: x.item.quality == 1, green: x.item.quality == 2, blue: x.item.quality == 3, purple: x.item.quality == 4, orange: x.item.quality == 5 }"><img class="class-img" v-bind:src="x.item.imageUrl" /> {{ x.item.name }}</td>
-                                        <td v-else>{{ x.name }}</td>
-                                        <td>{{ x.amount }}</td>
-                                        <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
-                                            <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
-                                            {{ x.player }}
-                                        </td>
-                                        <td v-else>
-                                            {{ x.player }}
-                                        </td>
-                                        <td>{{ x.price }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="class-group">
-                                <img src="/assets/images/consumer.jpg" style="margin-right: 10px;" />
-                                <strong>其他收入</strong>
-                            </div>
-                            <table class="reg-table" style="margin-bottom: 30px">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2">款项</th>
-                                        <th>玩家</th>
-                                        <th>金额</th>
-                                    </tr>
-                                </thead>
-                                <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
-                                    <tr v-for="x in ledger.other">
-                                        <td colspan="2">{{ x.name }}</td>
-                                        <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
-                                            <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
-                                            {{ x.player }}
-                                        </td>
-                                        <td v-else>
-                                            {{ x.player }}
-                                        </td>
-                                        <td>{{ x.price }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="class-group">
-                                <img src="/assets/images/consumer.jpg" style="margin-right: 10px;" />
-                                <strong>支出</strong>
-                            </div>
-                            <table class="reg-table" style="margin-bottom: 30px">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2">款项</th>
-                                        <th>玩家</th>
-                                        <th>金额</th>
-                                    </tr>
-                                </thead>
-                                <tbody v-if="ledger && ledger.income && ledger.other && ledger.expense">
-                                    <tr v-for="x in ledger.expense">
-                                        <td colspan="2">{{ x.name }}</td>
-                                        <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
-                                            <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
-                                            {{ x.player }}
-                                        </td>
-                                        <td v-else>
-                                            {{ x.player }}
-                                        </td>
-                                        <td>{{ x.price }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                     <div v-show="!activity">
