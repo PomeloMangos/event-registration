@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             [FromServices] WowContext db,
             CancellationToken cancellationToken = default)
         {
-            var raids = await db.Raids.ToListAsync(cancellationToken);
+            var raids = await db.Raids
+                .OrderByDescending(x =>x.Phase)
+                .ToListAsync(cancellationToken);
             return ApiResult(raids);
         }
     }

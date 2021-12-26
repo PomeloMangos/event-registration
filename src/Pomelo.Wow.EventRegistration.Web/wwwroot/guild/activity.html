@@ -11,6 +11,7 @@
             <div class="item-left-img col-lg-4 col-md-4 col-sm-12 col-xs-12 equal-height">
                 <img v-if="act.raids == '1,2'" src="/assets/images/raid/1_2.png" />
                 <img v-else-if="act.raids == '3,4'" src="/assets/images/raid/3_4.png" />
+                <img v-else-if="act.raids == '5,6'" src="/assets/images/raid/5_6.png" />
                 <img v-else v-bind:src="'/assets/images/raid/' + act.raids.split(',')[0].trim() + '.jpg'">
             </div>
             <div class="post-content col-lg-8 col-md-8 col-sm-12 col-xs-12 equal-height">

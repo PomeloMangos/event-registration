@@ -20,6 +20,7 @@
                 <td>
                     <img class="raid-icon" v-if="act.raids == '1,2'" src="/assets/images/raid/1_2.png" />
                     <img class="raid-icon" v-else-if="act.raids == '3,4'" src="/assets/images/raid/3_4.png" />
+                    <img class="raid-icon" v-else-if="act.raids == '5,6'" src="/assets/images/raid/5_6.png" />
                     <img class="raid-icon" v-else v-bind:src="'/assets/images/raid/' + act.raids.split(',')[0].trim() + '.jpg'">
                 </td>
                 <td>
