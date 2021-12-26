@@ -655,3 +655,23 @@ table {
     line-height: 48px;
     color: greenyellow;
 }
+
+.wechat-nickname {
+    color: #ccc;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+}
+
+.reg-subline {
+    white-space: nowrap;
+}
+
+.class-img.avatar {
+    border-radius: 3px;
+    margin-top: -4px;
+}
