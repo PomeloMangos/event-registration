@@ -28,6 +28,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         {
             var raids = await db.Raids
                 .OrderByDescending(x =>x.Phase)
+                .ThenByDescending(x => x.Priority)
                 .ToListAsync(cancellationToken);
             return ApiResult(raids);
         }

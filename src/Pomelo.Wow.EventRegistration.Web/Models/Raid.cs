@@ -8,6 +8,8 @@
 
         public int Phase { get; set; }
 
+        public int Priority { get; set; }
+
         public string BossList { get; set; }
 
         public int ItemLevelEntrance { get; set; }
