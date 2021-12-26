@@ -43,6 +43,11 @@
                                             &nbsp;
                                             <span class="reg-icon"><i class="fa fa-star"></i></span>
                                             <span v-bind:class="{ purple: reg.bossPassed == bosses.length, gray: !!!reg.bossPassed, green: (reg.bossPassed || 0) < bosses.length / 2, blue: (reg.bossPassed || 0) >= bosses.length / 2 && (reg.bossPassed || 0) != bosses.length  }">{{ reg.bossPassed || 0 }} / {{ bosses.length }}</span>
+                                            <template v-if="reg.avatarUrl">
+                                                &nbsp;
+                                                <img class="class-img avatar" src="{{ reg.avatarUrl }}" />
+                                                <span class="wechat-nickname">{{ reg.weChat }}</span>
+                                            </template>
                                             <template v-if="reg.hint">
                                                 &nbsp;
                                                 <span class="reg-icon"><i class="fa fa-comment-o"></i></span>
@@ -156,6 +161,17 @@
             </div>
         </div>
         <div class="ch-wrapper" v-if="active == 'reg'">
+            <template v-if="activity.description">
+                <div class="section-title">
+                    <span>活动须知</span>
+                </div>
+                <table class="form-table" style="margin-bottom: 30px">
+                    <tr>
+                        <td style="line-height: 32px; padding: 8px 12px;">{{ activity.description }}</td>
+                    </tr>
+                </table>
+            </template>
+
             <div class="section-title">
                 <span v-if="activity.status == 1">请点击角色进行报名</span>
                 <span v-else>点击角色可请假</span>
