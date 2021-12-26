@@ -45,7 +45,7 @@
                                             <span v-bind:class="{ purple: reg.bossPassed == bosses.length, gray: !!!reg.bossPassed, green: (reg.bossPassed || 0) < bosses.length / 2, blue: (reg.bossPassed || 0) >= bosses.length / 2 && (reg.bossPassed || 0) != bosses.length  }">{{ reg.bossPassed || 0 }} / {{ bosses.length }}</span>
                                             <template v-if="reg.avatarUrl">
                                                 &nbsp;
-                                                <img class="class-img avatar" src="{{ reg.avatarUrl }}" />
+                                                <img class="class-img avatar" v-bind:src="reg.avatarUrl" />
                                                 <span class="wechat-nickname">{{ reg.weChat }}</span>
                                             </template>
                                             <template v-if="reg.hint">
