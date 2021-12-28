@@ -170,7 +170,42 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             {
                 Guild.Realm = model.Realm;
             }
-            await db.SaveChangesAsync();
+
+            await db.SaveChangesAsync(cancellationToken);
+            return ApiResult(Guild);
+        }
+
+
+        [HttpPut("{guildId}/reg-policy")]
+        [HttpPatch("{guildId}/reg-policy")]
+        public async ValueTask<ApiResult<Guild>> PatchRegPolicy(
+            [FromServices] WowContext db,
+            [FromBody] PatchRegisterPolicyRequest request,
+            [FromRoute] string guildId,
+            CancellationToken cancellationToken = default)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return ApiResult<Guild>(401, "请登录");
+            }
+
+            if (GuildId == null)
+            {
+                return ApiResult<Guild>(400, "请在公会中进行该操作");
+            }
+
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, null, true, cancellationToken))
+            {
+                return ApiResult<Guild>(403, "您没有权限这样做");
+            }
+
+            if (guildId != GuildId)
+            {
+                return ApiResult<Guild>(400, "请在正确的公会中进行该操作");
+            }
+
+            Guild.RegisterPolicy = request.RegisterPolicy;
+            await db.SaveChangesAsync(cancellationToken);
             return ApiResult(Guild);
         }
 

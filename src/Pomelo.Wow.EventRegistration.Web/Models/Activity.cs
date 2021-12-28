@@ -73,6 +73,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public int ItemLevelFarm { get; set; }
 
+        public Guid? MiniProgramImageId { get; set; }
+
         [NotMapped]
         public ActivityStatus Status
         {

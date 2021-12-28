@@ -18,6 +18,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
         private Guild guild = null;
         private bool guildNotFound = false;
+        private User user = null;
 
         public string GuildId
         {
@@ -54,6 +55,28 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return guild;
             }
         }
+
+        public User CurrentUser
+        {
+            get 
+            {
+                if (user == null)
+                {
+                    if (!User.Identity.IsAuthenticated)
+                    {
+                        return null;
+                    }
+
+                    var db = HttpContext.RequestServices.GetRequiredService<WowContext>();
+                    var id = Convert.ToInt32(User.Identity.Name);
+                    user = db.Users.Single(x => x.Id == id);
+                }
+
+                return user;
+            }
+        }
+
+        public bool IsWeChatUser => CurrentUser != null && CurrentUser.WxOpenId != null;
 
         protected async ValueTask<bool> ValidateUserPermissionToCurrentGuildAsync(
             WowContext db,

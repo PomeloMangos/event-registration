@@ -35,5 +35,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         [MaxLength(64)]
         [JsonIgnore]
         public string WxOpenId { get; set; }
+
+        [MaxLength(256)]
+        public string WxAvatarUrl { get; set; }
     }
 }

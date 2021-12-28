@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Pomelo.Wow.EventRegistration.Web.Blob;
 using Pomelo.Wow.EventRegistration.WCL;
 using Pomelo.Wow.EventRegistration.Web.Models;
 using Pomelo.Wow.EventRegistration.Web.Models.ViewModels;
+using Pomelo.Wow.MiniProgram;
 
 namespace Pomelo.Wow.EventRegistration.Web.Controllers
 {
@@ -399,19 +402,33 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Registration>(400, "Invalid charactor name");
             }
 
-            var activity = await db.Activities.SingleOrDefaultAsync(x => x.Id == activityId, cancellationToken);
+            var activity = await db.Activities
+                .Include(x => x.Guild)
+                .SingleOrDefaultAsync(x => x.Id == activityId, cancellationToken);
             if (activity == null)
             {
-                return ApiResult<Registration>(404, "Acitvity not found");
+                return ApiResult<Registration>(404, "没有找到活动");
+            }
+
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, activity.GuildId, false, cancellationToken) 
+                && activity.Guild.RegisterPolicy == RegisterPolicy.RestrictWechat
+                && (string.IsNullOrWhiteSpace(registration.WeChat)
+                || !IsWeChatUser))
+            {
+                return ApiResult<Registration>(400, "请使用微信小程序进行报名");
             }
 
             registration.RegisteredAt = DateTime.UtcNow;
             registration.Status = RegistrationStatus.Pending;
             registration.ActivityId = activityId;
+            if (IsWeChatUser) 
+            {
+                registration.WxOpenId = CurrentUser.WxOpenId;
+            }
 
             if (await db.Registrations.AnyAsync(x => x.ActivityId == activityId && x.Name == registration.Name, cancellationToken))
             {
-                return ApiResult<Registration>(400, "Duplicated charactor found");
+                return ApiResult<Registration>(400, "请不要重复报名");
             }
 
             var charactor = await FetchCharactorAsync(db, _logger, registration.Name, activity.Realm);
@@ -422,6 +439,19 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             }
 
             db.Registrations.Add(registration);
+
+            if (CurrentUser.WxAvatarUrl == null)
+            {
+                CurrentUser.WxAvatarUrl = registration.AvatarUrl;
+                db.Attach(CurrentUser);
+            }
+
+            if (CurrentUser.DisplayName == null)
+            {
+                CurrentUser.DisplayName = registration.WeChat;
+                db.Attach(CurrentUser);
+            }
+
             await db.SaveChangesAsync(cancellationToken);
 
             return ApiResult(registration);
@@ -530,5 +560,36 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return null;
             }
         }
+
+        #region Mini Program
+        [HttpGet("{activityId}/miniprogram-qrcode.png")]
+        public async ValueTask<IActionResult> GetMiniProgramQrCode(
+            [FromServices] WowContext db,
+            [FromServices] IBlobStorage bs,
+            [FromServices] MpApi mp,
+            [FromRoute] long activityId,
+            CancellationToken cancellationToken = default)
+        {
+            var activity = await db.Activities.SingleOrDefaultAsync(x => x.Id == activityId, cancellationToken);
+            if (activity == null)
+            {
+                return NotFound();
+            }
+
+            if (activity.MiniProgramImageId == null)
+            {
+                var bytes = await mp.GenerateMiniProgramQrCodeAsync("pages/activity", activity.Id.ToString(), cancellationToken);
+                using (var ms = new MemoryStream(bytes))
+                {
+                    var blob = await bs.SaveBlobAsync($"act-{activity.Id}-mp.png", "image/png", ms, cancellationToken);
+                    activity.MiniProgramImageId = blob.Id;
+                    await db.SaveChangesAsync(cancellationToken);
+                }
+            }
+
+            var ret = await bs.GetBlobAsync(activity.MiniProgramImageId.Value, cancellationToken);
+            return File(ret.Stream, "image/png", true);
+        }
+        #endregion
     }
 }

@@ -11,6 +11,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         Horde
     }
 
+    public enum RegisterPolicy
+    {
+        AllowAll,
+        RestrictWechat
+    }
+
     public class Guild
     {
         [MaxLength(32)]
@@ -40,5 +46,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public virtual User User { get; set; }
 
         public virtual ICollection<GuildManager> Managers { get; set; } = new List<GuildManager>();
+
+        public RegisterPolicy RegisterPolicy { get; set; }
     }
 }

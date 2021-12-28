@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Pomelo.Wow.EventRegistration.WCL.Models;
+using Newtonsoft.Json;
 
 namespace Pomelo.Wow.EventRegistration.Web.Models
 {
@@ -48,5 +49,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public virtual Activity Activity { get; set; }
 
         public int Evaluation { get; set; }
+
+        [JsonIgnore]
+        [MaxLength(64)]
+        public string WxOpenId { get; set; }
     }
 }

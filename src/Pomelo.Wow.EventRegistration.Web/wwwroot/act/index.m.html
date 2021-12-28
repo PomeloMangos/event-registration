@@ -172,78 +172,84 @@
                 </table>
             </template>
 
-            <div class="section-title">
-                <span v-if="activity.status == 1">请点击角色进行报名</span>
-                <span v-else>点击角色可请假</span>
-            </div>
-            <table class="form-table" style="margin-bottom: 30px">
-                <tr v-for="(ch, i) in myCharactors.filter(x => x.realm == activity.realm)" v-on:click="mobile.ch = ch">
-                    <td v-bind:class="'class-' + ch.class">
-                        <img v-bind:src="'/assets/images/class-' + ch.class + '.png'" class="class-img" />
-                        {{ ch.name }}
-                        <template v-if="activity.registrations.filter(x => x.name == ch.name).length">
-                            <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 0">待审核</span>
-                            <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 1">被拒绝</span>
-                            <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 2">替补队员</span>
-                            <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 3">已请假</span>
-                            <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 4">已通过</span>
-                        </template>
-                    </td>
-                </tr>
-                <tr v-if="myCharactors.filter(x => x.realm == activity.realm).length == 0">
-                    <td style=" line-height: 42px; padding-left: 15px;">您还没有添加任何角色</td>
-                </tr>
-            </table>
-
-            <template v-if="activity.status == 1">
+            <div v-if="$root.guild.registerPolicy != 1">
                 <div class="section-title">
-                    <span>添加新角色 (请填写完整角色名)</span>
+                    <span v-if="activity.status == 1">请点击角色进行报名</span>
+                    <span v-else>点击角色可请假</span>
                 </div>
-                <table class="form-table ch-table" style="margin-bottom: 30px">
-                    <colgroup>
-                        <col style="width: 80px" />
-                        <col />
-                    </colgroup>
-                    <tr>
-                        <td>角色名</td>
-                        <td>
-                            <input class="inline-textbox" placeholder="点击以输入角色名..." style="width: 110px" type="text" v-model="form.newCharactor.name" />
+                <table class="form-table" style="margin-bottom: 30px">
+                    <tr v-for="(ch, i) in myCharactors.filter(x => x.realm == activity.realm)" v-on:click="mobile.ch = ch">
+                        <td v-bind:class="'class-' + ch.class">
+                            <img v-bind:src="'/assets/images/class-' + ch.class + '.png'" class="class-img" />
+                            {{ ch.name }}
+                            <template v-if="activity.registrations.filter(x => x.name == ch.name).length">
+                                <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 0">待审核</span>
+                                <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 1">被拒绝</span>
+                                <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 2">替补队员</span>
+                                <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 3">已请假</span>
+                                <span class="right" style="color: #ccc" v-if="activity.registrations.filter(x => x.name == ch.name)[0].status == 4">已通过</span>
+                            </template>
                         </td>
                     </tr>
-                    <tr>
-                        <td>职业</td>
-                        <td>
-                            <select class="inline-textbox" v-model="form.newCharactor.class" style="background: rgb(41,40,69);">
-                                <option value="1">战士</option>
-                                <option value="2">圣骑士</option>
-                                <option value="8">萨满祭司</option>
-                                <option value="4">猎人</option>
-                                <option value="32">德鲁伊</option>
-                                <option value="16">潜行者</option>
-                                <option value="128">法师</option>
-                                <option value="64">术士</option>
-                                <option value="256">牧师</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>服务器</td>
-                        <td>
-                            <input disabled class="inline-textbox" style="width: 110px" type="text" v-model="form.newCharactor.realm" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align:center">
-                            <a style="display:block" v-on:click="addCharactor">添加角色</a>
-                        </td>
+                    <tr v-if="myCharactors.filter(x => x.realm == activity.realm).length == 0">
+                        <td style=" line-height: 42px; padding-left: 15px;">您还没有添加任何角色</td>
                     </tr>
                 </table>
-            </template>
-            <template v-else>
-                <div class="section-title">
-                    <span>报名截止日期已过，您已无法报名</span>
-                </div>
-            </template>
+
+                <template v-if="activity.status == 1">
+                    <div class="section-title">
+                        <span>添加新角色 (请填写完整角色名)</span>
+                    </div>
+                    <table class="form-table ch-table" style="margin-bottom: 30px">
+                        <colgroup>
+                            <col style="width: 80px" />
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <td>角色名</td>
+                            <td>
+                                <input class="inline-textbox" placeholder="点击以输入角色名..." style="width: 110px" type="text" v-model="form.newCharactor.name" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>职业</td>
+                            <td>
+                                <select class="inline-textbox" v-model="form.newCharactor.class" style="background: rgb(41,40,69);">
+                                    <option value="1">战士</option>
+                                    <option value="2">圣骑士</option>
+                                    <option value="8">萨满祭司</option>
+                                    <option value="4">猎人</option>
+                                    <option value="32">德鲁伊</option>
+                                    <option value="16">潜行者</option>
+                                    <option value="128">法师</option>
+                                    <option value="64">术士</option>
+                                    <option value="256">牧师</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>服务器</td>
+                            <td>
+                                <input disabled class="inline-textbox" style="width: 110px" type="text" v-model="form.newCharactor.realm" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align:center">
+                                <a style="display:block" v-on:click="addCharactor">添加角色</a>
+                            </td>
+                        </tr>
+                    </table>
+                </template>
+                <template v-else>
+                    <div class="section-title">
+                        <span>报名截止日期已过，您已无法报名</span>
+                    </div>
+                </template>
+            </div>
+            <div v-else style="text-align: center">
+                <div><img v-bind:src="'/api/activity/' + activity.id + '/miniprogram-qrcode.png'" class="mp-qrcode" /></div>
+                <div class="mp-qrcode-hint">本公会要求玩家使用微信扫描上方二维码在小程序中报名</div>
+            </div>
         </div>
         <div class="ch-wrapper" v-if="active == 'ledger'">
             <div class="section-title">

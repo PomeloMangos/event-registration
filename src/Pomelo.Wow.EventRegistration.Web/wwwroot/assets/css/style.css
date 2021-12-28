@@ -3660,3 +3660,15 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap
 }
+
+.mp-qrcode {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    background: #fff;
+    margin: 15px 0;
+}
+
+.mp-qrcode-hint {
+    color: #3dd0d8
+}

@@ -9,6 +9,7 @@
                 <h1 class="page-title" v-if="active == 'price'">装备价目表</h1>
                 <h1 class="page-title" v-if="active == 'manager'">管理员设置</h1>
                 <h1 class="page-title" v-if="active == 'icon'">公会图标设置</h1>
+                <h1 class="page-title" v-if="active == 'reg-policy'">报名策略</h1>
             </div>
 
             <div class="breadcrumbs" v-if="$root.guild">
@@ -58,6 +59,12 @@
                                         <a>
                                             <i class="fa fa-fw fa-users"></i>
                                             <span>管理员设置</span>
+                                        </a>
+                                    </li>
+                                    <li class="color1" v-on:click="active = 'reg-policy'" v-bind:class="{ 'active': active == 'reg-policy' }">
+                                        <a>
+                                            <i class="fa fa-fw fa-gavel"></i>
+                                            <span>报名策略</span>
                                         </a>
                                     </li>
                                     <li class="color1">
