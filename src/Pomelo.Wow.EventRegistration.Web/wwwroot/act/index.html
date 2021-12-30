@@ -451,7 +451,7 @@
                                             <template v-for="category in ledger.statistics.categories">
                                                 <thead>
                                                     <tr class="tr-category">
-                                                        <th colspan="4"><span class="ledger-category">{{ category.category }}</span> <span class="float-right">{{ category.price }}G</span></th>
+                                                        <th colspan="4"><span class="ledger-category">{{ category.category || '其他' }}</span> <span class="float-right">{{ category.price }}G</span></th>
                                                     </tr>
                                                     <tr>
                                                         <th>物品</th>
