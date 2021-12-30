@@ -15,7 +15,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
     public class ScanController : ControllerBase
     {
         private static ConcurrentDictionary<Guid, LoginResponse> dic = new ConcurrentDictionary<Guid, LoginResponse>();
-        private static AESHelper aes = new AESHelper(Guid.NewGuid().ToString().Replace("-", ""), Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16));
+        private static AESHelper aes = new AESHelper(Startup.Configuration["Aes:Key"], Startup.Configuration["Aes:IV"]);
 
         [HttpPost("generate")]
         public ApiResult<string> PostGenerateCode()
