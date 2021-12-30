@@ -72,9 +72,9 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<LoginResponse>(404, "请求无效");
             }
 
-            if (dic.TryRemove(qrcode.Id, out var session))
+            if (dic.ContainsKey(qrcode.Id))
             {
-                return ApiResult(session);
+                return ApiResult(dic[qrcode.Id]);
             }
             else
             {

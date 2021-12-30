@@ -4,6 +4,7 @@
 
 var app = new Vue({
     data: {
+        authHost: 'https://gbgbg.cn',
         notifications: [],
         active: 'activity',
         user: {
