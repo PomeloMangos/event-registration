@@ -32,7 +32,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         public async ValueTask<PagedApiResult<Guild>> Get(
             [FromServices] WowContext db,
             [FromQuery] string name = null,
-            [FromQuery] int pageSize = 10,
+            [FromQuery] int pageSize = 50,
             [FromQuery] int page = 1,
             CancellationToken cancellationToken = default)
         {
