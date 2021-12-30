@@ -69,7 +69,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             var qrcode = ValidateCode(request.Code);
             if (qrcode == null)
             {
-                return ApiResult<LoginResponse>(400, "请求无效");
+                return ApiResult<LoginResponse>(404, "请求无效");
             }
 
             if (dic.TryRemove(qrcode.Id, out var session))
