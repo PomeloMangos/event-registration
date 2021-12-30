@@ -77,9 +77,6 @@
                                 <li v-if="!!$root.user.token && !$root.guildId" class="inline-block" v-bind:class="{ 'active': active == 'create-guild' }">
                                     <a v-on:click="$root.open('/guild/create')">创建公会</a>
                                 </li>
-                                <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'password' }">
-                                    <a v-on:click="$root.open('/password')">修改密码</a>
-                                </li>
                                 <li v-if="!!$root.user.token" class="inline-block">
                                     <a v-on:click="$root.logout()">注销</a>
                                 </li>
@@ -125,9 +122,6 @@
                             </li>
                             <li v-if="!!$root.user.token && !$root.guildId" class="" v-bind:class="{ 'active': active == 'create-guild' }">
                                 <a v-on:click="open('/guild/create')">创建公会</a>
-                            </li>
-                            <li v-if="!!$root.user.token" class="" v-bind:class="{ 'active': active == 'password' }">
-                                <a v-on:click="open('/password')">修改密码</a>
                             </li>
                             <li v-if="!!$root.user.token" class="">
                                 <a v-on:click="logout">注销</a>
