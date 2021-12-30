@@ -141,14 +141,14 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return ApiResult(new LoginResponse { Username = user.Username, UserId = user.Id, DisplayName = user.DisplayName, Token = us.Id, Role = user.Role.ToString() });
         }
 
-        private string GenerateTokenId()
+        internal static string GenerateTokenId()
         {
             return $"{DateTime.UtcNow.Ticks}-{GenerateRandomString(64)}";
         }
 
         static string randomStringDic = "1234567890qwertyuiopasdfghjklzxcvbnm";
 
-        private string GenerateRandomString(int length)
+        private static string GenerateRandomString(int length)
         {
             var sb = new StringBuilder();
             while(sb.Length < length)

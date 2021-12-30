@@ -3672,3 +3672,23 @@ a {
 .mp-qrcode-hint {
     color: #3dd0d8
 }
+
+.login-qrcode-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.login-qrcode-table {
+    text-align: center;
+}
+
+    .login-qrcode-table img, .login-qrcode-table .qrcode {
+        width: 300px;
+        max-width: 100%;
+        display: inline-block;
+    }
+
+    .login-qrcode-table td {
+        padding: 15px;
+    }

@@ -19,7 +19,7 @@ namespace Pomelo.Wow.EventRegistration.Web
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {

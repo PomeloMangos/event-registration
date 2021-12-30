@@ -51,10 +51,16 @@ var app = new Vue({
                 self.user.token = null;
                 self.user.role = null;
                 self.user.username = null;
-                token: window.localStorage.setItem('token', null);
-                token: window.localStorage.setItem('role', null);
-                token: window.localStorage.setItem('username', null);
+                window.localStorage.setItem('token', null);
+                window.localStorage.setItem('role', null);
+                window.localStorage.setItem('username', null);
             }
+        },
+        logout: function () {
+            window.localStorage.setItem('token', null);
+            window.localStorage.setItem('role', null);
+            window.localStorage.setItem('username', null);
+            window.location.reload();
         },
         marked: function (text) {
             if (!text) return '';

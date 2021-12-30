@@ -27,6 +27,7 @@
     <script src="/assets/js/moment.min.js"></script>
     <script src="/assets/plugins/jquery-date-range-picker-master/dist/jquery.daterangepicker.min.js"></script>
     <script src="/assets/plugins/wow-master/dist/wow.min.js"></script>
+    <script src="/assets/js/qrcode.min.js"></script>
     <script src="/assets/js/script.js"></script>
     <script>
         $('#lbl-build').text(__version);
@@ -67,9 +68,6 @@
                                 <li class="inline-block" v-if="$root.guildId" v-bind:class="{ 'active': active == 'ch' }">
                                     <a v-on:click="$root.open('/ch/search')">角色</a>
                                 </li>
-                                <li v-if="!$root.user.token && !$root.guildId" class="inline-block" v-bind:class="{ 'active': active == 'reg' }">
-                                    <a v-on:click="$root.open('/reg')">注册</a>
-                                </li>
                                 <li v-if="!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'login' }">
                                     <a v-on:click="$root.open('/login')">登录</a>
                                 </li>
@@ -81,6 +79,9 @@
                                 </li>
                                 <li v-if="!!$root.user.token" class="inline-block" v-bind:class="{ 'active': active == 'password' }">
                                     <a v-on:click="$root.open('/password')">修改密码</a>
+                                </li>
+                                <li v-if="!!$root.user.token" class="inline-block">
+                                    <a v-on:click="$root.logout()">注销</a>
                                 </li>
                             </ul>
                         </div>
@@ -116,9 +117,6 @@
                             <li class="" v-bind:class="{ 'active': active == 'activity' }">
                                 <a v-on:click="$root.guildId ? open('/home') : $root.open('/list')">{{ $root.guildId ? '首页' : '活动列表' }}</a>
                             </li>
-                            <li v-if="!$root.user.token" class="" v-bind:class="{ 'active': active == 'reg' }">
-                                <a v-on:click="open('/reg')">注册</a>
-                            </li>
                             <li v-if="!$root.user.token" class="" v-bind:class="{ 'active': active == 'login' }">
                                 <a v-on:click="open('/login')">登录</a>
                             </li>
@@ -130,6 +128,9 @@
                             </li>
                             <li v-if="!!$root.user.token" class="" v-bind:class="{ 'active': active == 'password' }">
                                 <a v-on:click="open('/password')">修改密码</a>
+                            </li>
+                            <li v-if="!!$root.user.token" class="">
+                                <a v-on:click="logout">注销</a>
                             </li>
                         </ul>
                     </div>
