@@ -83,7 +83,7 @@ component.methods = {
         this.raids = (await qv.get('/api/raid')).data;
         var activity = (await qv.get('/api/activity/' + this.id)).data;
 
-        if (!app.guildId || activity.guildId != app.guildId) {
+        if (activity.guildId != app.guildId && app.guildId) {
             window.location = `https://${activity.guildId}.mwow.org/act?id=${this.id}`;
         }
 

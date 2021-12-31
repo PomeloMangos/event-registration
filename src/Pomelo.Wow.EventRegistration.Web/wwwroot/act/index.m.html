@@ -172,7 +172,7 @@
                 </table>
             </template>
 
-            <div v-if="$root.guild.registerPolicy != 1">
+            <div v-if="$root.guild && $root.guild.registerPolicy != 1">
                 <div class="section-title">
                     <span v-if="activity.status == 1">请点击角色进行报名</span>
                     <span v-else>点击角色可请假</span>

@@ -155,7 +155,7 @@
                             </div>
 
                             <div v-if="activity && activity.status < 3">
-                                <div v-if="$root.guild.registerPolicy != 1">
+                                <div v-if="$root.guild && $root.guild.registerPolicy != 1">
                                     <h5>我的角色</h5>
                                     <table class="reg-table" style="table-layout: auto!important;">
                                         <thead>
