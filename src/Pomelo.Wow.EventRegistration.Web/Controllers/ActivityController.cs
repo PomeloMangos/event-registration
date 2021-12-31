@@ -440,13 +440,13 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             db.Registrations.Add(registration);
 
-            if (CurrentUser.WxAvatarUrl == null)
+            if (CurrentUser != null && CurrentUser.WxAvatarUrl == null)
             {
                 CurrentUser.WxAvatarUrl = registration.AvatarUrl;
                 db.Attach(CurrentUser);
             }
 
-            if (CurrentUser.DisplayName == null)
+            if (CurrentUser != null && CurrentUser.DisplayName == null)
             {
                 CurrentUser.DisplayName = registration.WeChat;
                 db.Attach(CurrentUser);
