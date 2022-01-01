@@ -48,5 +48,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         public virtual ICollection<GuildManager> Managers { get; set; } = new List<GuildManager>();
 
         public RegisterPolicy RegisterPolicy { get; set; }
+
+        public int Points { get; set; }
     }
 }

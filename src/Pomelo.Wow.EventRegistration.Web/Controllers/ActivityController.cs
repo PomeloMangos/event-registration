@@ -424,6 +424,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             if (IsWeChatUser) 
             {
                 registration.WxOpenId = CurrentUser.WxOpenId;
+                ++activity.Guild.Points;
             }
 
             if (await db.Registrations.AnyAsync(x => x.ActivityId == activityId && x.Name == registration.Name, cancellationToken))
