@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Pomelo.Wow.EventRegistration.Web.Models;
 using Pomelo.Wow.EventRegistration.Web.Models.ViewModels;
@@ -22,17 +23,19 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         [HttpGet("{realm}/{charactorName}")]
         public async ValueTask<ApiResult<Charactor>> Get(
              [FromServices] WowContext db,
+             [FromServices] IConfiguration configuration,
              [FromRoute] string realm,
              [FromRoute] string charactorName,
              CancellationToken cancellationToken = default)
         {
-            var charactor = await ActivityController.FetchCharactorAsync(db, _logger, charactorName, realm);
+            var charactor = await ActivityController.FetchCharactorAsync(db, _logger, charactorName, realm, Convert.ToInt32(configuration["Partition"]));
             return ApiResult(charactor);
         }
 
         [HttpPost("batch")]
         public async ValueTask<ApiResult> Post(
             [FromServices] WowContext db,
+             [FromServices] IConfiguration configuration,
             [FromBody] BatchUpdateWclRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -45,7 +48,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             {
                 try
                 {
-                    await ActivityController.FetchCharactorAsync(db, _logger, x, request.Realm);
+                    await ActivityController.FetchCharactorAsync(db, _logger, x, request.Realm, Convert.ToInt32(configuration["Partition"]));
                 }
                 catch (Exception ex) 
                 {

@@ -160,9 +160,6 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
         [HttpGet("{username}/session/{session}")]
         public async ValueTask<ApiResult> Get(
-            [FromServices] WowContext db,
-            [FromRoute] string username,
-            [FromRoute] string session,
             CancellationToken cancellationToken = default)
         {
             if (User.Identity.IsAuthenticated)

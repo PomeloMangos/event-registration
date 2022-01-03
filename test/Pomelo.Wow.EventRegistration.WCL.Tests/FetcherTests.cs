@@ -9,7 +9,7 @@ namespace Pomelo.Wow.EventRegistration.WCL.Tests
         [Fact]
         public async Task FetchCharacterTest()
         {
-            var ch = await Fetcher.FetchAsync("√»–°Ë÷", "¡˙÷Æ’ŸªΩ", Models.CharactorRole.Tank);
+            var ch = await Fetcher.FetchAsync("√»–°Ë÷", "¡˙÷Æ’ŸªΩ", Models.CharactorRole.Tank, 3);
 
             Assert.NotNull(ch);
         }

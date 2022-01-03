@@ -6,6 +6,7 @@ using System.Linq;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Pomelo.Wow.EventRegistration.Web.Blob;
@@ -393,6 +394,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         [HttpPost("{activityId:long}/registrations")]
         public async ValueTask<ApiResult<Registration>> Post(
             [FromServices] WowContext db,
+            [FromServices] IConfiguration configuration,
             [FromRoute] long activityId,
             [FromBody] Registration registration,
             CancellationToken cancellationToken = default)
@@ -432,7 +434,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<Registration>(400, "请不要重复报名");
             }
 
-            var charactor = await FetchCharactorAsync(db, _logger, registration.Name, activity.Realm);
+            var charactor = await FetchCharactorAsync(db, _logger, registration.Name, activity.Realm, Convert.ToInt32(configuration["Partition"]));
             if (charactor != null)
             {
                 registration.CharactorId = charactor.Id;
@@ -518,7 +520,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         }
         #endregion
 
-        internal static async ValueTask<Charactor> FetchCharactorAsync(WowContext db, ILogger logger, string name, string realm)
+        internal static async ValueTask<Charactor> FetchCharactorAsync(WowContext db, ILogger logger, string name, string realm, int partition)
         {
             try
             {
@@ -530,8 +532,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
                 var key = (await db.WclApiKeys.OrderBy(x => Guid.NewGuid()).FirstAsync()).Id;
                 Fetcher.SetApiKey(key);
-                var wclCharactorDps = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.DPS);
-                var wclCharactorHealer = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.Healer);
+                var wclCharactorDps = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.DPS, partition);
+                var wclCharactorHealer = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.Healer, partition);
 
                 if (charactor == null)
                 {

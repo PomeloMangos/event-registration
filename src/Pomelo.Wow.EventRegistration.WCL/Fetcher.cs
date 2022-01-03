@@ -28,7 +28,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
             apiKey = key;
         }
 
-        public static async ValueTask<Charactor> FetchAsync(string name, string realm, CharactorRole role)
+        public static async ValueTask<Charactor> FetchAsync(string name, string realm, CharactorRole role, int partition)
         {
             var html = await GetWclHomePageAsync(name, realm);
             if (html == null)
@@ -41,7 +41,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
             charactor.Realm = realm;
             charactor.Role = role;
             charactor.Equipments = GetItemIds(html);
-            charactor.BossRanks = await GetBossRanksAsync(name, realm, role);
+            charactor.BossRanks = await GetBossRanksAsync(name, realm, role, partition);
             charactor.Class = classRegex.Match(html).Value;
             if (charactor.BossRanks.Count() > 0)
             {
@@ -158,7 +158,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
             }
         }
 
-        private static async ValueTask<List<BossRank>> GetBossRanksAsync(string name, string realm, CharactorRole role)
+        private static async ValueTask<List<BossRank>> GetBossRanksAsync(string name, string realm, CharactorRole role, int partition)
         {
             var metric = "dps";
             if (role == CharactorRole.Healer)
@@ -166,7 +166,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
                 metric = "hps";
             }
 
-            using (var response = await clientWclCN.GetAsync($"/v1/parses/character/{name}/{realm}/CN?includeCombatantInfo=true&metric={metric}&api_key={apiKey}"))
+            using (var response = await clientWclCN.GetAsync($"/v1/parses/character/{name}/{realm}/CN?includeCombatantInfo=true&metric={metric}&partition={partition}&api_key={apiKey}"))
             {
                 var jsonStr = await response.Content.ReadAsStringAsync();
                 var obj = JsonConvert.DeserializeObject<IEnumerable<WclBattleRecord>>(jsonStr);
