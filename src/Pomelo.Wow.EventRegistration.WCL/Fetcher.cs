@@ -45,7 +45,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
             charactor.Class = classRegex.Match(html).Value;
             if (charactor.BossRanks.Count() > 0)
             {
-                var ignoreHighest = charactor.BossRanks.Where(x => !x.Name.Contains("凯尔萨斯")).FirstOrDefault();
+                var ignoreHighest = charactor.BossRanks.Where(x => x.Name.Contains("凯尔萨斯")).FirstOrDefault();
                 if (ignoreHighest == null)
                 {
                     charactor.HighestItemLevel = charactor.BossRanks.Where(x => !x.Name.Contains("凯尔萨斯")).Max(x => x.ItemLevel);
