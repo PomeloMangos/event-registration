@@ -1,4 +1,6 @@
-﻿namespace Pomelo.Wow.EventRegistration.WCL.Models
+﻿using System.Collections.Generic;
+
+namespace Pomelo.Wow.EventRegistration.WCL.Models
 {
     internal class WclBattleRecord
     {
@@ -19,5 +21,7 @@
         public int Duration { get; set; }
 
         public int IlvlKeyOrPatch { get; set; }
+
+        public IEnumerable<Gear> Gear { get; set; }
     }
 }

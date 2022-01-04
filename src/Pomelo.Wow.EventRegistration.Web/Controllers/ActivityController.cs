@@ -533,6 +533,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 var key = (await db.WclApiKeys.OrderBy(x => Guid.NewGuid()).FirstAsync()).Id;
                 Fetcher.SetApiKey(key);
                 var wclCharactorDps = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.DPS, partition);
+                if (wclCharactorDps == null)
+                {
+                    return null;
+                }
+
                 var wclCharactorHealer = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.Healer, partition);
 
                 if (charactor == null)
@@ -550,6 +555,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 if (Enum.TryParse<Class>(wclCharactorDps.Class, out var cls))
                 {
                     charactor.Class = cls;
+                }
+
+                if (Enum.TryParse<ClassCN>(wclCharactorDps.Class, out var cls2))
+                {
+                    charactor.Class = (Class)(int)cls2;
                 }
 
                 charactor.UpdatedAt = DateTime.UtcNow;
