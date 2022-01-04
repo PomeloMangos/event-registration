@@ -21,5 +21,7 @@ namespace Pomelo.Wow.EventRegistration.WCL.Models
         public int Parse { get; set; }
 
         public int ItemLevel { get; set; }
+
+        public bool ItemLevelIsExactly { get; set; }
     }
 }

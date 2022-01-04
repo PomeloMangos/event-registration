@@ -39,18 +39,21 @@ namespace Pomelo.Wow.EventRegistration.WCL
                 return null;
             }
             charactor.BossRanks = parsed.ranks;
-            charactor.Equipments = parsed.gear.Select(x => x.Id);
+            charactor.Equipments = parsed.gear
+                .Select(x => x.Id)
+                .Where(x => !ignoreItems.Contains(x))
+                .ToList();
             charactor.Class = parsed.@class;
             if (charactor.BossRanks.Count() > 0)
             {
-                var ignoreHighest = charactor.BossRanks.Where(x => x.Name.Contains("凯尔萨斯")).FirstOrDefault();
-                if (ignoreHighest == null)
+                var validRanks = charactor.BossRanks.Where(x => x.ItemLevelIsExactly && !x.Name.Contains("凯尔萨斯"));
+                if (validRanks.Count() > 0)
                 {
-                    charactor.HighestItemLevel = charactor.BossRanks.Where(x => !x.Name.Contains("凯尔萨斯")).Max(x => x.ItemLevel);
+                    charactor.HighestItemLevel = validRanks.Max(x => x.ItemLevel);
                 }
                 else
                 {
-                    charactor.HighestItemLevel = charactor.BossRanks.Where(x => !x.Name.Contains("凯尔萨斯") && x.ItemLevel != ignoreHighest.ItemLevel).Max(x => x.ItemLevel);
+                    charactor.HighestItemLevel = 0;
                 }
             }
 
@@ -109,7 +112,6 @@ namespace Pomelo.Wow.EventRegistration.WCL
         {
             try
             {
-
                 html = html.Split("\n").Where(x => x.Contains("tooltip_enus")).First();
             }
             catch 
@@ -171,7 +173,6 @@ namespace Pomelo.Wow.EventRegistration.WCL
                         .SelectMany(x => x.Gear)
                         .GroupBy(x => x.Id)
                         .Select(x => x.First())
-                        .Where(x => !ignoreItems.Any(y => y == x.Id))
                         .ToList();
                     var ret = new List<BossRank>();
                     foreach (var boss in obj)
@@ -182,7 +183,8 @@ namespace Pomelo.Wow.EventRegistration.WCL
                             Fastest = new TimeSpan(0, 0, boss.Duration / 1000),
                             Highest = boss.Total,
                             Name = boss.EncounterName,
-                            ItemLevel = boss.IlvlKeyOrPatch
+                            ItemLevel = boss.IlvlKeyOrPatch,
+                            ItemLevelIsExactly = boss.Gear.All(x => !ignoreItems.Contains(x.Id))
                         });
                     }
 
@@ -197,7 +199,8 @@ namespace Pomelo.Wow.EventRegistration.WCL
                             Lowest = x.Min(x => x.Highest),
                             ItemLevel = x.Max(x => x.ItemLevel),
                             Killed = x.Count(),
-                            Parse = x.Max(x => x.Parse)
+                            Parse = x.Max(x => x.Parse),
+                            ItemLevelIsExactly = x.Any(y => y.ItemLevel == x.Max(z => z.ItemLevel) && y.ItemLevelIsExactly)
                         })
                         .ToList(), gear, obj.Count() > 0 ? obj.First().Class : null);
                 }
