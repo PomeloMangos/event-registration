@@ -520,6 +520,14 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         }
         #endregion
 
+        internal static async ValueTask<string> GetApiKeyAsync(WowContext db, CancellationToken cancellationToken = default)
+        {
+            var keys = await db.WclApiKeys
+                .Where(x => !x.Disabled)
+                .ToListAsync(cancellationToken);
+            return keys.OrderBy(x => Guid.NewGuid()).First().Id;
+        }
+
         internal static async ValueTask<Charactor> FetchCharactorAsync(WowContext db, ILogger logger, string name, string realm, int partition)
         {
             try
@@ -530,14 +538,14 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                     return charactor;
                 }
 
-                var key = (await db.WclApiKeys.OrderBy(x => Guid.NewGuid()).FirstAsync()).Id;
-                Fetcher.SetApiKey(key);
+                Fetcher.SetApiKey(await GetApiKeyAsync(db));
                 var wclCharactorDps = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.DPS, partition);
                 if (wclCharactorDps == null)
                 {
                     return null;
                 }
 
+                Fetcher.SetApiKey(await GetApiKeyAsync(db));
                 var wclCharactorHealer = await Fetcher.FetchAsync(name, realm, WCL.Models.CharactorRole.Healer, partition);
 
                 if (charactor == null)

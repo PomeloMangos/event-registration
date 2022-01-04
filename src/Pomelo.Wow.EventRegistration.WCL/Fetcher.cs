@@ -40,7 +40,8 @@ namespace Pomelo.Wow.EventRegistration.WCL
             }
             charactor.BossRanks = parsed.ranks;
             charactor.Equipments = parsed.gear
-                .Select(x => x.Id)
+                .Where(x => x.Id.HasValue)
+                .Select(x => x.Id.Value)
                 .Where(x => !ignoreItems.Contains(x))
                 .ToList();
             charactor.Class = parsed.@class;
@@ -171,7 +172,8 @@ namespace Pomelo.Wow.EventRegistration.WCL
                     var obj = JsonConvert.DeserializeObject<IEnumerable<WclBattleRecord>>(jsonStr);
                     var gear = obj
                         .SelectMany(x => x.Gear)
-                        .GroupBy(x => x.Id)
+                        .Where(x => x.Id.HasValue)
+                        .GroupBy(x => x.Id.Value)
                         .Select(x => x.First())
                         .ToList();
                     var ret = new List<BossRank>();
@@ -184,7 +186,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
                             Highest = boss.Total,
                             Name = boss.EncounterName,
                             ItemLevel = boss.IlvlKeyOrPatch,
-                            ItemLevelIsExactly = boss.Gear.All(x => !ignoreItems.Contains(x.Id))
+                            ItemLevelIsExactly = boss.Gear.Where(x => x.Id.HasValue).All(x => !ignoreItems.Contains(x.Id.Value))
                         });
                     }
 

@@ -6,5 +6,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
     {
         [MaxLength(32)]
         public string Id { get; set; }
+
+        public bool Disabled { get; set; }
     }
 }
