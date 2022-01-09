@@ -268,6 +268,10 @@
                             <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
                             {{ x.player }}
                         </td>
+                        <td v-else-if="x.class" v-bind:class="'class-' + x.class">
+                            <img v-bind:src="'/assets/images/class-' + x.class + '.png'" class="class-img">
+                            {{ x.player }}
+                        </td>
                         <td v-else>
                             {{ x.player }}
                         </td>
@@ -290,6 +294,10 @@
                             <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
                             {{ x.player }}
                         </td>
+                        <td v-else-if="x.class" v-bind:class="'class-' + x.class">
+                            <img v-bind:src="'/assets/images/class-' + x.class + '.png'" class="class-img">
+                            {{ x.player }}
+                        </td>
                         <td v-else>
                             {{ x.player }}
                         </td>
@@ -310,6 +318,10 @@
                         <td>{{ x.name }}</td>
                         <td v-if="activity.registrations.some(y => y.name == x.player)" v-bind:class="'class-' + activity.registrations.filter(y => y.name == x.player)[0].class">
                             <img v-bind:src="'/assets/images/class-' + activity.registrations.filter(y => y.name == x.player)[0].class + '.png'" class="class-img">
+                            {{ x.player }}
+                        </td>
+                        <td v-else-if="x.class" v-bind:class="'class-' + x.class">
+                            <img v-bind:src="'/assets/images/class-' + x.class + '.png'" class="class-img">
                             {{ x.player }}
                         </td>
                         <td v-else>

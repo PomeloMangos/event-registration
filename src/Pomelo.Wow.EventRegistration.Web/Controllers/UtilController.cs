@@ -60,6 +60,22 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                     {
                         rec.Category = splited[6];
                     }
+                    if (splited.Length >= 8)
+                    {
+                        var classStr = splited[7].ToLower();
+                        if (classStr.Length > 0)
+                        {
+                            var classChArr = classStr.ToCharArray();
+                            classChArr[0] = char.ToUpper(classChArr[0]);
+                            if (Enum.TryParse<Class>(new string(classChArr), out var cls))
+                            {
+                                if (!string.IsNullOrWhiteSpace(rec.Player))
+                                {
+                                    rec.Class = cls;
+                                }
+                            }
+                        }
+                    }
                     tmp.Add(rec);
                     continue;
                 }
@@ -71,12 +87,31 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                         continue;
                     }
 
+                    Class? cls = null;
+                    if (splited.Length >= 8)
+                    {
+                        var classStr = splited[7].ToLower();
+                        if (classStr.Length > 0)
+                        {
+                            var classChArr = classStr.ToCharArray();
+                            classChArr[0] = char.ToUpper(classChArr[0]);
+                            if (Enum.TryParse<Class>(new string(classChArr), out var parsed))
+                            {
+                                if (!string.IsNullOrWhiteSpace(splited[1]))
+                                {
+                                    cls = parsed;
+                                }
+                            }
+                        }
+                    }
+
                     ret.Expense.Add(new ParseLedgerRecord 
                     {
                         Name = splited[1],
                         Amount = Convert.ToInt32(splited[2]),
                         Player = splited[3],
-                        Price = Convert.ToInt32(splited[4])
+                        Price = Convert.ToInt32(splited[4]),
+                        Class = cls
                     });
                 }
             }
@@ -116,6 +151,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 .Select(x => new ParseLedgerStatisticsConsumer
                 {
                     Player = x.Key,
+                    Class = x.First().Class,
                     Price = x.Sum(y => y.Price)
                 })
                 .ToList();

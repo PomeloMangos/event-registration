@@ -30,6 +30,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models.ViewModels
 
         public string Player { get; set; }
 
+        public Class? Class { get; set; }
+
         public int Price { get; set; }
 
         public string Category { get; set; }
@@ -63,6 +65,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models.ViewModels
     public class ParseLedgerStatisticsConsumer
     { 
         public string Player { get; set; }
+
+        public Class? Class { get; set; }
 
         public int Price { get; set; }
     }
