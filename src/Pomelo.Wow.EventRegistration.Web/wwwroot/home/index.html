@@ -10,6 +10,7 @@
                 <h1 class="page-title" v-if="active == 'manager'">管理员设置</h1>
                 <h1 class="page-title" v-if="active == 'icon'">公会图标设置</h1>
                 <h1 class="page-title" v-if="active == 'reg-policy'">报名策略</h1>
+                <h1 class="page-title" v-if="active == 'members'">公会成员</h1>
             </div>
 
             <div class="breadcrumbs" v-if="$root.guild">
@@ -34,6 +35,12 @@
                                     <a>
                                         <i class="fa fa-fw fa-calendar"></i>
                                         <span>公会活动</span>
+                                    </a>
+                                </li>
+                                <li class="color1" v-on:click="active = 'members'" v-bind:class="{ 'active': active == 'members' }">
+                                    <a>
+                                        <i class="fa fa-fw fa-user"></i>
+                                        <span>公会成员</span>
                                     </a>
                                 </li>
                                 <li class="color1" v-if="$root.guildPermission.guildManager" v-on:click="active = 'new-act'" v-bind:class="{ 'active': active == 'new-act' }">

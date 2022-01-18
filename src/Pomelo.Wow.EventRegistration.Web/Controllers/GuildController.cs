@@ -498,5 +498,50 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             return File(ret.Stream, "image/png", true);
         }
         #endregion
+
+        #region Members
+        [HttpGet("{guildId}/members")]
+        public async ValueTask<ApiResult<List<GuildMemberViewModel>>> GetMembers(
+            [FromServices] WowContext db,
+            [FromRoute] string guildId,
+            int days = 30,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(guildId))
+            {
+                return ApiResult<List<GuildMemberViewModel>>(400, "缺少公会ID");
+            }
+
+            if (days > 365)
+            {
+                days = 365;
+            }
+
+            var now = DateTime.UtcNow;
+            var from = now.AddDays(-days);
+            var ret = (await db.Registrations
+                .Where(x => !string.IsNullOrEmpty(x.WxOpenId))
+                .Where(x => x.RegisteredAt >= from && x.RegisteredAt < now)
+                .Where(x => x.Activity.GuildId == guildId)
+                .Where(x => x.Status != RegistrationStatus.Leave && x.Status != RegistrationStatus.Rejected)
+                .OrderBy(x => x.RegisteredAt)
+                .ToListAsync(cancellationToken))
+                .GroupBy(x => x.WxOpenId)
+                .Select(x => new GuildMemberViewModel
+                {
+                    Nickname = x.Last(y => y.WxOpenId == x.Key).WeChat,
+                    Attend = x.Count(),
+                    AvatarUrl = x.Last(y => y.WxOpenId == x.Key).AvatarUrl,
+                    Charactors = x.GroupBy(x => x.Name)
+                        .Select(y => new GuildMemberCharactorViewModel { Name = y.First().Name, Class = y.First().Class, Attend = y.Count() })
+                        .OrderByDescending(y => y.Attend)
+                        .ToList()
+                })
+                .OrderByDescending(x => x.Attend)
+                .ToList();
+
+            return ApiResult(ret);
+        }
+        #endregion
     }
 }
