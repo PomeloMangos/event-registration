@@ -520,7 +520,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             var now = DateTime.UtcNow;
             var from = now.AddDays(-days);
             var ret = (await db.Registrations
-                .Where(x => !string.IsNullOrEmpty(x.WxOpenId))
+                .Where(x => !string.IsNullOrEmpty(x.WxOpenId) && !string.IsNullOrEmpty(x.WeChat))
                 .Where(x => x.RegisteredAt >= from && x.RegisteredAt < now)
                 .Where(x => x.Activity.GuildId == guildId)
                 .Where(x => x.Status != RegistrationStatus.Leave && x.Status != RegistrationStatus.Rejected)
