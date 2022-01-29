@@ -131,7 +131,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             // Try to get item link by name
             var itemsWithoutIds = tmp.Where(x => !x.ItemId.HasValue);
             var itemNames = itemsWithoutIds.Select(x => x.Name);
-            var items2 = await db.Items.Where(x => itemNames.Contains(x.Name)).ToDictionaryAsync(x => x.Name, x => x, cancellationToken);
+            var items2 = (await db.Items
+                .Where(x => itemNames.Contains(x.Name))
+                .ToListAsync(cancellationToken))
+                .GroupBy(x => x.Name)
+                .Select(x => x.First())
+                .ToDictionary(x => x.Name, x => x);
             foreach(var item in itemsWithoutIds)
             {
                 if (items2.ContainsKey(item.Name))
