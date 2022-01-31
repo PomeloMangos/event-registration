@@ -48,6 +48,15 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return ApiResult<dynamic>(null);
             }
 
+            if (CurrentUser.Role == UserRole.Admin)
+            {
+                return ApiResult<dynamic>(new
+                {
+                    GuildOwner = true,
+                    GuildManager = true
+                });
+            }
+
             return ApiResult<dynamic>(new 
             {
                 GuildOwner = await ValidateUserPermissionToCurrentGuildAsync(db, null, true, cancellationToken),

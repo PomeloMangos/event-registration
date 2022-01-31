@@ -94,6 +94,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 return false;
             }
 
+            if (CurrentUser.Role == UserRole.Admin)
+            {
+                return true;
+            }
+
             if (GuildId == null)
             {
                 return false;
