@@ -51,7 +51,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             if (GuildId != null)
             {
-                query = query.Where(x => x.GuildId == GuildId || db.UnionActivities.Where(y => y.GuildId == GuildId).Select(y => y.GuildId).Contains(GuildId));
+                var union = db.UnionActivities
+                    .Where(y => y.GuildId == GuildId)
+                    .Select(y => y.ActivityId);
+
+                query = query.Where(x => union.Contains(x.Id) 
+                    || x.GuildId == GuildId);
             }
 
             if (from.HasValue)
