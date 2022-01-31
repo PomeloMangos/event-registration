@@ -51,7 +51,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             if (GuildId != null)
             {
-                query = query.Where(x => x.GuildId == GuildId);
+                query = query.Where(x => x.GuildId == GuildId || db.UnionActivities.Where(y => y.GuildId == GuildId).Select(y => y.GuildId).Contains(GuildId));
             }
 
             if (from.HasValue)
@@ -157,6 +157,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
                 .ThenByDescending(x => x.Status)
                 .ThenBy(x => x.Class)
                 .ToList();
+
+            if (GuildId != null)
+            {
+                activity.DomainGuildId = GuildId;
+                activity.DomainGuildName = Guild.Name;
+            }
 
             return ApiResult(activity);
         }
@@ -439,6 +445,12 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             {
                 registration.CharactorId = charactor.Id;
                 registration.Class = registration.Class;
+            }
+
+            if (registration.GuildId == null)
+            {
+                registration.GuildId = activity.GuildId;
+                registration.GuildNameCache = activity.Guild.Name;
             }
 
             db.Registrations.Add(registration);

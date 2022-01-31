@@ -53,5 +53,14 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
         [JsonIgnore]
         [MaxLength(64)]
         public string WxOpenId { get; set; }
+
+        [MaxLength(32)]
+        [ForeignKey(nameof(Guild))]
+        public string GuildId { get; set; }
+
+        public virtual Guild Guild { get; set; }
+
+        [MaxLength(64)]
+        public string GuildNameCache { get; set; }
     }
 }

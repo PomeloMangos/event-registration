@@ -179,5 +179,31 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
 
             return ret;
         }
+
+        [HttpPost("forward-activity")]
+        public async ValueTask<ApiResult> PostForwardActivity(
+            [FromServices] WowContext db,
+            [FromBody] ForwardActivityRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            if (!await ValidateUserPermissionToCurrentGuildAsync(db, request.GuildId, false, cancellationToken))
+            {
+                return ApiResult(403, "您没有权限将活动转发至该公会");
+            }
+
+            if (await db.UnionActivities.AnyAsync(x => x.GuildId == request.GuildId && x.ActivityId == request.ActivityId, cancellationToken))
+            {
+                return ApiResult(400, "您已经转发过这个活动了");
+            }
+
+            db.UnionActivities.Add(new UnionActivity 
+            {
+                ActivityId = request.ActivityId,
+                GuildId = request.GuildId
+            });
+
+            await db.SaveChangesAsync(cancellationToken);
+            return ApiResult(200, "转发成功");
+        }
     }
 }

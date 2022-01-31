@@ -28,6 +28,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public DbSet<Registration> Registrations { get; set; }
 
+        public DbSet<UnionActivity> UnionActivities { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<UserSession> UserSessions { get; set; }
@@ -74,6 +76,16 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
             {
                 e.HasKey(x => new { x.GuildId, x.Key });
             });
+
+            builder.Entity<Registration>(e =>
+            {
+                e.HasOne(x => x.Guild).WithMany().IsRequired(false);
+            });
+
+            builder.Entity<UnionActivity>(e => 
+            {
+                e.HasKey(x => new { x.GuildId, x.ActivityId });
+            }); 
 
             builder.Entity<User>(e =>
             {

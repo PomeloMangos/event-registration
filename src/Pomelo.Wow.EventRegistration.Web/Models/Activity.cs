@@ -75,6 +75,8 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
 
         public Guid? MiniProgramImageId { get; set; }
 
+        public bool AllowForward { get; set; }
+
         [NotMapped]
         public ActivityStatus Status
         {
@@ -98,5 +100,11 @@ namespace Pomelo.Wow.EventRegistration.Web.Models
                 }
             }
         }
+
+        [NotMapped]
+        public string DomainGuildId { get; set; }
+
+        [NotMapped]
+        public string DomainGuildName { get; set; }
     }
 }
