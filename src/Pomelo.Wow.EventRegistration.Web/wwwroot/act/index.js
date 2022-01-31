@@ -63,6 +63,7 @@ component.created = async function () {
             this.myCharactors[i].role = 1;
         }
     }
+    this.getPermission();
     await this.loadItemSets();
 };
 
