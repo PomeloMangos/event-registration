@@ -26,7 +26,7 @@
                             <a class="tab-item" v-on:click="active = 'task'" v-bind:class="{ active: active == 'task' }"><i class="fa fa-puzzle-piece"></i> 任务分配</a>
                             <a class="tab-item" v-if="ledger && ledger.income && ledger.other && ledger.expense" v-on:click="active = 'ledger'" v-bind:class="{ active: active == 'ledger' }"><i class="fa fa-money"></i> 收支明细</a>
                             <a class="tab-item" v-on:click="active = 'wa'" v-bind:class="{ active: active == 'wa' }"><i class="fa fa-bolt"></i> WeakAuras</a>
-                            <a class="tab-item" v-on:click="active = 'manage'" v-bind:class="{ active: active == 'manage' }" v-if="$root.guildPermission.guildManager"><i class="fa fa-cog"></i> 管理活动</a>
+                            <a class="tab-item" v-on:click="active = 'manage'" v-bind:class="{ active: active == 'manage' }" v-if="permission.guildManager"><i class="fa fa-cog"></i> 管理活动</a>
                         </div>
                         <div v-if="active == 'registration'">
                             <h5>报名情况</h5>
@@ -66,6 +66,7 @@
                                                 <td v-bind:class="'class-' + reg.class">
                                                     <img v-bind:src="'/assets/images/class-' + reg.class + '.png'" class="class-img" />
                                                     {{ reg.name }}
+                                                    <span class="guild-name" v-if="activity && reg.guildId && activity.domainGuildId != reg.guildId">&lt;{{ reg.guildNameCache }}&gt;</span>
                                                 </td>
                                                 <td v-if="reg.charactor" v-bind:class="getItemColor(bosses[0], reg.charactor.highestItemLevel)">{{ reg.charactor.highestItemLevel }}<span v-if="reg.setCount"> ({{ reg.setCount }}{{ reg.setName }})</span></td>
                                                 <td v-else>-</td>
@@ -132,7 +133,7 @@
                                                             </div>
                                                         </div>
                                                         <div v-else>没有找到该角色的相关战斗记录</div>
-                                                        <div v-if="$root.guildPermission.guildManager">
+                                                        <div v-if="permission.guildManager">
                                                             <hr />
                                                             <input type="button" value="通过申请" class="form-btn" v-on:click="setStatus(reg.id, 4, reg.role)" />
                                                             <input type="button" value="拒绝申请" class="form-btn" v-on:click="setStatus(reg.id, 1, reg.role)" />
@@ -268,7 +269,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="$root.guildPermission.guildManager">
+                            <div v-if="permission.guildManager">
                                 <h5>创建框架</h5>
                                 <select class="form-input" v-model="form.newGrid.mode">
                                     <option value="0">25人团队</option>
@@ -286,10 +287,10 @@
                                         <span v-if="!group.wa">{{ group.name }}</span>
                                         <span v-else-if="group.name.indexOf('WeakAuras - ') == 0">{{ group.name.substr('WeakAuras - '.length) }}</span>
                                         <span v-else>{{ group.name }}</span>
-                                        <a v-if="taskEdit && $root.guildPermission.guildManager" class="form-btn" style="float:right; font-weight: normal" v-on:click="tasks.groups.splice(i, 1);$forceUpdate();"><i class="fa fa-trash"></i> 删除任务组</a>
+                                        <a v-if="taskEdit && permission.guildManager" class="form-btn" style="float:right; font-weight: normal" v-on:click="tasks.groups.splice(i, 1);$forceUpdate();"><i class="fa fa-trash"></i> 删除任务组</a>
                                     </div>
                                     <div class="task-item" v-for="(task, j) in group.tasks">
-                                        <a class="delete-task" v-if="taskEdit && $root.guildPermission.guildManager" v-on:click="group.tasks.splice(j, 1);$forceUpdate();"><i class="fa fa-minus-circle"></i></a>
+                                        <a class="delete-task" v-if="taskEdit && permission.guildManager" v-on:click="group.tasks.splice(j, 1);$forceUpdate();"><i class="fa fa-minus-circle"></i></a>
                                         <img src="/assets/images/task.svg" />
                                         <span>{{ task.text }}</span>
                                         <div class="task-players">
@@ -303,11 +304,11 @@
                                                     <s style="opacity: 0.5" v-else>{{ reg.name }}</s>
                                                 </span>
                                             </template>
-                                            <a v-on:click="activeTask = `${i},${j}`" style="color: #3dd0d8" v-if="taskEdit && $root.guildPermission.guildManager"><i class="fa fa-user"></i></a>
+                                            <a v-on:click="activeTask = `${i},${j}`" style="color: #3dd0d8" v-if="taskEdit && permission.guildManager"><i class="fa fa-user"></i></a>
                                         </div>
                                         <div class="clear"></div>
                                     </div>
-                                    <div class="task-item-new" v-if="taskEdit && $root.guildPermission.guildManager">
+                                    <div class="task-item-new" v-if="taskEdit && permission.guildManager">
                                         <div class="form-row">
                                             <div class="input-wrap">
                                                 <input type="text" placeholder="任务内容" class="general_input italic task-content" style="width: calc(100% - 140px);">
@@ -316,7 +317,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <template v-if="$root.guildPermission.guildManager">
+                                <template v-if="permission.guildManager">
                                     <template v-if="taskEdit">
                                         <div class="task-title">创建任务组</div>
                                         <div class="form-row">
@@ -660,7 +661,7 @@
             </div>
         </div>
     </section>
-    <div class="player-picker" v-show="activeTask && $root.guildPermission.guildManager">
+    <div class="player-picker" v-show="activeTask && permission.guildManager">
         <div class="player-picker-title">
             <i class="fa fa-user-circle-o"></i> 选择玩家
         </div>

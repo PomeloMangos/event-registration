@@ -20,6 +20,10 @@
                 text: ''
             }
         },
+        permission: {
+            guildManager: false,
+            guildOwner: false
+        },
         activity: null,
         raids: [],
         bosses: [],
@@ -83,7 +87,7 @@ component.methods = {
         this.raids = (await qv.get('/api/raid')).data;
         var activity = (await qv.get('/api/activity/' + this.id)).data;
 
-        if (activity.guildId != app.guildId && app.guildId) {
+        if (app.guildId && activity.guildId != app.guildId && activity.domainGuildId != app.guildId) {
             window.location = `https://${activity.guildId}.mwow.org/act?id=${this.id}`;
         }
 
@@ -600,6 +604,9 @@ component.methods = {
         }
 
         return ret;
+    },
+    getPermission: async function () {
+        this.permission = (await qv.get('/api/user/permission')).data;
     }
 };
 
