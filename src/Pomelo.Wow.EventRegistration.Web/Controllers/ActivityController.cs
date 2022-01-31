@@ -338,7 +338,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
         public async ValueTask<ApiResult<Activity>> Patch(
             [FromServices] WowContext db,
             [FromRoute] long id,
-            [FromBody] Activity model,
+            [FromBody] PatchActivityRequest model,
             CancellationToken cancellationToken = default)
         {
             if (!User.Identity.IsAuthenticated)
@@ -388,6 +388,10 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             if (!string.IsNullOrEmpty(model.Extension3))
             {
                 activity.Extension3 = model.Extension3;
+            }
+            if (model.AllowForward.HasValue)
+            {
+                activity.AllowForward = model.AllowForward.Value;
             }
 
             await db.SaveChangesAsync(cancellationToken);
