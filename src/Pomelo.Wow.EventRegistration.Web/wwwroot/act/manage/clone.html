@@ -42,9 +42,10 @@
             <tr>
                 <td>克隆人员选项</td>
                 <td class="input-wrap">
-                    <select class="general_input italic input" v-model="form.cloneRejected">
-                        <option v-bind:value="false">仅克隆批准入团人员</option>
-                        <option v-bind:value="true">克隆全部人员</option>
+                    <select class="general_input italic input" v-model="form.rule">
+                        <option v-bind:value="0">不克隆报名人员</option>
+                        <option v-bind:value="1">仅克隆批准入团人员</option>
+                        <option v-bind:value="2">克隆全部人员</option>
                     </select>
                 </td>
             </tr>

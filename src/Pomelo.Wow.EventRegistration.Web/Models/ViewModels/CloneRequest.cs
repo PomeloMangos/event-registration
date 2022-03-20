@@ -2,6 +2,13 @@
 
 namespace Pomelo.Wow.EventRegistration.Web.Models.ViewModels
 {
+    public enum MemberRule
+    {
+        None,
+        AcceptedOnly,
+        All
+    }
+
     public class CloneRequest
     {
         public long OriginalActivityId { get; set; }
@@ -16,6 +23,6 @@ namespace Pomelo.Wow.EventRegistration.Web.Models.ViewModels
 
         public string Raids { get; set; }
 
-        public bool CloneRejected { get; set; }
+        public MemberRule Rule { get; set; }
     }
 }
