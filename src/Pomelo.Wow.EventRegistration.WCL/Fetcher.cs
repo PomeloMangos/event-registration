@@ -72,7 +72,7 @@ namespace Pomelo.Wow.EventRegistration.WCL
                     var html = await response.Content.ReadAsStringAsync();
                     ret.Id = itemId;
                     ret.ItemLevel = Convert.ToInt32(itemLevelRegex.Match(html).Value);
-                    ret.ImageUrl = imageUrlRegex.Match(html).Value;
+                    ret.ImageUrl = imageUrlRegex.Match(html).Value.Replace("https://wow.zamimg.com/images/wow/icons", "http://image.nfuwow.com/static/database/static/images/wow/icons");
                     ret.Name = await GetEquipmentNameCNAsync(itemId);
                     var quality = qualityRegex
                         .Matches(html)

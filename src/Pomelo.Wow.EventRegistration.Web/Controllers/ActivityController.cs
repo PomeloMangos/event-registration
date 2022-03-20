@@ -275,7 +275,7 @@ namespace Pomelo.Wow.EventRegistration.Web.Controllers
             // 2. Clone registrations
             foreach (var x in original.Registrations)
             {
-                if (!request.CloneRejected && x.Status != RegistrationStatus.Accepted)
+                if (request.Rule == MemberRule.None || request.Rule == MemberRule.AcceptedOnly && x.Status != RegistrationStatus.Accepted)
                 {
                     continue;
                 }

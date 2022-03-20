@@ -9,7 +9,7 @@
             begin: null,
             deadline: null,
             raids: '',
-            cloneRejected: false
+            rule: 0
         }
     }
 };

@@ -53,15 +53,34 @@ var qv = {
         else
             return true;
     },
+    _xhrRequest: function (options) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(options.type, options.url);
+        xhr.setRequestHeader('Content-Type', options.contentType);
+        if (options.beforeSend) {
+            options.beforeSend(xhr);
+        }
+        xhr.send(options.data);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                var ret = options.dataType == 'json' ? JSON.parse(xhr.responseText) : xhr.responseText;
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    options.success(ret, xhr);
+                } else {
+                    options.error(ret, xhr);
+                }
+            }
+        };
+    },
     request: function (endpoint, method, params, dataType) {
         var self = this;
         return new Promise(function (resolve, reject) {
-            $.ajax({
+            self._xhrRequest({
                 url: endpoint,
                 type: method,
                 dataType: dataType || 'json',
                 contentType: 'application/json',
-                data: method == 'GET' ? params : JSON.stringify(params),
+                data: method == 'GET' ? null : JSON.stringify(params),
                 success: function (ret) {
                     resolve(ret);
                 },
