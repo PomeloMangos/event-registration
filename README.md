@@ -6,3 +6,6 @@
 - Visual Studio 2022 Community
 - .NET Core 3.1
 - MySQL 8.0
+- 
+## Related Components
+- WeChat Mini Program: https://github.com/PomeloMangos/mirai-mp
